@@ -1,6 +1,6 @@
 # Bad-Company-2-Map-Editor
 
-This is a Unity 3D project that currently is in development. 
+This is a Unity 3D project that is in development. 
 
 Currently it allows basic loading of decompiled dbx files and converted 3d models. 
 
