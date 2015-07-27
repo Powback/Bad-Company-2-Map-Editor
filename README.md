@@ -18,18 +18,22 @@ The main goal here is to create a fully functional 3D map editor that allows you
 * 0% - Terrain loading 
   * Needs a lot of research. Help would be appreciated.
 * 0% - Saving  
-  * Will be worked on when the above are correct.
-* 0% - Importing / exporting textures 
-  * Needs more research.
-* 0% - importing lightning 
-  * Needs more research.
-* 0% - importing weather. 
-  * Needs more research.
+  * Will be worked on when the above are finished.
 
 # Planned
+* Basic position/rotation editing
+  * More spesifically, a UI interface for it. Allowing the editor to be ran without the Unity Editor.
+* Advanced editing
+  * Adding and removing objects. 
+* Importing / exporting textures 
+  * Needs more research.
+* importing lightning 
+  * Needs more research.
+* importing weather. 
+  * Needs more research.
 * Creating maps from scratch.
   * Will need to import the standard map objects (HUD, VO) and place them correctly. More research needed.
-
+ 
 # Future
 * Texture editing
   * Will need to research how frostbite handles object textures and shaders.
