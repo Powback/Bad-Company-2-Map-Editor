@@ -7,7 +7,6 @@ Currently, it allows basic loading of decompiled dbx files and converted 3d mode
 # Goals
 The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entirely new ones from scratch. It will hopefully be possible to port maps in the future.
 
-Since the Frostbite 2+ map layout is pretty similar, it's not impossible that porting maps can become a reality.
 
 # Progress
 * 50% - Map loading 
