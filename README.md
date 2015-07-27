@@ -21,16 +21,16 @@ The main goal here is to create a fully functional 3D map editor that allows you
   * Will be worked on when the above are finished.
 
 # Planned
-* Basic position/rotation editing
-  * More spesifically, a UI interface for it. Allowing the editor to be ran without the Unity Editor.
-* Advanced editing
-  * Adding and removing objects. 
 * Importing / exporting textures 
   * Needs more research.
 * importing lightning 
   * Needs more research.
 * importing weather. 
   * Needs more research.
+* Basic position/rotation editing
+  * More spesifically, a UI interface for it. Allowing the editor to be ran without the Unity Editor.
+* Advanced editing
+  * Adding and removing objects. 
 * Creating maps from scratch.
   * Will need to import the standard map objects (HUD, VO) and place them correctly. More research needed.
  
