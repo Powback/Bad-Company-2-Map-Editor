@@ -2,7 +2,7 @@
 
 This is a Unity 3D project that is in development. 
 
-Currently it allows basic loading of decompiled dbx files and converted 3d models. 
+Currently, it allows basic loading of decompiled dbx files and converted 3d models. 
 
 # Goals
 The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entirely new ones from scratch. 
@@ -19,7 +19,7 @@ Since the Frostbite 2+ map layout is pretty similar, it's not impossible that po
 * 0% - Terrain loading 
   * Needs a lot of research. Help would be appreciated.
 * 0% - Saving  
-  * WIll be worked on when the above are correct.
+  * Will be worked on when the above are correct.
 * 0% - Importing / exporting textures 
   * Needs more research.
 * 0% - importing lightning 
@@ -38,3 +38,6 @@ Since the Frostbite 2+ map layout is pretty similar, it's not impossible that po
   * Need to convert objects to .meshdata and correctly export all needed data.
 * BF3 map loading with Rime
   * Can hopefully allow you to port BC2 maps to BF3 and vice versa.
+
+# Why Unity?
+Unity provides a fast rendering engine with a lot of room for expansion. It loads quickly and is extremely customizable. While it's mostly used for game development, it's an excellent platform for projects such as this one.
