@@ -5,7 +5,7 @@ This is a Unity 3D project that is in development.
 Currently it allows basic loading of decompiled dbx files and converted 3d models. 
 
 # Goals
-The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entierly new ones from scratch. 
+The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entirely new ones from scratch. 
 
 Since the Frostbite 2+ map layout is pretty similar, it's not impossible that porting maps can become a reality.
 
