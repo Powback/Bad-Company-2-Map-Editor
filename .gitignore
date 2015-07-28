@@ -6,3 +6,4 @@ Assets/MapFiles
 *.meta
 Library/metadata/
 Library/ShaderCache/
+Temp/

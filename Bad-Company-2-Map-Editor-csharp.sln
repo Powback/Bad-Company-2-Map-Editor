@@ -1,7 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
-Project("{202FB0C8-B66D-45DF-B3EF-483B42BA9302}") = "BC2 Port", "Assembly-CSharp-vs.csproj", "{131975D1-02AF-95EE-E888-51A6EFAC6B33}"
+Project("{5A8406CB-AC07-CE9A-48F7-C1E14C828CAF}") = "Bad-Company-2-Map-Editor", "Assembly-CSharp-vs.csproj", "{A46604DB-9E78-374F-A38A-48811EF07081}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,15 +9,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{131975D1-02AF-95EE-E888-51A6EFAC6B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{131975D1-02AF-95EE-E888-51A6EFAC6B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{131975D1-02AF-95EE-E888-51A6EFAC6B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{131975D1-02AF-95EE-E888-51A6EFAC6B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A46604DB-9E78-374F-A38A-48811EF07081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46604DB-9E78-374F-A38A-48811EF07081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46604DB-9E78-374F-A38A-48811EF07081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46604DB-9E78-374F-A38A-48811EF07081}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																															GlobalSection(MonoDevelopProperties) = preSolution
+																																																																GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
