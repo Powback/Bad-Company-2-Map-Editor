@@ -46,3 +46,16 @@ The main goal here is to create a fully functional 3D map editor that allows you
   
 # Why Unity?
 Unity provides a fast rendering engine with a lot of room for expansion. It loads quickly and is extremely customizable. While it's mostly used for game development, it's an excellent platform for projects such as this one.
+
+# How to use
+Method 1 - Automatic.
+Download the files located in the File Branch and place them in the assets/resources folder.
+
+Method 2 - Manually.
+In order to load the data, you will need to export your BC2 files and convert them to the correct format using the Phyton scripts located in the Export folder. 
+
+Simply drag and drop your BC2 directory into the FBRP export script. Then drag the exported file folder into the DBX converter. 
+
+You should be able to load the maps now. To import the models you will need to install and activate the blender addon located in the Export folder. Just open blender and press ctrl+f11, open file, select the convert script and change the folder to where you exported the data. I recommend that you launch blender from the commandline using "blender.exe -d". The script crash at certain files. Opening blender from the command line will show the console after blender has crashed. Then you can just delete the files that are causing the crash.
+
+Video tutorial coming soon.
