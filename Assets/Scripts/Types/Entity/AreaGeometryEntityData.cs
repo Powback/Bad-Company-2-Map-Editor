@@ -1,0 +1,1 @@
+﻿using UnityEngine;using System.Collections;public class AreaGeometryEntityData : MonoBehaviour {	public string Components;	public string Enumeration;	public string Transform;	public string Name;	public string Next;	public string Previous;	public string Height;	public string Weight;	public string Waypoint;}

@@ -1,0 +1,289 @@
+<?xml version="1.0"?>
+<partition guid="7B69FCAF-D269-2731-A833-49A7BCF91BA8" primaryInstance="7B69FCAF-D269-2731-A833-49A7BCF91BA8" exportMode="All">
+	<instance guid="7B69FCAF-D269-2731-A833-49A7BCF91BA8" type="GameSharedResources.LevelDescriptionAsset" id="NAM_MP_003SDM_description">
+		<field name="Name">Levels/NAM_MP_003SDM_description</field>
+		<field name="MemoryReportGroup">MemoryReportGroup_default</field>
+		<field name="LevelName">Levels/NAM_MP_003SDM</field>
+		<complex name="Description">
+			<field name="Name">NAM_MP_003_NAME</field>
+			<field name="Description">NAM_MP_003_DESC</field>
+			<array name="LoadingScreens" />
+			<field ref="null" name="LoadingMovie" />
+			<complex name="LoadingMovieTopLeft">0/0</complex>
+			<complex name="LoadingMovieDimensions">1280.0/720.0</complex>
+			<field name="LoadingMovieLoopBeginFrame">0</field>
+			<field name="LoadingMovieLoopEndFrame">0</field>
+			<field name="AttackerTeam">TeamNeutral</field>
+			<complex name="LoadingTime">
+				<field name="Win32Time">10.0</field>
+				<field name="XenonTime">10.0</field>
+				<field name="Ps3Time">10.0</field>
+			</complex>
+			<field ref="sound/music/vietnam/menu_and_loading/loading_music_nam_mp_003r_wave/0ac24907-488a-44ae-98ad-84883a79c5ae" name="Music" />
+			<array name="SoundFX" />
+			<field ref="levels/nam_mp_003/ui/minimaptexture/c453a20e-0594-48fb-933f-ad14ec121201" name="MinimapTexture" />
+			<field name="AchivementEasyCompleted" />
+			<field name="AchivementEasyDate" />
+			<field name="AchivementMediumCompleted" />
+			<field name="AchivementMediumDate" />
+			<field name="AchivementHardCompleted" />
+			<field name="AchivementHardDate" />
+			<field ref="2b96d332-ccaa-11e0-b5a0-8cc3f2ab16ac" name="RichPresence" />
+			<complex name="Advertisement">
+				<field name="Identifier" />
+				<array name="Members" />
+			</complex>
+			<array name="Consumables" />
+			<field name="GatherCollectibles">false</field>
+			<array name="Collectibles" />
+			<complex name="LevelMemoryUsage">
+				<field name="StaticAnimationsInBytes">10605512</field>
+				<field name="WeaponAsyncHeapSize">1536</field>
+				<field name="CutsceneSmallHeapSize">0</field>
+				<field name="CutsceneLargeHeapSize">0</field>
+			</complex>
+			<complex name="MinimapCameraOffset">
+				<complex name="Position">0/0</complex>
+				<field name="CameraFov">0</field>
+			</complex>
+			<field ref="gamemodes/namteamdeathmatch/2eda2bf7-27ce-4461-975a-3ee3a829920b" name="GameMode" />
+			<field name="StartDelayTime">15</field>
+			<field name="FactionTeam1">FactionUS</field>
+			<field name="FactionTeam2">FactionRUS</field>
+			<field name="WaitForButtonBeforeStarting">false</field>
+			<array name="GameTips" />
+			<array name="KitImages">
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_ASSAULT_NAM</field>
+					<field ref="awards/images/kitselection/vietnam/us_assault/6b910b72-c543-4d2c-9822-5c57edcde5dd" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_ENGINEER_NAM</field>
+					<field ref="awards/images/kitselection/vietnam/us_engineer/58218f41-f608-4bf9-87e7-e2607e0d5a69" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_MEDIC_NAM</field>
+					<field ref="awards/images/kitselection/vietnam/us_medic/d2f759ae-0854-497f-8462-b44ded87b205" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_RECON_NAM</field>
+					<field ref="awards/images/kitselection/vietnam/us_recon/deef940a-4360-4e51-9f48-5dd2e891b93d" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_ASSAULT_NAM</field>
+					<field ref="awards/images/kitselection/vietnam/vc_assault/d25268c6-c2d4-49e5-b990-4b950d642dac" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_ENGINEER_NAM</field>
+					<field ref="awards/images/kitselection/vietnam/vc_engineer/0b7c9962-3c05-4559-83e4-308c17cde741" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_MEDIC_NAM</field>
+					<field ref="awards/images/kitselection/vietnam/vc_medic/9987faa5-bfe3-4b7b-9e25-340d4797a5a9" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_RECON_NAM</field>
+					<field ref="awards/images/kitselection/vietnam/vc_recon/354588ab-34aa-4fa7-9bd7-bd2690edcecb" name="Texture" />
+				</complex>
+			</array>
+			<field name="Licenses">nam</field>
+			<field name="Revision">0</field>
+			<field name="KickIfLicenseMissing">true</field>
+			<field name="LevelRoundTimeStatName" />
+			<field name="MatchmakingModID">VIETNAM</field>
+		</complex>
+	</instance>
+	<instance guid="6D46EE35-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceConnection">
+		<field ref="null" name="RichPresence" />
+		<field name="RichPresenceIndex">4</field>
+		<array name="ContextPairs">
+			<complex>
+				<field ref="6d46ee37-517d-11e0-a2e5-d3e77d748a2c" name="Context" />
+				<field name="ContextIndex">2</field>
+				<field ref="6d46ee3b-517d-11e0-a2e5-d3e77d748a2c" name="Value" />
+				<field name="ValueIndex">3</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+			<complex>
+				<field ref="6d46ee3d-517d-11e0-a2e5-d3e77d748a2c" name="Context" />
+				<field name="ContextIndex">0</field>
+				<field ref="6d46ee4a-517d-11e0-a2e5-d3e77d748a2c" name="Value" />
+				<field name="ValueIndex">13</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+		</array>
+		<array name="PropertyPairs" />
+	</instance>
+	<instance guid="6D46EE36-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceString">
+		<field name="Name">Playing Vietnam</field>
+		<field name="Index">4</field>
+	</instance>
+	<instance guid="6D46EE37-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContext">
+		<field name="Name">Multiplayer: Game mode</field>
+		<field name="Index">2</field>
+		<array name="PossibleValues">
+			<item ref="6d46ee38-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee39-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee3a-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee3b-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee3c-517d-11e0-a2e5-d3e77d748a2c" />
+		</array>
+		<field name="ContextType">RichPresenceContextType_Normal</field>
+	</instance>
+	<instance guid="6D46EE3B-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Squad Rush</field>
+		<field name="Index">3</field>
+	</instance>
+	<instance guid="6D46EE3D-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContext">
+		<field name="Name">Multiplayer: Level Name</field>
+		<field name="Index">0</field>
+		<array name="PossibleValues">
+			<item ref="6d46ee3e-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee3f-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee40-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee41-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee42-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee43-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee44-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee45-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee46-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee47-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee48-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee49-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee4a-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee4b-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee4c-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee4d-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee4e-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee4f-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee50-517d-11e0-a2e5-d3e77d748a2c" />
+			<item ref="6d46ee51-517d-11e0-a2e5-d3e77d748a2c" />
+		</array>
+		<field name="ContextType">RichPresenceContextType_Normal</field>
+	</instance>
+	<instance guid="6D46EE4A-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_003</field>
+		<field name="Index">13</field>
+	</instance>
+	<instance guid="6D46EE38-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Conquest</field>
+		<field name="Index">1</field>
+	</instance>
+	<instance guid="6D46EE39-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Rush</field>
+		<field name="Index">0</field>
+	</instance>
+	<instance guid="6D46EE3A-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Squad DM</field>
+		<field name="Index">2</field>
+	</instance>
+	<instance guid="6D46EE3C-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Onslaught</field>
+		<field name="Index">4</field>
+	</instance>
+	<instance guid="6D46EE3E-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP01</field>
+		<field name="Index">1</field>
+	</instance>
+	<instance guid="6D46EE3F-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP02</field>
+		<field name="Index">2</field>
+	</instance>
+	<instance guid="6D46EE40-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP03</field>
+		<field name="Index">3</field>
+	</instance>
+	<instance guid="6D46EE41-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP04</field>
+		<field name="Index">4</field>
+	</instance>
+	<instance guid="6D46EE42-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP05</field>
+		<field name="Index">5</field>
+	</instance>
+	<instance guid="6D46EE43-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP06</field>
+		<field name="Index">6</field>
+	</instance>
+	<instance guid="6D46EE44-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP07</field>
+		<field name="Index">7</field>
+	</instance>
+	<instance guid="6D46EE45-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP08</field>
+		<field name="Index">8</field>
+	</instance>
+	<instance guid="6D46EE46-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP09</field>
+		<field name="Index">9</field>
+	</instance>
+	<instance guid="6D46EE47-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP10</field>
+		<field name="Index">10</field>
+	</instance>
+	<instance guid="6D46EE48-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP12</field>
+		<field name="Index">11</field>
+	</instance>
+	<instance guid="6D46EE49-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_002</field>
+		<field name="Index">12</field>
+	</instance>
+	<instance guid="6D46EE4B-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_005</field>
+		<field name="Index">14</field>
+	</instance>
+	<instance guid="6D46EE4C-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_006</field>
+		<field name="Index">15</field>
+	</instance>
+	<instance guid="6D46EE4D-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_007</field>
+		<field name="Index">16</field>
+	</instance>
+	<instance guid="6D46EE4E-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">BC1_Oasis</field>
+		<field name="Index">17</field>
+	</instance>
+	<instance guid="6D46EE4F-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">BC1_Harvest_Day</field>
+		<field name="Index">18</field>
+	</instance>
+	<instance guid="6D46EE50-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP_SP02</field>
+		<field name="Index">19</field>
+	</instance>
+	<instance guid="6D46EE51-517D-11E0-A2E5-D3E77D748A2C" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP_SP05</field>
+		<field name="Index">20</field>
+	</instance>
+	<instance guid="2B96D332-CCAA-11E0-B5A0-8CC3F2AB16AC" type="GameSharedResources.RichPresenceConnection">
+		<field ref="null" name="RichPresence" />
+		<field name="RichPresenceIndex">4</field>
+		<array name="ContextPairs">
+			<complex>
+				<field ref="null" name="Context" />
+				<field name="ContextIndex">2</field>
+				<field ref="null" name="Value" />
+				<field name="ValueIndex">3</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+			<complex>
+				<field ref="null" name="Context" />
+				<field name="ContextIndex">0</field>
+				<field ref="null" name="Value" />
+				<field name="ValueIndex">13</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+		</array>
+		<array name="PropertyPairs" />
+	</instance>
+</partition>

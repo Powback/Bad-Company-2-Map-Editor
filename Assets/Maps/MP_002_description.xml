@@ -1,0 +1,329 @@
+<?xml version="1.0"?>
+<partition guid="5F9E580D-745B-F817-633D-3956A02740A4" primaryInstance="5F9E580D-745B-F817-633D-3956A02740A4" exportMode="All">
+	<instance guid="5F9E580D-745B-F817-633D-3956A02740A4" type="GameSharedResources.LevelDescriptionAsset" id="MP_002_description">
+		<field name="Name">Levels/MP_002_description</field>
+		<field name="MemoryReportGroup">MemoryReportGroup_default</field>
+		<field name="LevelName">Levels/MP_002</field>
+		<complex name="Description">
+			<field name="Name">MP_002_NAME</field>
+			<field name="Description">MP_002_DESC</field>
+			<array name="LoadingScreens" />
+			<field ref="levels/mp_002/ui/mp02_rush/e3b6a79c-db58-4f9f-8558-e8cb936d8ec7" name="LoadingMovie" />
+			<complex name="LoadingMovieTopLeft">0/0</complex>
+			<complex name="LoadingMovieDimensions">1280.0/720.0</complex>
+			<field name="LoadingMovieLoopBeginFrame">0</field>
+			<field name="LoadingMovieLoopEndFrame">0</field>
+			<field name="AttackerTeam">Team1</field>
+			<complex name="LoadingTime">
+				<field name="Win32Time">10.0</field>
+				<field name="XenonTime">10.0</field>
+				<field name="Ps3Time">10.0</field>
+			</complex>
+			<field ref="sound/music/rome/menu_and_loading/loading_music_mp_02_wave/7a242443-15dd-42c3-8b92-7d05b5534248" name="Music" />
+			<array name="SoundFX" />
+			<field ref="levels/mp_002/ui/minimaptexture/d2700568-5441-482f-b843-513db957b88e" name="MinimapTexture" />
+			<field name="AchivementEasyCompleted" />
+			<field name="AchivementEasyDate" />
+			<field name="AchivementMediumCompleted" />
+			<field name="AchivementMediumDate" />
+			<field name="AchivementHardCompleted" />
+			<field name="AchivementHardDate" />
+			<field ref="0f979e79-ccaa-11e0-b5a0-8cc3f2ab16ac" name="RichPresence" />
+			<complex name="Advertisement">
+				<field name="Identifier" />
+				<array name="Members" />
+			</complex>
+			<array name="Consumables" />
+			<field name="GatherCollectibles">false</field>
+			<array name="Collectibles" />
+			<complex name="LevelMemoryUsage">
+				<field name="StaticAnimationsInBytes">14377776</field>
+				<field name="WeaponAsyncHeapSize">1536</field>
+				<field name="CutsceneSmallHeapSize">0</field>
+				<field name="CutsceneLargeHeapSize">0</field>
+			</complex>
+			<complex name="MinimapCameraOffset">
+				<complex name="Position">0/0</complex>
+				<field name="CameraFov">0</field>
+			</complex>
+			<field ref="gamemodes/goldrush/3eb0392d-dc32-4667-bd0e-9e6051144a1f" name="GameMode" />
+			<field name="StartDelayTime">15</field>
+			<field name="FactionTeam1">FactionUS</field>
+			<field name="FactionTeam2">FactionRUS</field>
+			<field name="WaitForButtonBeforeStarting">false</field>
+			<array name="GameTips" />
+			<array name="KitImages">
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_ASSAULT</field>
+					<field ref="awards/images/kitselection/us_assault_wood/951913e1-6da9-4c45-85d3-7f03f4450fc8" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_ASSAULT_UPG_US</field>
+					<field ref="awards/images/kitselection/us_assault_upgrade/6b676e3c-0f81-45ce-aa2e-5050d5b88186" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_ENGINEER</field>
+					<field ref="awards/images/kitselection/us_engineer_wood/1881ba9c-cf9a-4b93-9f5b-6f7ed0cdc943" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_ENGINEER_UPG_US</field>
+					<field ref="awards/images/kitselection/us_engineer_upgrade/9283b704-8425-4af9-937d-26da2dc55f3c" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_MEDIC</field>
+					<field ref="awards/images/kitselection/us_medic_wood/779fdb6a-d214-4aad-af12-cfa94a3c76b3" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_MEDIC_UPG_US</field>
+					<field ref="awards/images/kitselection/us_medic_upgrade/30d9378d-8de0-451e-b544-44b89155695d" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_RECON</field>
+					<field ref="awards/images/kitselection/us_recon_wood/a4f55393-67d8-4b43-9265-330c8154b0e8" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team1</field>
+					<field name="KitCategory">KIT_RECON_UPG_US</field>
+					<field ref="awards/images/kitselection/us_recon_upgrade/eb48267d-effd-419e-bab0-adbdf8499533" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_ASSAULT</field>
+					<field ref="awards/images/kitselection/rus_assault_wood/e9ae04e4-ddbe-4101-8750-9e92168811bd" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_ASSAULT_UPG_RU</field>
+					<field ref="awards/images/kitselection/rus_assault_upgrade/7b41b96a-2a33-4c34-8f89-51a7a2026e38" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_ENGINEER</field>
+					<field ref="awards/images/kitselection/rus_engineer_wood/8dbff467-6fbc-4a88-8b99-1cda4354676c" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_ENGINEER_UPG_RU</field>
+					<field ref="awards/images/kitselection/rus_engineer_upgrade/34de4b27-cc2d-4e23-bf6c-04ab0d61e6f4" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_MEDIC</field>
+					<field ref="awards/images/kitselection/rus_medic_wood/5613a8d0-2e63-4462-a60a-090e34b1187f" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_MEDIC_UPG_RU</field>
+					<field ref="awards/images/kitselection/rus_medic_upgrade/054d3580-f534-444d-b505-2dbdfdfa4fb9" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_RECON</field>
+					<field ref="awards/images/kitselection/rus_recon_wood/56cfc474-3cb3-41a2-9e7d-41d712f2ceea" name="Texture" />
+				</complex>
+				<complex>
+					<field name="Team">Team2</field>
+					<field name="KitCategory">KIT_RECON_UPG_RU</field>
+					<field ref="awards/images/kitselection/rus_recon_upgrade/fe8cfec0-45b8-4f79-a4fc-c1f97a63896c" name="Texture" />
+				</complex>
+			</array>
+			<field name="Licenses" />
+			<field name="Revision">0</field>
+			<field name="KickIfLicenseMissing">false</field>
+			<field name="LevelRoundTimeStatName" />
+			<field name="MatchmakingModID">BC2</field>
+		</complex>
+	</instance>
+	<instance guid="B2F8AA95-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceConnection">
+		<field ref="null" name="RichPresence" />
+		<field name="RichPresenceIndex">2</field>
+		<array name="ContextPairs">
+			<complex>
+				<field ref="b2f8aa97-5004-11e0-bf3f-cbc4fb3f961e" name="Context" />
+				<field name="ContextIndex">0</field>
+				<field ref="b2f8aa99-5004-11e0-bf3f-cbc4fb3f961e" name="Value" />
+				<field name="ValueIndex">2</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+			<complex>
+				<field ref="b2f8aaac-5004-11e0-bf3f-cbc4fb3f961e" name="Context" />
+				<field name="ContextIndex">2</field>
+				<field ref="b2f8aaae-5004-11e0-bf3f-cbc4fb3f961e" name="Value" />
+				<field name="ValueIndex">0</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+		</array>
+		<array name="PropertyPairs" />
+	</instance>
+	<instance guid="B2F8AA96-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceString">
+		<field name="Name">Playing Multiplayer</field>
+		<field name="Index">2</field>
+	</instance>
+	<instance guid="B2F8AA97-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContext">
+		<field name="Name">Multiplayer: Level Name</field>
+		<field name="Index">0</field>
+		<array name="PossibleValues">
+			<item ref="b2f8aa98-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aa99-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aa9a-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aa9b-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aa9c-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aa9d-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aa9e-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aa9f-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa0-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa1-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa2-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa3-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa4-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa5-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa6-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa7-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa8-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaa9-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaaa-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaab-5004-11e0-bf3f-cbc4fb3f961e" />
+		</array>
+		<field name="ContextType">RichPresenceContextType_Normal</field>
+	</instance>
+	<instance guid="B2F8AA99-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP02</field>
+		<field name="Index">2</field>
+	</instance>
+	<instance guid="B2F8AAAC-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContext">
+		<field name="Name">Multiplayer: Game mode</field>
+		<field name="Index">2</field>
+		<array name="PossibleValues">
+			<item ref="b2f8aaad-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaae-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aaaf-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aab0-5004-11e0-bf3f-cbc4fb3f961e" />
+			<item ref="b2f8aab1-5004-11e0-bf3f-cbc4fb3f961e" />
+		</array>
+		<field name="ContextType">RichPresenceContextType_Normal</field>
+	</instance>
+	<instance guid="B2F8AAAE-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Rush</field>
+		<field name="Index">0</field>
+	</instance>
+	<instance guid="B2F8AA98-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP01</field>
+		<field name="Index">1</field>
+	</instance>
+	<instance guid="B2F8AA9A-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP03</field>
+		<field name="Index">3</field>
+	</instance>
+	<instance guid="B2F8AA9B-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP04</field>
+		<field name="Index">4</field>
+	</instance>
+	<instance guid="B2F8AA9C-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP05</field>
+		<field name="Index">5</field>
+	</instance>
+	<instance guid="B2F8AA9D-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP06</field>
+		<field name="Index">6</field>
+	</instance>
+	<instance guid="B2F8AA9E-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP07</field>
+		<field name="Index">7</field>
+	</instance>
+	<instance guid="B2F8AA9F-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP08</field>
+		<field name="Index">8</field>
+	</instance>
+	<instance guid="B2F8AAA0-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP09</field>
+		<field name="Index">9</field>
+	</instance>
+	<instance guid="B2F8AAA1-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP10</field>
+		<field name="Index">10</field>
+	</instance>
+	<instance guid="B2F8AAA2-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP12</field>
+		<field name="Index">11</field>
+	</instance>
+	<instance guid="B2F8AAA3-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_002</field>
+		<field name="Index">12</field>
+	</instance>
+	<instance guid="B2F8AAA4-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_003</field>
+		<field name="Index">13</field>
+	</instance>
+	<instance guid="B2F8AAA5-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_005</field>
+		<field name="Index">14</field>
+	</instance>
+	<instance guid="B2F8AAA6-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_006</field>
+		<field name="Index">15</field>
+	</instance>
+	<instance guid="B2F8AAA7-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">NAM_MP_007</field>
+		<field name="Index">16</field>
+	</instance>
+	<instance guid="B2F8AAA8-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">BC1_Oasis</field>
+		<field name="Index">17</field>
+	</instance>
+	<instance guid="B2F8AAA9-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">BC1_Harvest_Day</field>
+		<field name="Index">18</field>
+	</instance>
+	<instance guid="B2F8AAAA-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP_SP02</field>
+		<field name="Index">19</field>
+	</instance>
+	<instance guid="B2F8AAAB-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">MP_SP05</field>
+		<field name="Index">20</field>
+	</instance>
+	<instance guid="B2F8AAAD-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Conquest</field>
+		<field name="Index">1</field>
+	</instance>
+	<instance guid="B2F8AAAF-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Squad DM</field>
+		<field name="Index">2</field>
+	</instance>
+	<instance guid="B2F8AAB0-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Squad Rush</field>
+		<field name="Index">3</field>
+	</instance>
+	<instance guid="B2F8AAB1-5004-11E0-BF3F-CBC4FB3F961E" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">Onslaught</field>
+		<field name="Index">4</field>
+	</instance>
+	<instance guid="0F979E79-CCAA-11E0-B5A0-8CC3F2AB16AC" type="GameSharedResources.RichPresenceConnection">
+		<field ref="null" name="RichPresence" />
+		<field name="RichPresenceIndex">2</field>
+		<array name="ContextPairs">
+			<complex>
+				<field ref="null" name="Context" />
+				<field name="ContextIndex">0</field>
+				<field ref="null" name="Value" />
+				<field name="ValueIndex">2</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+			<complex>
+				<field ref="null" name="Context" />
+				<field name="ContextIndex">2</field>
+				<field ref="null" name="Value" />
+				<field name="ValueIndex">0</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+		</array>
+		<array name="PropertyPairs" />
+	</instance>
+</partition>

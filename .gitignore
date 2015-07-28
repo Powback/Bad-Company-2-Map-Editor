@@ -1,0 +1,8 @@
+Resources/
+Assets/Resources
+/Assets/Resources
+Assets/MapData
+Assets/MapFiles
+*.meta
+Library/metadata/
+Library/ShaderCache/

@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<partition guid="F01890A8-AFCA-D575-E040-B2AC106EEF1B" primaryInstance="F01890A8-AFCA-D575-E040-B2AC106EEF1B" exportMode="All">
+	<instance guid="F01890A8-AFCA-D575-E040-B2AC106EEF1B" type="GameSharedResources.LevelDescriptionAsset" id="SP_03_description">
+		<field name="Name">Levels/SP_03_description</field>
+		<field name="MemoryReportGroup">MemoryReportGroup_default</field>
+		<field name="LevelName">Levels/SP_03</field>
+		<complex name="Description">
+			<field name="Name">SP_03_A_NAME</field>
+			<field name="Description">SP_03_A_DESC</field>
+			<array name="LoadingScreens" />
+			<field ref="levels/sp_03/ui/loadingmovie/ac3f2741-9242-4447-b45b-027d0c09233c" name="LoadingMovie" />
+			<complex name="LoadingMovieTopLeft">0/0</complex>
+			<complex name="LoadingMovieDimensions">1280.0/720.0</complex>
+			<field name="LoadingMovieLoopBeginFrame">0</field>
+			<field name="LoadingMovieLoopEndFrame">0</field>
+			<field name="AttackerTeam">TeamNeutral</field>
+			<complex name="LoadingTime">
+				<field name="Win32Time">10.0</field>
+				<field name="XenonTime">10.0</field>
+				<field name="Ps3Time">10.0</field>
+			</complex>
+			<field ref="sound/music/rome/menu_and_loading/loading_music_sp_03_wave/c05e8078-89e2-4a2e-ba98-54bb2701e1f2" name="Music" />
+			<array name="SoundFX" />
+			<field ref="levels/sp_03/ui/minimaptexture/a704bad2-b87d-4a05-8534-ee44dca954fa" name="MinimapTexture" />
+			<field name="AchivementEasyCompleted">sp03c_00</field>
+			<field name="AchivementEasyDate">sp03c_01</field>
+			<field name="AchivementMediumCompleted">sp03n_00</field>
+			<field name="AchivementMediumDate">sp03n_01</field>
+			<field name="AchivementHardCompleted">sp03h_00</field>
+			<field name="AchivementHardDate">sp03h_01</field>
+			<field ref="02129aa3-ccaa-11e0-b5a0-8cc3f2ab16ac" name="RichPresence" />
+			<complex name="Advertisement">
+				<field name="Identifier" />
+				<array name="Members" />
+			</complex>
+			<array name="Consumables">
+				<item>cn_A10BE1BF-AD54-4A4E-A48D-045892A6560C</item>
+				<item>cn_CA57FE45-2950-478A-B727-5C1726B71098</item>
+			</array>
+			<field name="GatherCollectibles">true</field>
+			<array name="Collectibles">
+				<item>cl_sp_mg3</item>
+				<item>cl_sp_usas12</item>
+				<item>cl_sp_qbu88</item>
+				<item>cl_sp_scarl</item>
+				<item>cl_sp_an94_k</item>
+				<item>cl_sp_aks74u</item>
+				<item>cl_sp_m95</item>
+				<item>cl_sp_scarl_s</item>
+				<item>cl_sp_mg3_k</item>
+				<item>cl_sp_qbu88_k</item>
+				<item>cl_sp_qjy88_k</item>
+				<item>cl_sp_an94_s</item>
+				<item>cl_sp_m95_s</item>
+				<item>cl_sp_aek971_k</item>
+				<item>cl_sp_xm8</item>
+				<item>cl_sp_spas12_s</item>
+				<item>cl_sp_qjy88</item>
+				<item>cl_sp_m60_s</item>
+				<item>cl_sp_f2000_k</item>
+				<item>cl_sp_aks74u_k</item>
+				<item>cl_sp_toz_s</item>
+				<item>cl_sp_aek971</item>
+				<item>cl_sp_toz</item>
+				<item>cl_sp_spas12</item>
+				<item>cl_sp_usas12_s</item>
+				<item>cl_sp_carlgustaf</item>
+				<item>cl_sp_xm8_s</item>
+				<item>cl_sp_grach</item>
+				<item>cl_sp_f2000</item>
+				<item>cl_sp_m60</item>
+			</array>
+			<complex name="LevelMemoryUsage">
+				<field name="StaticAnimationsInBytes">15193340</field>
+				<field name="WeaponAsyncHeapSize">1536</field>
+				<field name="CutsceneSmallHeapSize">1024</field>
+				<field name="CutsceneLargeHeapSize">6144</field>
+			</complex>
+			<complex name="MinimapCameraOffset">
+				<complex name="Position">0/0</complex>
+				<field name="CameraFov">0</field>
+			</complex>
+			<field ref="gamemodes/singleplayer/fe62a9fa-483d-423f-8f33-c0ca46904700" name="GameMode" />
+			<field name="StartDelayTime">15</field>
+			<field name="FactionTeam1">FactionNeutral</field>
+			<field name="FactionTeam2">FactionNeutral</field>
+			<field name="WaitForButtonBeforeStarting">false</field>
+			<array name="GameTips">
+				<complex>
+					<field name="Text">SP03A_HINT_1</field>
+					<field name="Header" />
+				</complex>
+				<complex>
+					<field name="Text">SP03A_HINT_1</field>
+					<field name="Header" />
+				</complex>
+				<complex>
+					<field name="Text">SP03A_HINT_1</field>
+					<field name="Header" />
+				</complex>
+				<complex>
+					<field name="Text">SP03A_HINT_1</field>
+					<field name="Header" />
+				</complex>
+				<complex>
+					<field name="Text">SP03A_HINT_1</field>
+					<field name="Header" />
+				</complex>
+			</array>
+			<array name="KitImages" />
+			<field name="Licenses" />
+			<field name="Revision">0</field>
+			<field name="KickIfLicenseMissing">false</field>
+			<field name="LevelRoundTimeStatName" />
+			<field name="MatchmakingModID">BC2</field>
+		</complex>
+	</instance>
+	<instance guid="3D4FF4C1-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceConnection">
+		<field ref="null" name="RichPresence" />
+		<field name="RichPresenceIndex">3</field>
+		<array name="ContextPairs">
+			<complex>
+				<field ref="3d4ff4c3-4f1b-11e0-bef3-9e12707b7abb" name="Context" />
+				<field name="ContextIndex">1</field>
+				<field ref="3d4ff4c6-4f1b-11e0-bef3-9e12707b7abb" name="Value" />
+				<field name="ValueIndex">3</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+		</array>
+		<array name="PropertyPairs" />
+	</instance>
+	<instance guid="3D4FF4C2-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceString">
+		<field name="Name">Playing Singleplayer</field>
+		<field name="Index">3</field>
+	</instance>
+	<instance guid="3D4FF4C3-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContext">
+		<field name="Name">Singleplayer: Level Name</field>
+		<field name="Index">1</field>
+		<array name="PossibleValues">
+			<item ref="3d4ff4c4-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4c5-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4c6-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4c7-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4c8-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4c9-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4ca-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4cb-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4cc-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4cd-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4ce-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4cf-4f1b-11e0-bef3-9e12707b7abb" />
+			<item ref="3d4ff4d0-4f1b-11e0-bef3-9e12707b7abb" />
+		</array>
+		<field name="ContextType">RichPresenceContextType_Normal</field>
+	</instance>
+	<instance guid="3D4FF4C6-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP03A</field>
+		<field name="Index">3</field>
+	</instance>
+	<instance guid="3D4FF4C4-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP01</field>
+		<field name="Index">1</field>
+	</instance>
+	<instance guid="3D4FF4C5-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP2</field>
+		<field name="Index">2</field>
+	</instance>
+	<instance guid="3D4FF4C7-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP03B</field>
+		<field name="Index">4</field>
+	</instance>
+	<instance guid="3D4FF4C8-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP04A</field>
+		<field name="Index">5</field>
+	</instance>
+	<instance guid="3D4FF4C9-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP04B</field>
+		<field name="Index">6</field>
+	</instance>
+	<instance guid="3D4FF4CA-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP05A</field>
+		<field name="Index">7</field>
+	</instance>
+	<instance guid="3D4FF4CB-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP05B</field>
+		<field name="Index">8</field>
+	</instance>
+	<instance guid="3D4FF4CC-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP06</field>
+		<field name="Index">9</field>
+	</instance>
+	<instance guid="3D4FF4CD-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP07</field>
+		<field name="Index">10</field>
+	</instance>
+	<instance guid="3D4FF4CE-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP08A</field>
+		<field name="Index">11</field>
+	</instance>
+	<instance guid="3D4FF4CF-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP08B</field>
+		<field name="Index">12</field>
+	</instance>
+	<instance guid="3D4FF4D0-4F1B-11E0-BEF3-9E12707B7ABB" type="GameSharedResources.RichPresenceContextValue">
+		<field name="Name">SP09</field>
+		<field name="Index">13</field>
+	</instance>
+	<instance guid="02129AA3-CCAA-11E0-B5A0-8CC3F2AB16AC" type="GameSharedResources.RichPresenceConnection">
+		<field ref="null" name="RichPresence" />
+		<field name="RichPresenceIndex">3</field>
+		<array name="ContextPairs">
+			<complex>
+				<field ref="null" name="Context" />
+				<field name="ContextIndex">1</field>
+				<field ref="null" name="Value" />
+				<field name="ValueIndex">3</field>
+				<field name="ContextType">RichPresenceContextType_Normal</field>
+			</complex>
+		</array>
+		<array name="PropertyPairs" />
+	</instance>
+</partition>

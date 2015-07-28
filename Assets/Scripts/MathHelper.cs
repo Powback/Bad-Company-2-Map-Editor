@@ -1,0 +1,1 @@
+﻿using UnityEngine;using System.Collections;public class MathHelper : MonoBehaviour {	// Use this for initialization	void Start () {		Debug.Log(Mathf.Sin (0.99f)); // 0.836026		Debug.Log(Mathf.Deg2Rad); // 0.01745329		Debug.Log(Mathf.Rad2Deg); // 57.29578	}		// Update is called once per frame	void Update () {		}}
