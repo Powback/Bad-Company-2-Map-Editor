@@ -11,10 +11,10 @@ The main goal here is to create a fully functional 3D map editor that allows you
 # Progress
 * 50% - Map loading 
   * Correctly imports all data, but it still has to be placed into the correct containers.
-* 50% - Object Loading 
-  * Spawns the correct objects at the correct position but with wrong rotation. 
-* 0% - Fix rotation 
-  * Working on figuring this out. Frostbite handles rotation very weirdly.
+* 80% - Object Loading 
+  * Sometimes places objects akwardly. Might have something to do with scale.
+* 100% - Fix rotation 
+  * Rotation seems to work fine.
 * 0% - Terrain loading 
   * Needs a lot of research. Help would be appreciated.
 * 0% - Saving  
