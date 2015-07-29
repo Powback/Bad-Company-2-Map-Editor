@@ -9,10 +9,12 @@ The main goal here is to create a fully functional 3D map editor that allows you
 
 
 # Progress
-* 50% - Map loading 
+* 70% - Map loading 
   * Correctly imports all data, but it still has to be placed into the correct containers.
-* 80% - Object Loading 
-  * Sometimes places objects akwardly. Might have something to do with scale.
+  * Will be completed once I bother. It's a boring task. Feel free to help out!
+  * Just create a new script in the scripts/type folder. You just need to copy the Instance field and array names in there. 
+* 90% - Object Loading 
+  * Sometimes places objects akwardly. Might have something to do with scale. Only affects certain items. 
 * 100% - Fix rotation 
   * Rotation seems to work fine.
 * 0% - Terrain loading 
