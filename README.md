@@ -7,6 +7,12 @@ Currently, it allows basic loading of decompiled dbx files and converted 3d mode
 # Goals
 The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entirely new ones from scratch. It will hopefully be possible to port maps in the future.
 
+# Completed
+* HavokEntity
+  * Correctly imports all HavokEntites at correct locations. Actual physcis is not needed.
+* Texture importing
+  * All textures should be exported and converted. Some textures seem to be missing, but it's likely that I just can't find the correct one.
+
 
 # Progress
 * 70% - Map loading 
@@ -23,8 +29,7 @@ The main goal here is to create a fully functional 3D map editor that allows you
   * Will be worked on when the above are finished.
 
 # Planned
-* Importing / exporting textures 
-  * Needs more research.
+* Custom textures
 * importing lightning 
   * Needs more research.
 * importing weather. 
