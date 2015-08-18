@@ -23,10 +23,13 @@ The main goal here is to create a fully functional 3D map editor that allows you
   * Sometimes places objects akwardly. Might have something to do with scale. Only affects certain items. 
 * 100% - Fix rotation 
   * Rotation seems to work fine.
-* 0% - Terrain loading 
-  * Needs a lot of research. Help would be appreciated.
 * 0% - Saving  
   * Will be worked on when the above are finished.
+  * 
+  
+#Need more work
+ * Terrain loading
+   * Currently loads terrain, but the terrain file has to be loaded in Photoshop with a header of 50, flip horizontal, rotate 90 degrees ccw and saved with a 0 byte header. To load the map in BC2 I think the header has to be re-added. Untested.
 
 # Planned
 * Custom textures
