@@ -30,7 +30,7 @@ public class MapLoad : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		var InstanceCollection = MapContainer.Load ("Assets/Maps/" + mapName + ".xml");
+		var InstanceCollection = MapContainer.Load ("Assets/Resources/Levels/" + mapName + ".xml");
 		foreach (Inst inst in InstanceCollection.instance) {
 			GenerateItem(inst);
 		}
