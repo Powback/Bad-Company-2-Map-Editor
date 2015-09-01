@@ -77,7 +77,7 @@ public class HavokAsset : MonoBehaviour {
 						}
 					}
 				} else {
-					Debug.Log("No assets in Havok file");
+					Debug.Log("No assets in Havok file " + inst.guid);
 				}
 			}
 		}

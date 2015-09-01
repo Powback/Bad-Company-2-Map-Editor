@@ -1,0 +1,15 @@
+Terrain Info
+Import 00 terrainheightfield data
+Skip 56 bytes at start
+Flip X somehow...
+move terrainplane to -512 0 -512
+
+
+alternative
+Manual
+rename terrainheightfield in photoshop as RAW
+Header at 50 bytes
+Flip Horosontal
+Rotate 90 degrees ccw
+save as 1025x1025 raw file
+move on

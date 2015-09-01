@@ -1,0 +1,4 @@
+Props: 24
+Buildings: 32
+Vegetation: 32
+Rocks: 32

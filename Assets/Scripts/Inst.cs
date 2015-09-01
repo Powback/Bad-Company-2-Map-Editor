@@ -19,7 +19,8 @@ public class Inst
 	public List<Field> field { get; set; }
 	
 	[XmlElement]
-	public Complex complex;
+	public List<Complex> complex { get; set;}
+
 
 }
 
@@ -45,7 +46,15 @@ public class Complex
 
 	[XmlText]
 	public string value;
-	
+
+	[XmlElement]
+	public List<Item> item { get; set; }
+
+	[XmlElement]
+	public List<Field> field { get; set; }
+
+	[XmlElement]
+	public List<Complex> complex { get; set; }	
 }
 //
 //public enum Axis
@@ -68,6 +77,9 @@ public class BC2Array
 
 	[XmlElement]
 	public List<Item> item { get; set; }
+
+	[XmlElement]
+	public List<Complex> complex { get; set; }
 }
 
 

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -7,13 +7,16 @@ using System.Text.RegularExpressions;
 
 public class MapLoad : MonoBehaviour {
 
-	//Load all mesh (Grouped objects are missing)
+	//Load all mesh (Grouped objects are missing) - fixed. All objects should be loaded ( with the exception of flags/mcoms)
 	//convert all itexture to dds (some are missing. Fix UV map and find correct texture?)
 	//load texture based on meshdata-data?
 	//Allow back-parsing
 		//Edit items based on guid
 	//Terrain loading
+	  // If terrain raw file is not found, run the terminal script at the terrainheightfield file and load item.
+	  // if terrain raw file is found, create a new terrain and apply the raw heightmap.
 
+	  // Make HavokAsset use this function instead of the one it's using.
 
 
 
@@ -27,97 +30,31 @@ public class MapLoad : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		var InstanceCollection = MapContainer.Load ("Assets/maps/" + mapName + ".xml");
+		var InstanceCollection = MapContainer.Load ("Assets/Maps/" + mapName + ".xml");
 		foreach (Inst inst in InstanceCollection.instance) {
-			GenerateItem(inst, transform.GetComponent<MapItems>().ItemType(inst.type));
+			GenerateItem(inst);
 		}
 		//Debug.Log (InstanceCollection.instance.Count);
 	}
 
-	Vector3 CalculatePosition(Inst inst, int id) {
-		Vector3 pos = Vector3.zero;
-		if (transform.GetComponent<MapItems> ().IsObject (id)) {
-			if (inst.complex != null) {
-				if (inst.complex.value != null) {
-					//Debug.Log("pos val for " + inst.guid + " | " + inst.complex.value);
-					string coordiantes = inst.complex.value;
-					string[] coords = coordiantes.Split ('/');
-					int numcoords = coords.Length;
-					float z = float.Parse (coords [(numcoords - 4)]);
-					float y = float.Parse (coords [(numcoords - 3)]);
-					float x = float.Parse (coords [(numcoords - 2)]);
-					pos = new Vector3 (x, y, z);
-				}
-			}
-		}
-		return pos;
-	}
-
-	Vector3 CalculateRotation(Inst inst, int id, string type) {
-		Vector3 rot = Vector3.zero;
-		if (transform.GetComponent<MapItems>().IsObject(id) && inst.complex.value != null) {
-			string coordiantes = inst.complex.value;
-			string[] coords = coordiantes.Split ('/');
-			int numcoords = coords.Length;
-			if(numcoords > 3) { 
-				float rz = (float.Parse (coords [(0)]));
-				float ry = (float.Parse (coords [1]));
-				float rx = (float.Parse (coords [2]));
-
-				float uz = (float.Parse (coords [4]));
-				float uy = (float.Parse (coords [5]));
-				float ux = (float.Parse (coords [6]));
-				
-				float fz = (float.Parse (coords [8]));
-				float fy = (float.Parse (coords [9]));
-				float fx = (float.Parse (coords [10]));
-				if(type == "r") {
-					rot = new Vector3(rx,ry,rz);
-				} else if(type == "u") {
-					rot = new Vector3(ux,uz,uy);
-				} else if(type == "f") {
-					rot = new Vector3(fx,fy,fz);
-				}
-			}
-		}
-		return rot;
-	}
-
-	String CleanName(Inst inst, int id) {
-		string name = "Unknown";
-		foreach(Field field in inst.field) {
-			if(transform.GetComponent<MapItems>().IsObject(id) && field.refference != null && field.refference != "null") {
-				string pattern = "/[0-9a-z]+-[0-9a-z]+-[0-9a-z]+-[0-9a-z]+-[0-9a-z]+";
-				string pattern2 = "_entity";
-				string pattern3 = "_asset";
-				name = field.refference;
-				name = Regex.Replace(name,pattern,"");
-				name = Regex.Replace(name,pattern2,"");
-				name = Regex.Replace(name,pattern3,"");
-				//Debug.Log(name);
-			}
-
-		}
-		if (name == "Unknown" || name == "null" || name == null) {
-			
-			if (inst.type != null) {
-				name = inst.type + " | " + inst.guid;
-			}
-		}
-		return name;
-	}
-	
-		
 
 
-
-	void GenerateItem(Inst inst, int id) {
-		if (transform.GetComponent<MapItems> ().IsObject (id)) {
+	// Kind of redundant, but we're getting the position twice here. Look into it in the future.
+	// We are cleaning the name twice in order to find the actual name instead of name_mesh and name_lod. This is useful because name_mesh is not.
+	// Then we check if the acutal model exists. If it doesn't, we replace it with an empty game objects. 
+	// If it doesn't exist, we most likely failed to convert all objects. I will blame this on the occulsion models that can't be exported for some reason.
+	// Hopefully this will be solved before you see this. If not, I'm sorry. Just delete the models that won't export. It shouldn't matter.
+	// Eventually we go ahead and spawn either the placeholder or the model. We then run the addvalues function which will add values and components to the correct instances.
+	// This is the core to the way me make shit work. Sorry if anything is misspelled here. I'm writing this in Visual Code. It doesn't realize that this is a comment and therefore tries to suggest functions to use. Don't use Visual Code. 
+	// Fuck Monodevelopt too for crashing all the fucking TimeUntilAbandoned.
+	// You see this shit? TimeUntilAbandoned. I was going to write TimeUntilAbandoned. Fuck Visual Code;
+	void GenerateItem(Inst inst) {
+		//if (IsObject (inst)) {
 			//Debug.Log(inst.guid + " | " + id);
-			Vector3 pos = CalculatePosition (inst, id);
+			Vector3 pos = Util.CalculatePosition (inst);
 			GameObject model;
-			string actualmodelname = CleanName(inst, id) + "_lod0_data";
-			string actualmodelname2 = CleanName(inst, id) + "_mesh_lod0_data";
+			string actualmodelname = Util.ClearGUID(inst) + "_lod0_data";
+			string actualmodelname2 = Util.ClearGUID(inst) + "_mesh_lod0_data";
 			//Debug.Log(actualmodelname);
 
 			if(Resources.Load(actualmodelname) != null) {
@@ -128,70 +65,245 @@ public class MapLoad : MonoBehaviour {
 				model = placeholder.gameObject;
 			}
 			GameObject go = GameObject.Instantiate(model, pos, Quaternion.identity) as GameObject;
-			//go.AddComponent<ChangeUV>();
-			AddValues(inst, id, go);
-			if(id != 63 || id != 64 || id != 65 || id != 66) {
-				go.name = CleanName (inst, id);
-			} else {
-				go.name = "Terrain.TerrainSpline";
-			}
-			//Debug.Log("Setting parent id to go" + id);
-			GameObject parent = transform.GetComponent<MapItems>().SelectParents(id);
-			//Debug.Log(parent.name);
+			AddValues(inst, go);
+			go.name = Util.ClearGUID (inst);
+			GameObject parent = transform.GetComponent<MapItems>().SelectParent(inst.type);
 			go.transform.parent = parent.transform;
-			//Debug.Log("ID is set");
+			//transform.GetComponent<MapItems>().AddComponentData(inst.type, go);
 
-			//transform.GetComponent<MapItems>().SelectParent();
-		} else {
-
-		}
-		//go.transform.parent = transform.GetComponent<MapItems>().SelectParent(id).gameObject.transform;
 	}
-
-	void AddValues(Inst inst, int id, GameObject instgo) {
+	
+   // Rework this
+	void AddValues(Inst inst, GameObject instGO) {
 		//AreaGEometryEntity
-		if (id == 1) {
-			Debug.Log("Called AGED");
-			AreaGeometryEntityData AGED = instgo.AddComponent<AreaGeometryEntityData>();
+		string instType = inst.type;
+		if (instType == "Entity.AreaGeometryEntityData") {
+			Debug.Log("Called Entity.AreaGeometryEntityData");
+			AreaGeometryEntityData AGED = instGO.AddComponent<AreaGeometryEntityData>();
+			AGED.GUID = inst.guid;
 			foreach(Field field in inst.field) {
 				if(field.value != null && field.value != "null") {
 					if(field.name == "Components" ) {
 						AGED.components = field.value;
 					}
-					//transform?
 					if(field.name == "Enumeration" ) {
-						AGED.enumeration = field.value;
+						AGED.enumeration = int.Parse(field.value);
+					}
+					if(field.name == "Name") {
+						AGED.name = field.value;
+					}
+					if(field.name == "Height") {
+						AGED.height = float.Parse(field.value);
+					}
+					if(field.name == "Weight") {
+						AGED.weight = float.Parse(field.value);
+					}
+				} else if(field.refference != null) {
+					if(field.name == "Next") {
+						AGED.next = (field.refference);
+					}
+					if(field.name == "Previous") {
+						AGED.previous = (field.refference);
 					}
 					if(field.name == "Name") {
 						AGED.name = field.refference;
 					}
-					if(field.name == "Height") {
-						AGED.height = field.value;
+				}
+			}
+			foreach(Complex complex in inst.complex) {
+				if(complex.name == "Transform" && complex.value != null) {
+					AGED.bc2transform = complex.value;
+				}
+			}
+		}
+		if (instType == "Entity.ReferenceObjectData") {
+			Debug.Log("Called Entity.ReferenceObjectData");
+			//Vector3 right = CalculateRotation(inst, "r");
+			//Vector3 up = CalculateRotation(inst, "u");
+			//Vector3 forward = CalculateRotation(inst, "f");
+			//RotationSlave rotslave = instGO.AddComponent<RotationSlave>();
+			//rotslave.forward = forward;
+			//rotslave.up = up;
+			//rotslave.right = right;
+			Matrix4x4 matrix = Util.GenerateMatrix4x4(inst);
+			MatrixHelper.SetTransformFromMatrix(instGO.transform,ref matrix);
+		}
+		/*if (id == 54) {
+			Debug.Log("Called VehicleSpawnEntityData");
+			VehicleSpawnEntityData VSED = instgo.AddComponent<VehicleSpawnEntityData>();
+			VSED.GUID = inst.guid;
+			foreach(BC2Array bc2array in inst.array) {
+				if(bc2array.value != null || bc2array.value != "null") {
+					if(bc2array.name == "Components") {
+						if(bc2array.item != null) {
+//							VSED.Components.Add(array.item);
+						}
 					}
-					if(field.name == "Weight") {
-						AGED.weight = field.value;
+					if(bc2array.name == "Vehicles") {
+						foreach(Complex complex in bc2array.complex) {
+							VSED.Vehicles.Add(complex);
+							foreach(Complex subcomplex in complex.complex) {
+								VSED.Vehicles[VSED.Vehicles.Count].complex.Add(subcomplex);
+								foreach(Field field in subcomplex.field) {
+//									subfield.add(field);
+								}
+							}
+						}
 					}
-					if(field.name == "Next") {
-						AGED.next = field.refference;
+				}
+
+				foreach (Field field in inst.field) {
+					if(field.value != null || field.value != "null") {
+						if(field.name == "Enumeration") {
+							VSED.Enumeration = int.Parse(field.value);
+						}
+						if(field.name == "Name") {
+							VSED.Name = field.value;
+						}
+						if(field.name == "Enabled") {
+							VSED.Enabled = bool.Parse(field.value);
+						}
+						if(field.name == "Team") {
+							VSED.Team = field.value;
+						}
+						if(field.name == "Amount") {
+							VSED.Amount = int.Parse(field.value);
+						}
+						if(field.name == "SpawnDelay") {
+							VSED.SpawnDelay = float.Parse(field.value);
+						}
+						if(field.name == "InitializedSpawnDelay") {
+							VSED.InitializedSpawnDelay = float.Parse(field.value);
+						}
+						if(field.name == "AllowMulipleSpawn") {
+							VSED.AllowMulipleSpawn = bool.Parse(field.value);
+						}
+						if(field.name == "Immortal") {
+							VSED.Immortal = bool.Parse(field.value);
+						}
+						if(field.name == "FakeImmortal") {
+							VSED.FakeImmortal = bool.Parse(field.value);
+						}
+						if(field.name == "Vehicle") {
+							VSED.Vehicle = field.refference;
+						}
+						if(field.name == "TakeControlEntryIndex") {
+							VSED.TakeControlEntryIndex = int.Parse(field.value);
+						}
+						if(field.name == "RotationYaw") {
+							VSED.RotationYaw = float.Parse(field.value);
+						}
+						if(field.name == "RotationPitch") {
+							VSED.RotationPitch = float.Parse(field.value);
+						}
+						if(field.name == "RotationRoll") {
+							VSED.RotationRoll = float.Parse(field.value);
+						}
+						if(field.name == "Throttle") {
+							VSED.Throttle = float.Parse(field.value);
+						}
+						if(field.name == "Brake") {
+							VSED.Brake = float.Parse(field.value);
+						}
+						if(field.name == "RespawnRange") {
+							VSED.RespawnRange = float.Parse(field.value);
+						}
+						if(field.name == "SpawnAreaRadius") {
+							VSED.SpawnAreaRadius = float.Parse(field.value);
+						}
+						if(field.name == "TimeUntilAbandoned") {
+							VSED.TimeUntilAbandoned = float.Parse(field.value);
+						}
+						if(field.name == "TimeUntilAbandonedIsDestroyed") {
+							VSED.TimeUntilAbandonedIsDestroyed = float.Parse(field.value);
+						}
+						if(field.name == "BotBailWhenHealthBelow") {
+							VSED.BotBailWhenHealthBelow = float.Parse(field.value);
+						}
+						if(field.name == "BotBailOutDelay") {
+							VSED.BotBailOutDelay = float.Parse(field.value);
+						}
+						if(field.name == "KeepAliveRadius") {
+							VSED.KeepAliveRadius = float.Parse(field.value);
+						}
+						if(field.name == "WreckDuration") {
+							VSED.WreckDuration = float.Parse(field.value);
+						}
+						if(field.name == "MaxVehicles") {
+							VSED.MaxVehicles = int.Parse(field.value);
+						}
+						if(field.name == "MaxVehiclesPerMap") {
+							VSED.MaxVehiclesPerMap = int.Parse(field.value);
+						}
+						if(field.name == "MeshShaderSetNumber") {
+							VSED.MeshShaderSetNumber = int.Parse(field.value);
+						}
+						if(field.name == "AutoSpawn") {
+							VSED.AutoSpawn = bool.Parse(field.value);
+						}
+						if(field.name == "ApplyDamageToAbandondedVehicles") {
+							VSED.ApplyDamageToAbandondedVehicles = bool.Parse(field.value);
+						}
+						if(field.name == "SnapToSurface") {
+							VSED.SnapToSurface = bool.Parse(field.value);
+						}
+						if(field.name == "SpawnVehicleFromBeginning") {
+							VSED.SpawnVehicleFromBeginning = bool.Parse(field.value);
+						}
+						if(field.name == "DestroyVehiclesOnDisable") {
+							VSED.DestroyVehiclesOnDisable = bool.Parse(field.value);
+						}
+						if(field.name == "SetTeamOnSpawn") {
+							VSED.SetTeamOnSpawn = bool.Parse(field.value);
+						}
+						if(field.name == "EffectedByImpulse") {
+							VSED.EffectedByImpulse = bool.Parse(field.value);
+						}
+						if(field.name == "LodDistance") {
+							VSED.LodDistance = float.Parse(field.value);
+						}
+						if(field.name == "EnterRestriction") {
+							VSED.EnterRestriction = field.value;
+						}
+						if(field.name == "OnlySendEventForHumanPlayers") {
+							VSED.OnlySendEventForHumanPlayers = bool.Parse(field.value);
+						}
+						if(field.name == "SendWeaponEvents") {
+							VSED.SendWeaponEvents = bool.Parse(field.value);
+						}
 					}
-					if(field.name == "Previous") {
-						AGED.previous = field.value;
+				}
+			}
+		}*/
+		if(instType == "GameSharedResources.TerrainEntityData") {
+			TerrainEntityData ted = instGO.AddComponent<TerrainEntityData>();
+			foreach(Field field in inst.field) {
+				if(field.value != null) {
+					if(field.name == "Enumeration") {
+						ted.Components = field.value;
+					}
+					if(field.name == "Name") {
+						ted.Components = field.value;
+					}
+					if(field.name == "Enabled") {
+						ted.Components = field.value;
+					}
+					if(field.name == "Material") {
+						ted.Components = field.value;
+					}
+					if(field.name == "Material") {
+						ted.Components = field.value;
+					}
+				} else if(field.refference != null) {
+					if(field.name == "TerrainAsset") {
+						ted.TerrainAsset = field.refference;
 					}
 				}
 			}
 		}
-		if (id == 4) {
-			Vector3 right = CalculateRotation(inst, id, "r");
-			Vector3 up = CalculateRotation(inst, id, "u");
-			Vector3 forward = CalculateRotation(inst, id, "f");
-			RotationSlave rotslave = instgo.AddComponent<RotationSlave>();
-			rotslave.forward = forward;
-			rotslave.up = up;
-			rotslave.right = right;
-		}
-		if (id == 60) {
-			Debug.Log("Called Havok");
-			HavokAsset havok = instgo.AddComponent<HavokAsset>();
+		if (instType == "Physics.HavokAsset") {
+			Debug.Log("Called Physics.HavokAsset");
+			HavokAsset havok = instGO.AddComponent<HavokAsset>();
 			foreach(Field field in inst.field) {
 				if(field.value != null && field.value != "null") {
 					if(field.name == "Name") {
