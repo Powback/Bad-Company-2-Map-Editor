@@ -29,7 +29,7 @@ The main goal here is to create a fully functional 3D map editor that allows you
   
 #Need more work
  * Terrain loading
-   * Currently loads terrain, but the terrain file has to be loaded in Photoshop with a header of 50, flip horizontal, rotate 90 degrees ccw and saved with a 0 byte header. To load the map in BC2 I think the header has to be re-added. Untested. It's also jittery, not sure if this will result in a jittery BC2 terrain.
+   * The Terrain loading is almost finished. It can automatically convert maps, but it can't use them automatically yet. I've got a solution for this, but it's not fully implemented.
 
 # Planned
 * Custom textures
