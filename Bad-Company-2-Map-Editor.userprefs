@@ -1,11 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Types/GameSharedResources/TerrainEntityData.cs">
     <Files>
-      <File FileName="Assets/Scripts/Types/GameSharedResources/TerrainEntityData.cs" Line="5" Column="17" />
+      <File FileName="Assets/Scripts/Types/GameSharedResources/TerrainEntityData.cs" Line="139" Column="1" />
+      <File FileName="Assets/Scripts/Types/Physics/HavokAsset.cs" Line="1" Column="1" />
       <File FileName="../BC2 DevEnv/Assets/matrixtest.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/MapLoad.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/RootTypes/EntityAreaGeometryEntityData.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/MapData/SkyBoxHandler.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

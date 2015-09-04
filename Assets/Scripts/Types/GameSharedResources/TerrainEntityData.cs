@@ -17,6 +17,13 @@ public class TerrainEntityData : MonoBehaviour {
 	public string TerrainAsset;
 	public string OutsideTerrainMaterial;
 	
+	int m_height = 0;
+	int m_res = 0;
+	int m_pos = 0;
+	bool terrainLoaded;
+	bool loadTerrain;
+	bool preConverted;
+	
 	// Check if raw file already exists. If it does, just load it into the TerrainAsset.
 	// If it doesn't exist, run the .sh or .bat file to convert the terrainheigtfield file into raw and then run the mogrify command to make it represent the actual map.
 	// We won't worry about converting it back just yet, but it shouldn't be harder than to re-add the header after flipping and rotating it back to it's original format.
@@ -29,59 +36,89 @@ public class TerrainEntityData : MonoBehaviour {
 	// Let's hope it's very fixed.
 	
 	// Let's get started. 
-	public void sStart() {
-		if (name != null) {
-			var InstanceCollection = MapContainer.Load ("Assets/Resources/Terrain" + name + ".xml");
-			foreach (Inst inst in InstanceCollection.instance) {
-				//GenerateHavokItem(inst);
+	void FixedUpdate() {
+
+		if (terrainLoaded == false && loadTerrain) {
+			if(System.IO.File.Exists("Assets/Resources/_Converted/" + transform.name + ".raw")) {
+				UnityEngine.Debug.Log("Heightmap found, starting import with res:" + m_res + ", height: " + m_height);
+				StartTerrainImport ();
+				loadTerrain = false;
 			}
 		}
 	}
 
 	void Start() {
 		if(System.IO.File.Exists("Assets/Resources/_Converted/" + transform.name + ".raw")) {
-			UnityEngine.Debug.Log("Found the converted Texture");
+			UnityEngine.Debug.Log("Found the converted Texture. Loading it.");
+			preConverted = true;
+			GetConvertInfo(transform.name);
 		} else {
-			//GetConvertInfo(transform.name);
+			UnityEngine.Debug.Log("Trying to convert " + transform.name);
+			GetConvertInfo(transform.name);
 		}
 	}
 
 	void GetConvertInfo(string path) {
-		AddTempFile("TerrainFile",transform.name);
+		//AddTempFile("TerrainFile",transform.name);
 		var InstanceCollection = MapContainer.Load ("Assets/Resources/" + path + ".xml");
 		foreach (Inst inst in InstanceCollection.instance) {
+			UnityEngine.Debug.Log("Found terrain XML");
 			HandleInstances(inst);
 		}
 	}
 	
 	void HandleInstances(Inst inst) {
+		int curRes = 0;
+		int height = 0;
 		if(inst.type == "Terrain.TerrainData") {
 			foreach(Field field in inst.field) {
 				if(field.name == "SizeXZ") {
-					AddTempFile("curRes", field.value);
+					float resFloat = float.Parse(field.value);
+					int res = Mathf.RoundToInt(resFloat);
+					m_res = res;
+					CheckIfReady();
 				}
 			}
-			foreach(BC2Array array in inst.array) {
-				
+		}
+		if (inst.type == "Terrain.TerrainHeightfieldData") {
+			foreach (Field field in inst.field) {
+				if(field.name == "SizeY") {
+					float heightFloat = float.Parse(field.value);
+					int iHeight = Mathf.RoundToInt(heightFloat);
+					m_height = iHeight;
+					CheckIfReady();
+				}
 			}
 		}
 	}
-	void AddTempFile(string type, string value) {
-		if(type == "curRes") {
-			string curResLocation = "/Users/Powback/Unity/Bad-Company-2-Map-Editor/Tools/Temp/CurRes.txt";
-			string newResLocation = "/Users/Powback/Unity/Bad-Company-2-Map-Editor/Tools/Temp/NewRes.txt";
-			string terrainLocation = "/Users/Powback/Unity/Bad-Company-2-Map-Editor/Tools/Temp/TerrainLocation.txt";
-			float floatres = float.Parse(value);
-			string stringres = floatres.ToString("0");
-			int res = int.Parse(stringres);
-			int newRes = res+1;
-			File.WriteAllText(curResLocation, res + "x"+res);
-			File.WriteAllText(newResLocation, newRes + "x"+newRes);
-			File.WriteAllText(terrainLocation, transform.name);
-			StartConvert();
+
+	void CheckIfReady() {
+		if (m_height != 0 && m_res != null) {
+			if(!preConverted) {
+				AddTempFile(m_res);				
+			}
+			loadTerrain = true;
 		}
-		if(type == "SizeY") {
+	}
+	void AddTempFile(int res) {
+		if (res != 0) {
+			string curResLocation = "Tools/Temp/CurRes.txt";
+			string newResLocation = "Tools/Temp/NewRes.txt";
+			string terrainLocation = "Tools/Temp/TerrainLocation.txt";
+
+			UnityEngine.Debug.Log("Resolution is " + res);
+
+			int newRes = res + 1;
 			
+			File.WriteAllText (curResLocation, res + "x" + res);
+			File.WriteAllText (newResLocation, newRes + "x" + newRes);
+			File.WriteAllText (terrainLocation, transform.name);
+			UnityEngine.Debug.Log("Starting convert");
+			StartConvert ();
+			terrainLoaded = true;
+			
+		} else {
+			UnityEngine.Debug.Log ("Temp File add failed. No values passed");
 		}
 	}
 	// TODO: Fix the shitty hardcoded script.
@@ -93,9 +130,51 @@ public class TerrainEntityData : MonoBehaviour {
 
 		p.StartInfo.FileName = "open";
 		p.StartInfo.Arguments = "TerrainConvertMac.command";
-		p.StartInfo.WorkingDirectory = "/Users/Powback/Unity/Bad-Company-2-Map-Editor/Tools";
+		p.StartInfo.WorkingDirectory = "Tools";
 		p.StartInfo.CreateNoWindow = false;
 
 		p.Start ();
+	}
+	
+	void StartTerrainImport() {
+		terrainLoaded = true;
+		GameObject terrain = GameObject.Find("Terrain");
+		TerrainData tData = terrain.GetComponent<Terrain> ().terrainData;
+		tData.heightmapResolution = m_res+1;
+		tData.size = new Vector3 (m_res, m_height, m_res);
+		float terrainPos = ((m_res * -1) / 2);
+		terrain.transform.position = new Vector3(terrainPos, 0, terrainPos);
+		UnityEngine.Debug.Log ("Loaded terrain with height: " + m_height + ", and res: " + m_res);
+		ReadRaw(terrain, "Assets/Resources/_Converted/" + transform.name + ".raw", m_res + 1);
+
+	}
+
+	private void ReadRaw(GameObject terrainGO, string path, int size)
+	{
+		byte[] buffer;
+		using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open, FileAccess.Read)))
+		{
+			buffer = reader.ReadBytes((size * size) * 2);
+			reader.Close();
+		}
+		Terrain terrain = terrainGO.GetComponent<Terrain>();
+		int heightmapWidth = terrain.terrainData.heightmapWidth;
+		int heightmapHeight = terrain.terrainData.heightmapHeight;
+
+		float[,] heights = new float[heightmapHeight, heightmapWidth];
+		float num3 = 1.525879E-05f;
+		for (int i = 0; i < heightmapHeight; i++)
+		{
+			for (int j = 0; j < heightmapWidth; j++)
+			{
+				int num6 = Mathf.Clamp(j, 0, size - 1) + (Mathf.Clamp(i, 0, size - 1) * size);
+				byte num7 = buffer[num6 * 2];
+				buffer[num6 * 2] = buffer[(num6 * 2) + 1];
+				buffer[(num6 * 2) + 1] = num7;
+				float num9 = System.BitConverter.ToUInt16(buffer, num6 * 2) * num3;
+				heights[i, j] = num9;
+			}
+		}
+		terrain.terrainData.SetHeights(0, 0, heights);
 	}
 }
