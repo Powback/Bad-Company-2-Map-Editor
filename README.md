@@ -75,3 +75,10 @@ We don't use these files yet, so they are safe to ignore.
 You should then place all these directories in the Resources folder of your project. It should look something like Resources/AI, Resources/Animations, Resources/awards
 
 Video tutorial coming soon.
+
+
+# Thanks to:
+Frankelstner - For all his work in the BF modding scene. Also the Unarchiver and converter scripts.
+Emulator Neuxus - For Rome, Venice Unleashed and Rime
+sand2710 - For the .meshdata importer. 
+Badbaubau - For helping me with his BC2 modding experience.
