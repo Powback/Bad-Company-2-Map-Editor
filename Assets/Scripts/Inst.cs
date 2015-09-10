@@ -32,7 +32,7 @@ public class Field
 	public string name;
 
 	[XmlAttribute("ref")]
-	public string refference;
+	public string reference;
 
 	[XmlText]
 	public string value;

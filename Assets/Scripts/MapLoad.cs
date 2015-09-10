@@ -98,15 +98,15 @@ public class MapLoad : MonoBehaviour {
 					if(field.name == "Weight") {
 						AGED.weight = float.Parse(field.value);
 					}
-				} else if(field.refference != null) {
+				} else if(field.reference != null) {
 					if(field.name == "Next") {
-						AGED.next = (field.refference);
+						AGED.next = (field.reference);
 					}
 					if(field.name == "Previous") {
-						AGED.previous = (field.refference);
+						AGED.previous = (field.reference);
 					}
 					if(field.name == "Name") {
-						AGED.name = field.refference;
+						AGED.name = field.reference;
 					}
 				}
 			}
@@ -185,7 +185,7 @@ public class MapLoad : MonoBehaviour {
 							VSED.FakeImmortal = bool.Parse(field.value);
 						}
 						if(field.name == "Vehicle") {
-							VSED.Vehicle = field.refference;
+							VSED.Vehicle = field.reference;
 						}
 						if(field.name == "TakeControlEntryIndex") {
 							VSED.TakeControlEntryIndex = int.Parse(field.value);
@@ -294,9 +294,9 @@ public class MapLoad : MonoBehaviour {
 					if(field.name == "Material") {
 						ted.Components = field.value;
 					}
-				} else if(field.refference != null) {
+				} else if(field.reference != null) {
 					if(field.name == "TerrainAsset") {
-						ted.TerrainAsset = field.refference;
+						ted.TerrainAsset = field.reference;
 					}
 				}
 			}

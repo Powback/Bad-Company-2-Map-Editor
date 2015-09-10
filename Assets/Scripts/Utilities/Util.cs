@@ -7,11 +7,11 @@ public class Util  {
 	public static string ClearGUID(Inst inst) {
 		string name = "Unknown";
 		foreach(Field field in inst.field) {
-			if(IsObject(inst) && field.refference != null && field.refference != "null") {
+			if(IsObject(inst) && field.reference != null && field.reference != "null") {
 				string pattern = "/[0-9a-z]+-[0-9a-z]+-[0-9a-z]+-[0-9a-z]+-[0-9a-z]+";
 				string pattern2 = "_entity";
 				string pattern3 = "_asset";
-				name = field.refference;
+				name = field.reference;
 				name = Regex.Replace(name,pattern,"");
 				name = Regex.Replace(name,pattern2,"");
 				name = Regex.Replace(name,pattern3,"");

@@ -23,6 +23,7 @@ public class TerrainEntityData : MonoBehaviour {
 	bool terrainLoaded;
 	bool loadTerrain;
 	bool preConverted;
+	bool convertStarted;
 	
 	// Check if raw file already exists. If it does, just load it into the TerrainAsset.
 	// If it doesn't exist, run the .sh or .bat file to convert the terrainheigtfield file into raw and then run the mogrify command to make it represent the actual map.
@@ -101,7 +102,8 @@ public class TerrainEntityData : MonoBehaviour {
 		}
 	}
 	void AddTempFile(int res) {
-		if (res != 0) {
+		if (res != 0 && convertStarted == false) {
+			convertStarted = true;
 			string curResLocation = "Tools/Temp/CurRes.txt";
 			string newResLocation = "Tools/Temp/NewRes.txt";
 			string terrainLocation = "Tools/Temp/TerrainLocation.txt";
