@@ -2,58 +2,18 @@
 
 This is a Unity 3D project that is in development. 
 
-Currently, it allows basic loading of decompiled dbx files and converted 3d models. 
+Currently, it allows basic loading of decompiled dbx files and converted 3d models. You can't export the maps yet.
 
 # Goals
-The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entirely new ones from scratch. It will hopefully be possible to port maps in the future.
+The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entirely new ones from scratch.
 
-# Completed
-* HavokEntity
-  * Correctly imports all HavokEntites at correct locations. Actual physcis is not needed.
-* Texture importing
-  * All textures should be exported and converted. Some textures seem to be missing, but it's likely that I just can't find the correct one.
+# Features
+* Map Data loading
+* Model Loading
+* Terrain Loading
+* HavokEntity Loading
 
 
-# Progress
-* 70% - Map loading 
-  * Correctly imports all data, but it still has to be placed into the correct containers.
-  * Will be completed once I bother. It's a boring task. Feel free to help out!
-  * Just create a new script in the scripts/type folder. You just need to copy the Instance field and array names in there. 
-* 90% - Object Loading 
-  * Sometimes places objects akwardly. Might have something to do with scale. Only affects certain items. 
-* 100% - Fix rotation 
-  * Rotation seems to work fine.
-* 0% - Saving  
-  * Will be worked on when the above are finished.
-  * 
-  
-#Need more work
- * Terrain loading
-   * The Terrain loading is almost finished. It can automatically convert maps, but it can't use them automatically yet. I've got a solution for this, but it's not fully implemented.
-
-# Planned
-* Custom textures
-* importing lightning 
-  * Needs more research.
-* importing weather. 
-  * Needs more research.
-* Basic position/rotation editing
-  * More spesifically, a UI interface for it. Allowing the editor to be ran without the Unity Editor.
-* Advanced editing
-  * Adding and removing objects. 
-* Creating maps from scratch.
-  * Will need to import the standard map objects (HUD, VO) and place them correctly. More research needed.
- 
-# Future
-* Texture editing
-  * Will need to research how frostbite handles object textures and shaders.
-* Custom models 
-  * Need to convert objects to .meshdata and correctly export all needed data.
-* BF3 map loading with Rime
-  * Can hopefully allow you to port BC2 maps to BF3 and vice versa.
-* Load Source Engine maps
-  * Hopefully it will be possible to import Source Engine maps in the future.
-  
 # Why Unity?
 Unity provides a fast rendering engine with a lot of room for expansion. It loads quickly and is extremely customizable. While it's mostly used for game development, it's an excellent platform for projects such as this one.
 
