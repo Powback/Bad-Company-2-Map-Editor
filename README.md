@@ -41,4 +41,4 @@ Video tutorial coming soon.
 * Frankelstner - For all his work in the BF modding scene. Also the Unarchiver and converter scripts.
 * Emulator Neuxus - For Rome, Venice Unleashed and Rime
 * sand2710 - For the .meshdata importer. 
-* Badbaubau - For helping me with his BC2 modding experience.
+* Nasipal and Badbaubau - For helping me figure out how Frostbite works.
