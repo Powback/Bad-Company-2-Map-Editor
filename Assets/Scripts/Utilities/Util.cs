@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using BC2;
 
@@ -8,7 +9,8 @@ public class Util  {
 	public static string ClearGUID(Inst inst) {
 		string name = "Unknown";
 		foreach(Field field in inst.field) {
-			if(IsObject(inst) && field.reference != null && field.reference != "null") {
+			if(field.name == "ReferencedObject") {
+				
 				string pattern = "/[0-9a-z]+-[0-9a-z]+-[0-9a-z]+-[0-9a-z]+-[0-9a-z]+";
 				string pattern2 = "_entity";
 				string pattern3 = "_asset";
@@ -17,8 +19,8 @@ public class Util  {
 				name = Regex.Replace(name,pattern2,"");
 				name = Regex.Replace(name,pattern3,"");
 				//Debug.Log(name);
-			}
-			
+				
+			}			
 		}
 		if (name == "Unknown" || name == "null" || name == null) {
 			
@@ -124,6 +126,38 @@ public class Util  {
 			}
 		}
 		if (IsObject(inst) && bc2rot != null) {
+			string coordiantes = bc2rot;
+			string[] coords = coordiantes.Split ('/');
+			int numcoords = coords.Length;
+			if(numcoords > 3) { 
+				float rz = (float.Parse (coords [0]) * -1);
+				float ry = (float.Parse (coords [1]) * -1);
+				float rx = (float.Parse (coords [2]) * -1);
+				
+				float uz = (float.Parse (coords [4]));
+				float uy = (float.Parse (coords [5]));
+				float ux = (float.Parse (coords [6]));
+				
+				float fz = (float.Parse (coords [8]));
+				float fy = (float.Parse (coords [9]));
+				float fx = (float.Parse (coords [10]));
+				
+				float px = (float.Parse (coords [12]));
+				float py = (float.Parse (coords [13]));
+				float pz = (float.Parse (coords [14]));
+				
+				matrix.SetColumn(0, new Vector4(rx,ry,rz,0));
+				matrix.SetColumn(1, new Vector4(ux,uy,uz,0));
+				matrix.SetColumn(2, new Vector4(fx,ry,fz,0));
+				matrix.SetColumn(3, new Vector4(px,py,pz,0));
+			}
+		} 
+		return matrix;
+	}
+
+	public static Matrix4x4 GenerateMatrix4x4String(string bc2rot) {
+		Matrix4x4 matrix = new Matrix4x4();
+		if (bc2rot != null) {
 			string coordiantes = bc2rot;
 			string[] coords = coordiantes.Split ('/');
 			int numcoords = coords.Length;
