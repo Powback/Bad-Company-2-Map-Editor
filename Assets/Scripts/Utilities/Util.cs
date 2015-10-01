@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Text.RegularExpressions;
+using BC2;
 
 public class Util  {
 
@@ -27,8 +28,58 @@ public class Util  {
 		}
 		return name;
 	}
+    public static Inst SelectByGUID(string GUID, Partition partition)
+    {
+        Inst retInst = new Inst();
+        foreach(Inst inst in partition.instance)
+        {
+            if(inst.guid == GUID)
+            {
+                retInst = inst;
+            }
+        }
+        return retInst;
+    }
 
-	public static bool IsObject(Inst inst) {
+    public static Partition LoadPartition(string path)
+    {
+        string subPath = "Assets/Resources/";
+        string extension = ".xml";
+        Partition partition = new Partition();
+        if(FileExist(subPath + path + extension))
+        {
+            var InstanceCollection = MapContainer.Load(subPath + path + extension);
+            if(InstanceCollection != null)
+            {
+                partition = InstanceCollection;
+            }
+        }
+        return partition;
+    }
+
+    public static bool FileExist(string path)
+    {
+       if( System.IO.File.Exists(path) == true)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    public static string ClearGUIDString(string name)
+    {
+        string pattern = "/[0-9a-z]+-[0-9a-z]+-[0-9a-z]+-[0-9a-z]+-[0-9a-z]+";
+        string pattern2 = "_entity";
+        string pattern3 = "_asset";
+        name = Regex.Replace(name, pattern, "");
+        name = Regex.Replace(name, pattern2, "");
+        name = Regex.Replace(name, pattern3, "");
+        return name;
+    }
+
+    public static bool IsObject(Inst inst) {
 		if(CalculatePosition(inst) == Vector3.zero) {
 			return false;
 		} else {
@@ -77,9 +128,9 @@ public class Util  {
 			string[] coords = coordiantes.Split ('/');
 			int numcoords = coords.Length;
 			if(numcoords > 3) { 
-				float rz = (float.Parse (coords [0]));
-				float ry = (float.Parse (coords [1]));
-				float rx = (float.Parse (coords [2]));
+				float rz = (float.Parse (coords [0]) * -1);
+				float ry = (float.Parse (coords [1]) * -1);
+				float rx = (float.Parse (coords [2]) * -1);
 				
 				float uz = (float.Parse (coords [4]));
 				float uy = (float.Parse (coords [5]));

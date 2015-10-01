@@ -3,36 +3,34 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using BC2;
 
-[XmlRoot("partition")]
 public class MapContainer
 {
-	[XmlElement("instance")]
-	public List<Inst> instance;
 	
-	public void Save(string path)
+	public static void Save(object obj, string path)
 	{
-		var serializer = new XmlSerializer(typeof(MapContainer));
+		var serializer = new XmlSerializer(typeof(Partition));
 		using(var stream = new FileStream(path, FileMode.Create))
 		{
-			serializer.Serialize(stream, this);
+			serializer.Serialize(stream, obj);
 		}
 	}
 	
-	public static MapContainer Load(string path)
+	public static Partition Load(string path)
 	{
-		var serializer = new XmlSerializer(typeof(MapContainer));
-		using(var stream = new FileStream(path, FileMode.Open))
-		{
-			return serializer.Deserialize(stream) as MapContainer;
+		XmlSerializer serializer = new XmlSerializer(typeof(Partition));
+        using (FileStream stream = new FileStream(path, FileMode.Open))
+        { 
+            return serializer.Deserialize(stream) as Partition;
 			
 		}
 	}
 	
 	//Loads the xml directly from the given string. Useful in combination with www.text.
-	public static MapContainer LoadFromText(string text) 
+	public static Partition LoadFromText(string text) 
 	{
-		var serializer = new XmlSerializer(typeof(MapContainer));
-		return serializer.Deserialize(new StringReader(text)) as MapContainer;
+		var serializer = new XmlSerializer(typeof(Partition));
+		return serializer.Deserialize(new StringReader(text)) as Partition;
 	}
 }

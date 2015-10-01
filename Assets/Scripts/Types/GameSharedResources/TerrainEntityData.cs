@@ -3,20 +3,9 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.IO;
+using BC2;
 
-public class TerrainEntityData : MonoBehaviour {
-	public string Components;
-	public int Enumeration;
-	public string Name;
-	public string Transform;
-	public bool Enabled;
-	public string PhysicsData;
-	public string Material;
-	public bool isObsolete;
-	public string ReplacementObject;
-	public string TerrainAsset;
-	public string OutsideTerrainMaterial;
-	
+public class TerrainEntityData : MonoBehaviour {	
 	int m_height = 0;
 	int m_res = 0;
 	int m_pos = 0;
@@ -24,6 +13,10 @@ public class TerrainEntityData : MonoBehaviour {
 	bool loadTerrain;
 	bool preConverted;
 	bool convertStarted;
+
+    public Partition partition;
+    public Inst instance;
+    public string terrainName;
 	
 	// Check if raw file already exists. If it does, just load it into the TerrainAsset.
 	// If it doesn't exist, run the .sh or .bat file to convert the terrainheigtfield file into raw and then run the mogrify command to make it represent the actual map.
@@ -38,39 +31,46 @@ public class TerrainEntityData : MonoBehaviour {
 	
 	// Let's get started. 
 	void FixedUpdate() {
-
 		if (terrainLoaded == false && loadTerrain) {
-			if(System.IO.File.Exists("Assets/Resources/_Converted/" + transform.name + ".raw")) {
-				UnityEngine.Debug.Log("Heightmap found, starting import with res:" + m_res + ", height: " + m_height);
+			if(Util.FileExist("Assets/Resources/_Converted/" + terrainName + ".raw")) {
+                loadTerrain = false;
+                UnityEngine.Debug.Log("Heightmap found, starting import with res:" + m_res + ", height: " + m_height);
 				StartTerrainImport ();
-				loadTerrain = false;
 			}
 		}
 	}
 
-	void Start() {
-		if(System.IO.File.Exists("Assets/Resources/_Converted/" + transform.name + ".raw")) {
+    void Start() {
+        Application.runInBackground = true;
+        instance = this.GetComponent<BC2Instance>().instance;
+        foreach(Field field in instance.field)
+        {
+            if (field.name == "TerrainAsset") {
+                terrainName = Util.ClearGUIDString(field.reference);
+            }
+        }
+        if (Util.FileExist("Assets/Resources/_Converted/" + terrainName + ".raw")) {
 			UnityEngine.Debug.Log("Found the converted Texture. Loading it.");
 			preConverted = true;
-			GetConvertInfo(transform.name);
 		} else {
-			UnityEngine.Debug.Log("Trying to convert " + transform.name);
-			GetConvertInfo(transform.name);
+			UnityEngine.Debug.Log("Trying to convert " + terrainName);
 		}
-	}
+        GetConvertInfo();
+    }
 
-	void GetConvertInfo(string path) {
-		//AddTempFile("TerrainFile",transform.name);
-		var InstanceCollection = MapContainer.Load ("Assets/Resources/" + path + ".xml");
-		foreach (Inst inst in InstanceCollection.instance) {
-			UnityEngine.Debug.Log("Found terrain XML");
-			HandleInstances(inst);
-		}
-	}
-	
-	void HandleInstances(Inst inst) {
-		int curRes = 0;
-		int height = 0;
+	void GetConvertInfo() {
+        //AddTempFile("TerrainFile",transform.name);
+        UnityEngine.Debug.Log("Trying to load " + terrainName);
+        partition = Util.LoadPartition(terrainName);
+
+        foreach (Inst inst in partition.instance) {
+            HandleInstances(inst);
+         }
+    }
+   
+    
+
+    void HandleInstances(Inst inst) {
 		if(inst.type == "Terrain.TerrainData") {
 			foreach(Field field in inst.field) {
 				if(field.name == "SizeXZ") {
@@ -94,7 +94,7 @@ public class TerrainEntityData : MonoBehaviour {
 	}
 
 	void CheckIfReady() {
-		if (m_height != 0 && m_res != null) {
+		if (m_height != 0 && m_res != 0) {
 			if(!preConverted) {
 				AddTempFile(m_res);				
 			}
@@ -114,7 +114,7 @@ public class TerrainEntityData : MonoBehaviour {
 			
 			File.WriteAllText (curResLocation, res + "x" + res);
 			File.WriteAllText (newResLocation, newRes + "x" + newRes);
-			File.WriteAllText (terrainLocation, transform.name);
+			File.WriteAllText (terrainLocation, terrainName);
 			UnityEngine.Debug.Log("Starting convert");
 			StartConvert ();
 			terrainLoaded = true;
@@ -147,7 +147,7 @@ public class TerrainEntityData : MonoBehaviour {
 		float terrainPos = ((m_res * -1) / 2);
 		terrain.transform.position = new Vector3(terrainPos, 0, terrainPos);
 		UnityEngine.Debug.Log ("Loaded terrain with height: " + m_height + ", and res: " + m_res);
-		ReadRaw(terrain, "Assets/Resources/_Converted/" + transform.name + ".raw", m_res + 1);
+		ReadRaw(terrain, "Assets/Resources/_Converted/" + terrainName + ".raw", m_res + 1);
 
 	}
 

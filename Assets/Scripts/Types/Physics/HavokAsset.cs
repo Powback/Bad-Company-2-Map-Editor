@@ -4,44 +4,32 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using BC2;
 
 
 public class HavokAsset : MonoBehaviour {
-	public string name;
-	public string memoryReportGroup;
-	public string sourceFile;
-	public string rootNode;
-	public string materialMappings;
-	public string materialSets;
-	public string referencedMaterials;
-	public string physicsMaterialSets;
-	public string partInfoDatas;
-	public string faceMaterials;
-	public string particleAllotment;
-	public string isStatic;
-	public string isDynamic;
-	public string isGroupable;
-	public string mass;
-	public string hkxDataFilePath;
-	public string hkxImgFilePath;
-	public string collisionNode;
-	public string detailNode;
-	public string rigidBodyDatas;
-
-	public List<string> havokItems;
-	public List<Vector3> vecRight = new List<Vector3>();
-	public List<Vector3> vecUp = new List<Vector3>();
-	public List<Vector3> vecForward = new List<Vector3>();
-	public List<Vector3> positions = new List<Vector3>();
+    public Partition partition;
+    private List<string> havokItems;
+	private List<Vector3> vecRight = new List<Vector3>();
+    private List<Vector3> vecUp = new List<Vector3>();
+    private List<Vector3> vecForward = new List<Vector3>();
+    private List<Vector3> positions = new List<Vector3>();
 
 	public void Start() {
-		if (name != null) {
-			var InstanceCollection = MapContainer.Load ("Assets/Resources/" + name + ".xml");
-			foreach (Inst inst in InstanceCollection.instance) {
-				GeneratePosRot(inst);
-				GenerateHavokItem(inst);
-			}
-		}
+        Inst instance = transform.gameObject.GetComponent<BC2Instance>().instance;
+        foreach(Field field in instance.field)
+        {
+            if(field.name == "Name")
+            {
+                partition = Util.LoadPartition(field.value);
+                foreach (Inst inst in partition.instance)
+                {
+                    GeneratePosRot(inst);
+                    GenerateHavokItem(inst);
+                }
+
+            }
+        }
 	}
 
 	public void GenerateHavokItem(Inst inst) {
@@ -50,7 +38,7 @@ public class HavokAsset : MonoBehaviour {
 				if(array.name == "Assets") {
 					int i = 0;
 					foreach (Item item in array.item) {
-						string name = CleanName(item.refference);
+						string name = CleanName(item.reference);
 						string modelname = name;
 						string actualmodelname = name + "_lod0_data";
 						string actualmodelname2 = name + "_mesh_lod0_data";
@@ -76,8 +64,6 @@ public class HavokAsset : MonoBehaviour {
 							Debug.Log("Could not load file " + name);
 						}
 					}
-				} else {
-					Debug.Log("No assets in Havok file " + inst.guid);
 				}
 			}
 		}
@@ -146,9 +132,6 @@ public class HavokAsset : MonoBehaviour {
 				vecForward.Add(forward);
 				positions.Add(pos);
 				i+=16;
-
-
-
 
 			}
 		}
