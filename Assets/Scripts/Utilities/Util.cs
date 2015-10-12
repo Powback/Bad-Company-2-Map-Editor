@@ -6,6 +6,55 @@ using BC2;
 
 public class Util  {
 
+
+	public static Inst SelectInst(string GUID, Partition partition) {
+		Inst ret = null;
+		foreach (Inst inst in partition.instance) {
+			if(inst.guid == GUID) {
+				ret = inst;
+			}
+		}
+		return ret;
+	}
+
+	public static Field SelectField(string name, Inst inst) {
+		Field ret = null;
+		foreach (Field field in inst.field) {
+			if(field.name == name) {
+				ret = field;
+			}
+		}
+		return ret;
+	}
+
+	public static Complex SelectComplex(string name, Inst inst) {
+		Complex ret = null;
+		foreach (Complex complex in inst.complex) {
+			if(complex.name == name) {
+				ret = complex;
+			}
+		}
+		return ret;
+	}
+
+	public static BC2Array SelectArray(string name, Inst inst) {
+		BC2Array ret = null;
+        if(inst == null) {
+            Debug.Log("Didn't find shit like inst");
+        }
+        if (inst.array != null)
+        {
+            foreach (BC2Array array in inst.array)
+            {
+                if (array.name == name)
+                {
+                    ret = array;
+                }
+            }
+        }
+		return ret;
+	}
+
 	public static string ClearGUID(Inst inst) {
 		string name = "Unknown";
 		foreach(Field field in inst.field) {
@@ -32,16 +81,48 @@ public class Util  {
 	}
     public static Inst SelectByGUID(string GUID, Partition partition)
     {
-        Inst retInst = new Inst();
-        foreach(Inst inst in partition.instance)
+        bool found = false;
+        GUID = GUID.ToUpper();
+        Inst ret = null;
+        foreach (Inst inst in partition.instance)
         {
             if(inst.guid == GUID)
             {
-                retInst = inst;
+                found = true;
+                ret = inst;
             }
         }
-        return retInst;
+        if(found)
+        {
+            return ret;
+        } else
+        {
+            Debug.Log("Found no Inst with GUID " + GUID);
+            return null;
+        }
     }
+
+	public static GameObject SelectGOByString (string GUID) {
+		MapLoad ml = SelectMapload ();
+		GameObject returnGO = null;
+		foreach (InstGameObject igo in ml.InstGameObjects) {
+			if(igo.GUID == GUID) {
+				returnGO = igo.GO;
+			}
+		}
+		return returnGO;
+	}
+
+	public static MapLoad SelectMapload() {
+		GameObject MLGO = GameObject.Find ("_GM");
+		if (MLGO != null) {
+			MapLoad ml = MLGO.GetComponent<MapLoad> ();
+			return ml;
+		} else {
+			Debug.Log("Could not find mapload for some reason");
+			return null;
+		}
+	}
 
     public static Partition LoadPartition(string path)
     {
@@ -97,6 +178,8 @@ public class Util  {
 			foreach(Complex complex in inst.complex) {
 				if(complex.name == "Transform") {
 					bc2pos = complex.value;
+				} else if(complex.name == "Position") {
+					bc2pos = complex.value;
 				}
 			}
 
@@ -116,6 +199,22 @@ public class Util  {
 		}
 		return pos;
 	}
+
+	public static Vector3 CalculatePositionFromString(string bc2pos) {
+		Vector3 pos = Vector3.zero;
+		if (bc2pos != null) {
+			//Debug.Log("pos val for " + inst.guid + " | " + inst.complex.value);
+			string coordiantes = bc2pos;
+			string[] coords = coordiantes.Split ('/');
+			int numcoords = coords.Length;
+			float z = float.Parse (coords [(numcoords - 4)]);
+			float y = float.Parse (coords [(numcoords - 3)]);
+			float x = float.Parse (coords [(numcoords - 2)]);
+			pos = new Vector3 (x, y, z);
+		}
+		return pos;
+	}
+
 
 	public static Matrix4x4 GenerateMatrix4x4(Inst inst) {
 		Matrix4x4 matrix = new Matrix4x4();
@@ -148,7 +247,7 @@ public class Util  {
 				
 				matrix.SetColumn(0, new Vector4(rx,ry,rz,0));
 				matrix.SetColumn(1, new Vector4(ux,uy,uz,0));
-				matrix.SetColumn(2, new Vector4(fx,ry,fz,0));
+				matrix.SetColumn(2, new Vector4(fx,fy,fz,0));
 				matrix.SetColumn(3, new Vector4(px,py,pz,0));
 			}
 		} 
@@ -180,7 +279,7 @@ public class Util  {
 				
 				matrix.SetColumn(0, new Vector4(rx,ry,rz,0));
 				matrix.SetColumn(1, new Vector4(ux,uy,uz,0));
-				matrix.SetColumn(2, new Vector4(fx,ry,fz,0));
+				matrix.SetColumn(2, new Vector4(fx,fy,fz,0));
 				matrix.SetColumn(3, new Vector4(px,py,pz,0));
 			}
 		} 

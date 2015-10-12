@@ -7,15 +7,21 @@ using System.Text.RegularExpressions;
 using BC2;
 using System.Reflection;
 
-public class MapLoad : MonoBehaviour {
+public class MapLoad : MonoBehaviour 
+{
 
 	public string mapName;
 	public GameObject placeholder;
+    public GameObject empty;
 	public Material material_white;
+    public Component waterScript;
+    public Material waterMaterial;
 	public Partition partition;
 	int i;
+	public string SaveAs = "TestMap";
     public bool Save;
     public bool saved;
+	public List<InstGameObject> InstGameObjects;
 
     void Start()
     {
@@ -31,7 +37,7 @@ public class MapLoad : MonoBehaviour {
         if(Save && saved == false)
         {
             saved = true;
-            MapContainer.Save(partition, "Assets/savetest.xml");
+            MapContainer.Save(partition, "Assets/"+ SaveAs + ".xml");
         }
     }
 
@@ -48,7 +54,14 @@ public class MapLoad : MonoBehaviour {
         } else if(Resources.Load(actualmodelname2) != null) {
 			model = Resources.Load(actualmodelname2) as GameObject;
 		} else {
-			model = placeholder.gameObject;
+            if (inst.type == "Terrain.TerrainSplineData")
+            {
+                model = empty.gameObject;
+            }
+            else
+            {
+                model = placeholder.gameObject;
+            }
 		}
 		GameObject go = GameObject.Instantiate(model, pos, Quaternion.identity) as GameObject;
 		
@@ -66,7 +79,10 @@ public class MapLoad : MonoBehaviour {
         instance.instance = inst;
 		instance.id = i;
 		instance.mapLoad = this;
+		InstGameObject instGameObject = new InstGameObject ();
+		instGameObject.GUID = inst.guid;
+		instGameObject.GO = go;
+		InstGameObjects.Add (instGameObject);
 		i++;
 	}
-	
 }

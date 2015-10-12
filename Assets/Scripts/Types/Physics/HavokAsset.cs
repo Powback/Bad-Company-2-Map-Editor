@@ -17,20 +17,16 @@ public class HavokAsset : MonoBehaviour {
 
 	public void Start() {
         Inst instance = transform.gameObject.GetComponent<BC2Instance>().instance;
-        foreach(Field field in instance.field)
+		Field field = Util.SelectField ("Name", instance);   
+        partition = Util.LoadPartition(field.value);
+        foreach (Inst inst in partition.instance)
         {
-            if(field.name == "Name")
-            {
-                partition = Util.LoadPartition(field.value);
-                foreach (Inst inst in partition.instance)
-                {
-                    GeneratePosRot(inst);
-                    GenerateHavokItem(inst);
-                }
-
-            }
+            GeneratePosRot(inst);
+            GenerateHavokItem(inst);
         }
-	}
+
+    }
+
 
 	public void GenerateHavokItem(Inst inst) {
 		if (inst.array != null) {
@@ -100,7 +96,7 @@ public class HavokAsset : MonoBehaviour {
 			}
 
 			string[] coords = coordinates.Split ('/');
-			int numcoords = coords.Length;
+			//int numcoords = coords.Length;
 			//Debug.Log(numcoords);
 			while(i < coords.Length - 1) {
 				

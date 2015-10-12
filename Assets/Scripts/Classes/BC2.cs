@@ -8,7 +8,6 @@ namespace BC2
 	[System.Serializable]
 	[XmlRoot(ElementName="field")]
 	public class Field {
-		
 		[XmlAttribute(AttributeName="name")]
 		public string name;
 		[XmlText]
@@ -16,47 +15,42 @@ namespace BC2
 		[XmlAttribute(AttributeName="ref")]
 		public string reference;
 	}
+
 	[System.Serializable]
 	[XmlRoot(ElementName="item")]
 	public class Item {
 		[XmlAttribute(AttributeName="ref")]
 		public string reference;
 	}
+
 	[System.Serializable]
 	[XmlRoot(ElementName="array")]
 	public class BC2Array {
-		[XmlElement(ElementName="item")]
+        [XmlAttribute(AttributeName = "name")]
+        public string name;
+        [XmlElement(ElementName="item")]
 		public List<Item> item;
-		[XmlAttribute(AttributeName="name")]
-		public string name;
-        //[System.NonSerialized] // Ugly hack to fix Serialization Depth issue 
-        // private List<Complex> m_complex;
-        [XmlElement(ElementName = "complex")]
-        public List<Complex> complex;
-        //public List<Complex> complex { get { return m_complex; } set { m_complex = value; } }
+		[XmlElement(ElementName = "complex")]
+		public List<Complex> complex;
 		[XmlText]
 		public string value;
 	}
+
 	[System.Serializable]
 	[XmlRoot(ElementName="complex")]
 	public class Complex {
-		[XmlElement(ElementName="field")]
+        [XmlAttribute(AttributeName = "name")]
+        public string name;
+        [XmlElement(ElementName="field")]
 		public List<Field> field;
-		[XmlAttribute(AttributeName="name")]
-		public string name;
-        // [System.NonSerialized] // Ugly hack to fix Serialization Depth issue 
-        // private List<Complex> m_complex;
-        [XmlElement(ElementName = "complex")]
-        public List<Complex> complex;
-        //public List<Complex> complex { get { return m_complex; } set { m_complex = value; } }
-        //[System.NonSerialized] // Ugly hack to fix Serialization Depth issue 
-        //private List<BC2Array> m_array;
-        [XmlElement(ElementName = "array")]
-        public List<BC2Array> array;
-        //public List<BC2Array> array { get { return m_array; } set { m_array = value; } }
+		[XmlElement(ElementName = "complex")]
+		public List<Complex> complex;
+		[XmlElement(ElementName = "array")]
+		public List<BC2Array> array;
 		[XmlText]
 		public string value;
 	}
+
 	[System.Serializable]
 	[XmlRoot(ElementName="instance")]
 	public class Inst {
@@ -73,6 +67,7 @@ namespace BC2
 		[XmlElement(ElementName="complex")]
 		public List<Complex> complex;
 	}
+
 	[System.Serializable]
 	[XmlRoot(ElementName="partition")]
 	public class Partition {

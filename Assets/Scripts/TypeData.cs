@@ -18,7 +18,7 @@ public class FieldDrawer : PropertyDrawer {
 		EditorGUI.indentLevel = 0;
 		
 		// Calculate rects
-		var amountRect = new Rect (position.x, position.y, 30, position.height);
+		//var amountRect = new Rect (position.x, position.y, 30, position.height);
 		var unitRect = new Rect (position.x, position.y, 90, position.height);
 		var nameRect = new Rect (position.x+90, position.y, position.width-90, position.height);
 		
