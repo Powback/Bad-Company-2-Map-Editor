@@ -14,17 +14,16 @@ public class TerrainSplineData : MonoBehaviour {
     public void Start()
     {
         inst = this.gameObject.GetComponent<BC2Instance>().instance;
-        BC2Array array = Util.SelectArray("Points", inst);
+        BC2Array array = Util.GetArray("Points", inst);
         foreach (Item Item in array.item)
         {
-            ml = Util.SelectMapload();
-            Inst refPoint = Util.SelectByGUID(Item.reference, ml.partition);
-            Debug.Log(refPoint.guid);
+            ml = Util.GetMapload();
+            Inst refPoint = Util.GetInst(Item.reference, ml.partition);
             points.Add(refPoint);
         }
         foreach(Inst point in points)
         {
-            Complex posString = Util.SelectComplex("Position", point);
+            Complex posString = Util.GetComplex("Position", point);
             Vector3 pos = Util.CalculatePositionFromString(posString.value);
             pointPos.Add(pos);
         }
@@ -37,9 +36,9 @@ public class TerrainSplineData : MonoBehaviour {
             LR.SetPosition(i, pointPos[i]);
         }
 
-        BC2Array planes = Util.SelectArray("Planes", inst);
-        Inst plane = Util.SelectByGUID(planes.item[0].reference, ml.partition);
-        if(Util.SelectField("PlaneType", plane).value == "Lake")
+        BC2Array planes = Util.GetArray("Planes", inst);
+        Inst plane = Util.GetInst(planes.item[0].reference, ml.partition);
+        if(Util.GetField("PlaneType", plane).value == "Lake")
         {
             GeneratePlane gp = transform.gameObject.AddComponent<GeneratePlane>();
             foreach(Vector3 v3 in pointPos)
@@ -50,8 +49,9 @@ public class TerrainSplineData : MonoBehaviour {
             startpos.y = pointPos[0].y;
             transform.position = startpos;
             transform.rotation = new Quaternion(0, 0, 0, 0);
-            gp.mat = ml.material_white;
+            
             gp.Generate();
+            transform.GetComponent<MeshRenderer>().material = ml.waterMaterial;
         }
 
     }

@@ -71,13 +71,14 @@ namespace BC2
 	[System.Serializable]
 	[XmlRoot(ElementName="partition")]
 	public class Partition {
-		[XmlElement(ElementName="instance")]
+        [XmlAttribute(AttributeName = "guid")]
+        public string guid;
+        [XmlAttribute(AttributeName = "primaryInstance")]
+        public string primaryInstance;
+        [XmlAttribute(AttributeName = "exportMode")]
+        public string exportMode;
+        [XmlElement(ElementName="instance")]
 		public List<Inst> instance;
-		[XmlAttribute(AttributeName="guid")]
-		public string guid;
-		[XmlAttribute(AttributeName="primaryInstance")]
-		public string primaryInstance;
-		[XmlAttribute(AttributeName="exportMode")]
-		public string exportMode;
+
 	}
 }

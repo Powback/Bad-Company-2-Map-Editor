@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using BC2;
 
 public class BC2Instance : MonoBehaviour {
 	public int id;
 	public Inst instance;
+    public List<Partition> partitions;
 	public MapLoad mapLoad;
 	public Vector3 lastPos;
 	

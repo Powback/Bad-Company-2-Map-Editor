@@ -1,182 +1,209 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
-using System.IO;
+using System.Collections.Generic;
 using BC2;
 
-public class TerrainEntityData : MonoBehaviour {	
-	int m_height = 0;
-	int m_res = 0;
-	int m_pos = 0;
-	bool terrainLoaded;
-	bool loadTerrain;
-	bool preConverted;
-	bool convertStarted;
+public class TerrainEntityData : MonoBehaviour {
 
     public Partition partition;
     public Inst instance;
-    public string terrainName;
-	
-	// Check if raw file already exists. If it does, just load it into the TerrainAsset.
-	// If it doesn't exist, run the .sh or .bat file to convert the terrainheigtfield file into raw and then run the mogrify command to make it represent the actual map.
-	// We won't worry about converting it back just yet, but it shouldn't be harder than to re-add the header after flipping and rotating it back to it's original format.
-	
-	
-	// So, right now we just need to create the .sh file that will copy and rename the terrainheightfield file int raw and run the mogrify command¨.
-	// Later, we will need to add windows support, because fuck mac. 
-	// First of all, figure out how to copy and rename files.
-	// Then figure out how we can check for files. Shouldn't be harder than to load the asset and just do the above if it doesn't exist.
-	// Let's hope it's very fixed.
-	
-	// Let's get started. 
-	void FixedUpdate() {
-		if (terrainLoaded == false && loadTerrain) {
-			if(Util.FileExist("Assets/Resources/_Converted/" + terrainName + ".raw")) {
-                loadTerrain = false;
-                UnityEngine.Debug.Log("Heightmap found, starting import with res:" + m_res + ", height: " + m_height);
-				StartTerrainImport ();
-			}
-		}
-	}
+    string terrainLoc;
+    int fullres;
 
     void Start() {
-        Application.runInBackground = true;
-        instance = this.GetComponent<BC2Instance>().instance;
-        foreach(Field field in instance.field)
+        CheckTerrain("00", 0);
+        GenerateOuterTerrain(terrainLoc);
+    }
+
+    void CheckTerrain(string id, int res)
+    {
+        instance = GetComponent<BC2Instance>().instance;
+        string terrainLocation = Util.GetField("TerrainAsset", instance).reference;
+        if (terrainLocation == "" || terrainLocation == null)
         {
-            if (field.name == "TerrainAsset") {
-                terrainName = Util.ClearGUIDString(field.reference);
+            Util.Log("TerrainAsset is missing from " + instance.guid);
+        } else
+        {
+           
+            string guid = Util.GetGuid(terrainLocation);
+            terrainLocation = Util.ClearGUIDString(terrainLocation);
+            terrainLoc = terrainLocation;
+            partition = Util.LoadPartition(terrainLocation);
+            int terrainRes;
+            if (res == 0)
+            {
+                terrainRes = TerrainRes(terrainLocation, guid);
+                fullres = terrainRes;
+            } else
+            {
+                terrainRes = res;
             }
+            
+            int terrainHeight = TerrainHeight(terrainLocation);
+
+            LoadTerrain(terrainLocation, terrainRes, terrainHeight, id);
+
         }
-        if (Util.FileExist("Assets/Resources/_Converted/" + terrainName + ".raw")) {
-			UnityEngine.Debug.Log("Found the converted Texture. Loading it.");
-			preConverted = true;
-		} else {
-			UnityEngine.Debug.Log("Trying to convert " + terrainName);
-		}
-        GetConvertInfo();
+    }
+    void LoadTerrain(string location, int res, int height, string id)
+    {
+        if (Util.FileExist("Assets/Resources/_Converted/" + location + id + ".raw")) {
+            GameObject terrain = GenerateTerrain(location, res, height, id);
+            terrain.transform.parent = Util.GetMapload().terrainHolder.transform;
+        }
+        else
+        {
+            Util.Log("Couldn't find terrain " + location + " , attempting to convert it.");
+            string convertlocation = location + ".heightfield-0" + id +".terrainheightfield";
+            ConvertTerrain(location, res, id);
+            //GameObject terrain = GenerateTerrain(location, res, height, id);
+            //terrain.transform.parent = Util.GetMapload().terrainHolder.transform;
+        }
     }
 
-	void GetConvertInfo() {
-        //AddTempFile("TerrainFile",transform.name);
-        UnityEngine.Debug.Log("Trying to load " + terrainName);
-        partition = Util.LoadPartition(terrainName);
+    void ConvertTerrain(string location, int res, string id)
+    {
+        if (Util.FileExist("Assets/Resources/" + location + ".heightfield-0" + id + ".terrainheightfield"))
+        {
+            Util.AddTempFile("location", location);
+            string resolution = res.ToString();
+            Util.AddTempFile("res", resolution);
+            Util.AddTempFile("id", id); // used for outer terrain mostly.
+            StartConvert();
 
-        foreach (Inst inst in partition.instance) {
-            HandleInstances(inst);
-         }
+        }
     }
-   
-    
 
-    void HandleInstances(Inst inst) {
-		if(inst.type == "Terrain.TerrainData") {
-			foreach(Field field in inst.field) {
-				if(field.name == "SizeXZ") {
-					float resFloat = float.Parse(field.value);
-					int res = Mathf.RoundToInt(resFloat);
-					m_res = res;
-					CheckIfReady();
-				}
-			}
-		}
-		if (inst.type == "Terrain.TerrainHeightfieldData") {
-			foreach (Field field in inst.field) {
-				if(field.name == "SizeY") {
-					float heightFloat = float.Parse(field.value);
-					int iHeight = Mathf.RoundToInt(heightFloat);
-					m_height = iHeight;
-					CheckIfReady();
-				}
-			}
-		}
-	}
+    GameObject GenerateTerrain(string location, int res, int height, string id)
+    {
+       
+        GameObject terrain = (GameObject)Instantiate(Util.GetMapload().empty, Vector3.zero, Quaternion.identity);
+        terrain.name = location + id;
+        if (Util.FileExist("Assets/Resources/_Converted/" + location + id + ".raw"))
+        {
+            Util.Log("Trying to load " + location);
+            Util.GenerateTerrain(terrain, "Assets/Resources/_Converted/" + location+ id + ".raw", res, height, fullres);
+           
 
-	void CheckIfReady() {
-		if (m_height != 0 && m_res != 0) {
-			if(!preConverted) {
-				AddTempFile(m_res);				
-			}
-			loadTerrain = true;
-		}
-	}
-	void AddTempFile(int res) {
-		if (res != 0 && convertStarted == false) {
-			convertStarted = true;
-			string curResLocation = "Tools/Temp/CurRes.txt";
-			string newResLocation = "Tools/Temp/NewRes.txt";
-			string terrainLocation = "Tools/Temp/TerrainLocation.txt";
+        }
+        else
+        {
+            Util.Log("Couldn't create " + location);
+        }
+        float terrainPos = ((res * -1) / 2);
+        if(res < 512)
+        {
+            terrain.transform.position = OuterTerrainPos(512, id);
+        } else
+        {
+            terrain.transform.position = new Vector3(terrainPos, 0, terrainPos);
+        }
+        Util.Log("Shit should be done loading by now");
 
-			UnityEngine.Debug.Log("Resolution is " + res);
+        return terrain;
+    }
 
-			int newRes = res + 1;
-			
-			File.WriteAllText (curResLocation, res + "x" + res);
-			File.WriteAllText (newResLocation, newRes + "x" + newRes);
-			File.WriteAllText (terrainLocation, terrainName);
-			UnityEngine.Debug.Log("Starting convert");
-			StartConvert ();
-			terrainLoaded = true;
-			
-		} else {
-			UnityEngine.Debug.Log ("Temp File add failed. No values passed");
-		}
-	}
-	// TODO: Fix the shitty hardcoded script.
-	void StartConvert() {
-		Process p = new Process ();
-		p.StartInfo.UseShellExecute = false;
-		p.StartInfo.RedirectStandardInput = true;
-		p.StartInfo.RedirectStandardOutput = true;
 
-		p.StartInfo.FileName = "open";
-		p.StartInfo.Arguments = "TerrainConvertMac.command";
-		p.StartInfo.WorkingDirectory = "Tools";
-		p.StartInfo.CreateNoWindow = false;
+    int TerrainHeight(string location)
+    {
+        Inst heightFieldData = Util.GetType("Terrain.TerrainHeightfieldData", partition);
+        int height = Mathf.CeilToInt(float.Parse(Util.GetField("SizeY", heightFieldData).value));
+        return height;
+    }
 
-		p.Start ();
-	}
-	
-	void StartTerrainImport() {
-		terrainLoaded = true;
-		GameObject terrain = GameObject.Find("Terrain");
-		TerrainData tData = terrain.GetComponent<Terrain> ().terrainData;
-		tData.heightmapResolution = m_res+1;
-		tData.size = new Vector3 (m_res, m_height, m_res);
-		float terrainPos = ((m_res * -1) / 2);
-		terrain.transform.position = new Vector3(terrainPos, 0, terrainPos);
-		UnityEngine.Debug.Log ("Loaded terrain with height: " + m_height + ", and res: " + m_res);
-		ReadRaw(terrain, "Assets/Resources/_Converted/" + terrainName + ".raw", m_res + 1);
 
-	}
 
-	private void ReadRaw(GameObject terrainGO, string path, int size)
-	{
-		byte[] buffer;
-		using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open, FileAccess.Read)))
-		{
-			buffer = reader.ReadBytes((size * size) * 2);
-			reader.Close();
-		}
-		Terrain terrain = terrainGO.GetComponent<Terrain>();
-		int heightmapWidth = terrain.terrainData.heightmapWidth;
-		int heightmapHeight = terrain.terrainData.heightmapHeight;
+    int TerrainRes(string location, string guid)
+    {
 
-		float[,] heights = new float[heightmapHeight, heightmapWidth];
-		float num3 = 1.525879E-05f;
-		for (int i = 0; i < heightmapHeight; i++)
-		{
-			for (int j = 0; j < heightmapWidth; j++)
-			{
-				int num6 = Mathf.Clamp(j, 0, size - 1) + (Mathf.Clamp(i, 0, size - 1) * size);
-				byte num7 = buffer[num6 * 2];
-				buffer[num6 * 2] = buffer[(num6 * 2) + 1];
-				buffer[(num6 * 2) + 1] = num7;
-				float num9 = System.BitConverter.ToUInt16(buffer, num6 * 2) * num3;
-				heights[i, j] = num9;
-			}
-		}
-		terrain.terrainData.SetHeights(0, 0, heights);
-	}
+        Inst terrainInst = Util.GetInst(guid, partition);
+        int res = Mathf.CeilToInt(float.Parse(Util.GetField("SizeXZ", terrainInst).value));
+        return res;
+    }
+
+
+
+    Vector3 OuterTerrainPos(int res, string id)
+    {
+        List<Vector3> pos12 = new List<Vector3>();
+
+
+        pos12.Add(new Vector3(-1, 0, -1)); // useless
+        pos12.Add(new Vector3(-2, 0, -2));
+        pos12.Add(new Vector3(-2, 0, -1));
+        pos12.Add(new Vector3(-1, 0, -2));
+        pos12.Add(new Vector3(-2, 0, 0));
+        pos12.Add(new Vector3(-2, 0, 1));
+        pos12.Add(new Vector3(-1, 0, 1));
+        pos12.Add(new Vector3(0, 0, -2));
+        pos12.Add(new Vector3(1, 0, -2));
+        pos12.Add(new Vector3(1, 0, -1));
+        pos12.Add(new Vector3(0, 0, 1));
+        pos12.Add(new Vector3(1, 0, 0));
+        pos12.Add(new Vector3(1, 0, 1));
+        int i = int.Parse(id);
+            return pos12[i] * (fullres / 2);
+        
+    }
+    void GenerateOuterTerrain(string location)
+    {
+
+        for (int i = 0; i < 12; i++)
+        {
+            string prefix = "0";
+            if(i + 1 > 9)
+            {
+                prefix = "";
+            }
+            int terrainID = i + 1;
+            string id = prefix + terrainID.ToString();
+            if(Util.FileExist("Assets/Resources/" + location + ".heightfield-0" + id + ".terrainheightfield"))
+            {
+                int size = Util.GetFilesize("Assets/Resources/" + location + ".heightfield-0" + id + ".terrainheightfield");
+                int res = 0;
+                if (size == 132485)
+                {
+                    res = 256;
+                }
+                else if (size == 33157)
+                {
+                    res = 124;
+                }
+                else if (size == 8325)
+                {
+                    res = 64;
+                }
+                else
+                {
+                    Util.Log("Couldn't find the correct res for " + location + id);
+                }
+
+                CheckTerrain(id, res);
+            }
+            
+
+
+        }
+    }
+
+
+    // TODO: Fix the shitty hardcoded script.
+    void StartConvert() {
+        Process p = new Process();
+        p.StartInfo.UseShellExecute = false;
+        p.StartInfo.RedirectStandardInput = true;
+        p.StartInfo.RedirectStandardOutput = true;
+
+        p.StartInfo.FileName = "open";
+        p.StartInfo.Arguments = "TerrainConvertMac.command";
+        p.StartInfo.WorkingDirectory = "Tools";
+        p.StartInfo.CreateNoWindow = false;
+
+        p.Start();
+    }
+
+
 }
+
+

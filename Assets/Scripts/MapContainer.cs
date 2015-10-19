@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using System.Text.RegularExpressions;
 using BC2;
 
 public class MapContainer
@@ -21,8 +22,21 @@ public class MapContainer
 	{
 		XmlSerializer serializer = new XmlSerializer(typeof(Partition));
         using (FileStream stream = new FileStream(path, FileMode.Open))
-        { 
-            return serializer.Deserialize(stream) as Partition;
+        {
+            string spPattern = "sp";
+            if( Regex.IsMatch(path, spPattern)) {
+                using (StreamReader reader = new StreamReader(stream, true))
+                {
+                    string content = reader.ReadToEnd();
+                    string pattern = "&";
+                    string ret = Regex.Replace(content, pattern, "and");
+                    return LoadFromText(ret) as Partition;
+                }
+            } else {
+                return serializer.Deserialize(stream) as Partition;
+            }
+         
+                
 			
 		}
 	}
