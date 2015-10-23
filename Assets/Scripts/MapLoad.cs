@@ -14,15 +14,15 @@ public class MapLoad : MonoBehaviour
 	public GameObject placeholder;
     public GameObject empty;
     public GameObject terrainHolder;
-	public Material material_white;
+	public Material materialwhite;
     public Component waterScript;
     public Material waterMaterial;
 	public Partition partition;
 	int i;
-	public string SaveAs = "TestMap";
-    public bool Save;
+	public string saveAs = "TestMap";
+    public bool save;
     public bool saved;
-	public List<InstGameObject> InstGameObjects;
+	public List<InstGameObject> InstGameObjects = new List<InstGameObject>();
 
     void Start()
     {
@@ -35,10 +35,13 @@ public class MapLoad : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(Save && saved == false)
+        if(save && saved == false)
         {
             saved = true;
-            MapContainer.Save(partition, "Assets/"+ SaveAs + ".xml");
+            foreach (InstGameObject igo in InstGameObjects) {
+                igo.GO.GetComponent<BC2Instance>().SetPosRot();
+            }
+            MapContainer.Save(partition, "Assets/Resources/Levels/"+ saveAs + ".xml");
         }
     }
 
