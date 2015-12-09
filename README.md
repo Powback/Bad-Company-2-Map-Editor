@@ -1,6 +1,6 @@
 # Bad-Company-2-Map-Editor
 
-This is a Unity 3D project that is in development. 
+This project is using Unity to load Battlefield: Bad Company 2 gamefiles. You are able modify and save levels.
 
 # Goals
 The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entirely new ones from scratch.
