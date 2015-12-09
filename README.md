@@ -2,8 +2,6 @@
 
 This is a Unity 3D project that is in development. 
 
-Currently, it allows basic loading of decompiled dbx files and converted 3d models. You can't export the maps yet.
-
 # Goals
 The main goal here is to create a fully functional 3D map editor that allows you to both edit existing maps and create entirely new ones from scratch.
 
