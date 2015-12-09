@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Triangulator : MonoBehaviour {
+public class Triangulator {
 	
 	public List<Vector2> m_points = new List<Vector2>();
 	

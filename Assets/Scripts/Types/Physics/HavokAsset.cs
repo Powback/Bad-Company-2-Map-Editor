@@ -29,40 +29,42 @@ public class HavokAsset : MonoBehaviour {
     }
 
 
+
 	public void GenerateHavokItem(Inst inst) {
-		if (inst.array != null) {
-			foreach (BC2Array array in inst.array) {
-				if(array.name == "Assets") {
-					int i = 0;
-					foreach (Item item in array.item) {
-						string name = CleanName(item.reference);
-						string modelname = name;
-						string actualmodelname = name + "_lod0_data";
-						string actualmodelname2 = name + "_mesh_lod0_data";
-						//Debug.Log(actualmodelname);
-						if(Resources.Load(actualmodelname) != null) {
-							modelname = actualmodelname;
-						} else if(Resources.Load(actualmodelname2) != null) {
-							modelname = actualmodelname2;
-						} else {
-							modelname = "Unknown";
-						}
-						if(modelname != "Unknown") {
-							GameObject go = Resources.Load(modelname) as GameObject;
-							Vector3 pos = positions[i];
-							GameObject instGO = Instantiate(go, pos, Quaternion.identity) as GameObject;
-                            Quaternion rot = MatrixHelper.QuatFromMatrix(matrix[i]);
-                            instGO.transform.rotation = rot;
-                            instGO.name = name;
-							instGO.transform.parent = transform;
-							i++;
-						} else {
-							Debug.Log("Could not load file " + name);
-						}
-					}
-				}
-			}
-		}
+//		if (inst.array != null) {
+//			foreach (BC2Array array in inst.array) {
+//				if(array.name == "Assets") {
+//					int i = 0;
+//					foreach (Item item in array.item) {
+//						string name = CleanName(item.reference);
+//						string modelname = name;
+//						string actualmodelname = name + "_lod0_data";
+//						string actualmodelname2 = name + "_mesh_lod0_data";
+//						//Debug.Log(actualmodelname);
+//						if(Util.FileExist(actualmodelname)) {
+//							modelname = actualmodelname;
+//						} else if(Util.FileExist(actualmodelname2)) {
+//							modelname = actualmodelname2;
+//						} else {
+//							modelname = "Unknown";
+//						}
+//						if(modelname != "Unknown") {
+//
+//							GameObject go = Util.LoadMesh(modelname) as GameObject;
+//							Vector3 pos = positions[i];
+//							GameObject instGO = Instantiate(go, pos, Quaternion.identity) as GameObject;
+//                            Quaternion rot = MatrixHelper.QuatFromMatrix(matrix[i]);
+//                            instGO.transform.rotation = rot;
+//                            instGO.name = name;
+//							instGO.transform.parent = transform;
+//							i++;
+//						} else {
+//							Debug.Log("Could not load file " + name);
+//						}
+//					}
+//				}
+//			}
+//		}
 	}
 
 

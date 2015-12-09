@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.IO;
 using BC2;
 
 public class TerrainEntityData : MonoBehaviour {
@@ -48,7 +49,7 @@ public class TerrainEntityData : MonoBehaviour {
     }
     void LoadTerrain(string location, int res, int height, string id)
     {
-        if (Util.FileExist("Assets/Resources/_Converted/" + location + id + ".raw")) {
+        if (Util.FileExist("Resources/_Converted/" + location + id + ".raw")) {
             GameObject terrain = GenerateTerrain(location, res, height, id);
             terrain.transform.parent = Util.GetMapload().terrainHolder.transform;
         }
@@ -64,7 +65,7 @@ public class TerrainEntityData : MonoBehaviour {
 
     void ConvertTerrain(string location, int res, string id)
     {
-        if (Util.FileExist("Assets/Resources/" + location + ".heightfield-0" + id + ".terrainheightfield"))
+        if (Util.FileExist("Resources/" + location + ".heightfield-0" + id + ".terrainheightfield"))
         {
             Util.AddTempFile("location", location);
             string resolution = res.ToString();
@@ -80,10 +81,10 @@ public class TerrainEntityData : MonoBehaviour {
        
         GameObject terrain = (GameObject)Instantiate(Util.GetMapload().empty, Vector3.zero, Quaternion.identity);
         terrain.name = location + id;
-        if (Util.FileExist("Assets/Resources/_Converted/" + location + id + ".raw"))
+        if (Util.FileExist("Resources/_Converted/" + location + id + ".raw"))
         {
             Util.Log("Trying to load " + location);
-            Util.GenerateTerrain(terrain, "Assets/Resources/_Converted/" + location+ id + ".raw", res, height, fullres);
+            GenerateTerrainMesh(terrain, "Resources/_Converted/" + location+ id + ".raw", res, height, fullres);
            
 
         }
@@ -107,7 +108,7 @@ public class TerrainEntityData : MonoBehaviour {
 
     int TerrainHeight(string location)
     {
-        Inst heightFieldData = Util.GetType("Terrain.TerrainHeightfieldData", partition);
+        Inst heightFieldData = Util.GetTypes("Terrain.TerrainHeightfieldData", partition)[0];
         int height = Mathf.CeilToInt(float.Parse(Util.GetField("SizeY", heightFieldData).value));
         return height;
     }
@@ -158,9 +159,9 @@ public class TerrainEntityData : MonoBehaviour {
             }
             int terrainID = i + 1;
             string id = prefix + terrainID.ToString();
-            if(Util.FileExist("Assets/Resources/" + location + ".heightfield-0" + id + ".terrainheightfield"))
+            if(Util.FileExist("Resources/" + location + ".heightfield-0" + id + ".terrainheightfield"))
             {
-                int size = Util.GetFilesize("Assets/Resources/" + location + ".heightfield-0" + id + ".terrainheightfield");
+                int size = Util.GetFilesize("Resources/" + location + ".heightfield-0" + id + ".terrainheightfield");
                 int res = 0;
                 if (size == 132485)
                 {
@@ -186,6 +187,53 @@ public class TerrainEntityData : MonoBehaviour {
 
         }
     }
+
+	public static void GenerateTerrainMesh(GameObject terrainGO, string path, int sizeorg, int height, int fullsize)
+	{
+		int size = sizeorg + 1;
+		byte[] buffer;
+		using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open, FileAccess.Read)))
+		{
+			buffer = reader.ReadBytes((size * size) * 2);
+			reader.Close();
+		}
+		Terrain terrain = terrainGO.AddComponent<Terrain>();
+		terrainGO.AddComponent<TerrainCollider>();
+		TerrainData terrainData = new TerrainData();
+		terrainData.heightmapResolution = size;
+		if(size < 512)
+		{
+			int otSize = (fullsize) / 2;
+			terrainData.size = new Vector3(otSize, height, otSize);
+		} else
+		{
+			terrainData.size = new Vector3(size - 1, height, size - 1);
+		}
+		
+		terrain.terrainData = terrainData;
+		
+		int heightmapWidth = terrain.terrainData.heightmapWidth;
+		int heightmapHeight = terrain.terrainData.heightmapHeight;
+		
+		float[,] heights = new float[heightmapHeight, heightmapWidth];
+		float num3 = 1.525879E-05f;
+		for (int i = 0; i < heightmapHeight; i++)
+		{
+			for (int j = 0; j < heightmapWidth; j++)
+			{
+				int num6 = Mathf.Clamp(j, 0, size - 1) + (Mathf.Clamp(i, 0, size - 1) * size);
+				byte num7 = buffer[num6 * 2];
+				buffer[num6 * 2] = buffer[(num6 * 2) + 1];
+				buffer[(num6 * 2) + 1] = num7;
+				float num9 = System.BitConverter.ToUInt16(buffer, num6 * 2) * num3;
+				heights[i, j] = num9;
+				
+			}
+		}
+		terrain.terrainData.SetHeights(0, 0, heights);
+		terrain.heightmapPixelError = 1;
+		
+	}
 
 
     // TODO: Fix the shitty hardcoded script.

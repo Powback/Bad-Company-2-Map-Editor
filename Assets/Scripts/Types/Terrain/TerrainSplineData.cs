@@ -24,7 +24,7 @@ public class TerrainSplineData : MonoBehaviour {
         foreach(Inst point in points)
         {
             Complex posString = Util.GetComplex("Position", point);
-            Vector3 pos = Util.CalculatePositionFromString(posString.value);
+            Vector3 pos = Util.GetPositionFromString(posString.value);
             pointPos.Add(pos);
         }
 

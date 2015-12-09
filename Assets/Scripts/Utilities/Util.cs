@@ -7,6 +7,7 @@ using BC2;
 
 public class Util {
 
+	public static MapLoad mapLoad;
     public static Inst GetType(string type, Partition partition)
     {
         Inst ret = null;
@@ -23,10 +24,27 @@ public class Util {
         return ret;
     }
 
-    public static Inst GetInst(string GUID, Partition partition) {
-        Inst ret = null;
-        GUID = GUID.ToUpper();
-        if(partition.instance != null)
+	public static List<Inst> GetTypes(string type, Partition partition)
+	{
+		List<Inst> ret = new List<Inst> ();
+
+		if (partition.instance != null)
+		{
+			foreach (Inst inst in partition.instance)
+			{
+				if (inst.type == type)
+				{
+					ret.Add(inst);
+				}
+			}
+		}
+		return ret;
+	}
+
+	public static Inst GetInst(string GUID, Partition partition) {
+		Inst ret = null;
+		GUID = GUID.ToUpper();
+		if(partition.instance != null)
         {
             foreach (Inst inst in partition.instance)
             {
@@ -56,9 +74,10 @@ public class Util {
     }
 
 
-
-    public static Complex GetComplex(string name, Inst inst) {
-        Complex ret = null;
+	
+	
+	public static Complex GetComplex(string name, Inst inst) {
+		Complex ret = null;
         foreach (Complex complex in inst.complex) {
             if (complex.name == name) {
                 ret = complex;
@@ -109,28 +128,17 @@ public class Util {
     public static GameObject GetGOByString(string GUID) {
         MapLoad ml = GetMapload();
         GameObject returnGO = null;
-        foreach (InstGameObject igo in ml.InstGameObjects) {
-            if (igo.GUID == GUID) {
-                returnGO = igo.GO;
-            }
-        }
+		ml.instantiatedDictionary.TryGetValue(GUID, out returnGO);
         return returnGO;
     }
 
     public static MapLoad GetMapload() {
-        GameObject MLGO = GameObject.Find("_GM");
-        if (MLGO != null) {
-            MapLoad ml = MLGO.GetComponent<MapLoad>();
-            return ml;
-        } else {
-            Debug.Log("Could not find mapload for some reason");
-            return null;
-        }
+		return mapLoad;
     }
 
     public static Partition LoadPartition(string path)
     {
-        string subPath = "Assets/Resources/";
+        string subPath = "Resources/";
         string extension = ".xml";
         Partition partition = new Partition();
         if (FileExist(subPath + path + extension))
@@ -146,11 +154,9 @@ public class Util {
 
     public static bool FileExist(string path)
     {
-       if( System.IO.File.Exists(path) == true)
-        {
+		if( System.IO.File.Exists(path) == true || System.IO.File.Exists("Resources/" + path) == true || System.IO.File.Exists(path + ".obj") == true || System.IO.File.Exists("Resources/" +path + ".obj") == true) {
             return true;
-        } else
-        {
+		} else {
             return false;
         }
     }
@@ -163,7 +169,7 @@ public class Util {
     }
 
     public static bool IsObject(Inst inst) {
-		if(CalculatePosition(inst) == Vector3.zero) {
+		if(GetPosition(inst) == Vector3.zero) {
 			return false;
 		} else {
 			return true;
@@ -183,13 +189,19 @@ public class Util {
         string pattern = "[a-zA-Z0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+[a-zA-Z0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+";
         return Regex.Match(name, pattern).Value;
     }
+	public static Quaternion GetRotation(Inst inst) {
+		Matrix4x4 matrix = Util.GenerateMatrix4x4 (inst);
+		Quaternion newQuat = MatrixHelper.QuatFromMatrix(matrix);
+		return newQuat;
+	}
 
-	public static Vector3 CalculatePosition(Inst inst) {
+
+	public static Vector3 GetPosition(Inst inst) {
 		Vector3 pos = Vector3.zero;
 		string bc2pos = null;
 		
 		if (Util.GetComplex("Transform", inst) != null || Util.GetComplex("Position", inst) != null) {
-            Util.Log(inst.guid);
+            //Util.Log(inst.guid);
             if(Util.GetComplex("Transform", inst) != null && Util.GetComplex("Transform", inst).value != null)
             {
                 bc2pos = Util.GetComplex("Transform", inst).value;
@@ -215,7 +227,7 @@ public class Util {
 		return pos;
 	}
 
-	public static Vector3 CalculatePositionFromString(string bc2pos) {
+	public static Vector3 GetPositionFromString(string bc2pos) {
 		Vector3 pos = Vector3.zero;
 		if (bc2pos != null) {
 			//Debug.Log("pos val for " + inst.guid + " | " + inst.complex.value);
@@ -335,52 +347,6 @@ public class Util {
         {
             UnityEngine.Debug.Log("Temp File add failed. No values passed");
         }
-    }
-
-
-    public static void GenerateTerrain(GameObject terrainGO, string path, int sizeorg, int height, int fullsize)
-    {
-        int size = sizeorg + 1;
-        byte[] buffer;
-        using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open, FileAccess.Read)))
-        {
-            buffer = reader.ReadBytes((size * size) * 2);
-            reader.Close();
-        }
-        Terrain terrain = terrainGO.AddComponent<Terrain>();
-        terrainGO.AddComponent<TerrainCollider>();
-        TerrainData terrainData = new TerrainData();
-        terrainData.heightmapResolution = size;
-        if(size < 512)
-        {
-            int otSize = (fullsize) / 2;
-            terrainData.size = new Vector3(otSize, height, otSize);
-        } else
-        {
-            terrainData.size = new Vector3(size - 1, height, size - 1);
-        }
-
-        terrain.terrainData = terrainData;
-
-        int heightmapWidth = terrain.terrainData.heightmapWidth;
-        int heightmapHeight = terrain.terrainData.heightmapHeight;
-
-        float[,] heights = new float[heightmapHeight, heightmapWidth];
-        float num3 = 1.525879E-05f;
-        for (int i = 0; i < heightmapHeight; i++)
-        {
-            for (int j = 0; j < heightmapWidth; j++)
-            {
-                int num6 = Mathf.Clamp(j, 0, size - 1) + (Mathf.Clamp(i, 0, size - 1) * size);
-                byte num7 = buffer[num6 * 2];
-                buffer[num6 * 2] = buffer[(num6 * 2) + 1];
-                buffer[(num6 * 2) + 1] = num7;
-                float num9 = System.BitConverter.ToUInt16(buffer, num6 * 2) * num3;
-                heights[i, j] = num9;
-            }
-        }
-        terrain.terrainData.SetHeights(0, 0, heights);
-        terrain.heightmapPixelError = 1;
     }
 
 }

@@ -37,8 +37,11 @@ public class GeneratePlane : MonoBehaviour {
         msh.RecalculateBounds();
 
         // Set up game object with mesh;
-        gameObject.AddComponent(typeof(MeshRenderer));
-        MeshFilter filter = gameObject.AddComponent(typeof(MeshFilter)) as MeshFilter;
+		if(gameObject.GetComponent<MeshRenderer>() == null) {
+			gameObject.AddComponent<MeshRenderer>();
+			gameObject.AddComponent<MeshFilter>();
+		}
+		MeshFilter filter = gameObject.GetComponent<MeshFilter> ();
         filter.mesh = msh;
 
         Mesh mesh = GetComponent<MeshFilter>().mesh;
