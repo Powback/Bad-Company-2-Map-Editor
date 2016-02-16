@@ -24,7 +24,7 @@ public class MapContainer
         using (FileStream stream = new FileStream(path, FileMode.Open))
         {
             string spPattern = "sp";
-            if( Regex.IsMatch(path, spPattern)) {
+			if( Regex.IsMatch(path.ToLower(), spPattern)) {
                 using (StreamReader reader = new StreamReader(stream, true))
                 {
                     string content = reader.ReadToEnd();

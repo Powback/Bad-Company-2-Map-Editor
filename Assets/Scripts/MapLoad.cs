@@ -49,13 +49,30 @@ public class MapLoad : MonoBehaviour
 //		StartCoroutine ("StartImport");
 //		StartCoroutine (StartConvert());
 		foreach (Inst inst in partition.instance) {
-			StartCoroutine(GenerateItem(inst));
+			//StartCoroutine(GenerateItem(inst));
+			GenerateItem(inst);
 		}
-
+		Debug.Log ("Done adding items?");
+		DoCleanup ();
 	}
 
 
-
+	void DoCleanup() {
+//		GameObject terrain_SplinePlaneData = transform.GetComponent<MapItems> ().SelectParent ("Terrain.TerrainSplinePlaneData").gameObject;
+//		int i = 0;
+//		while(i < terrain_SplinePlaneData.transform.childCount) {
+//			GameObject tspd = terrain_SplinePlaneData.transform.GetChild (i).gameObject;
+//			if (tspd != null) {
+//				if (tspd.GetComponent<BC2Instance> () != null) {
+//					Util.Log (tspd.name);
+//					tspd.GetComponent<TerrainSplinePlaneData> ().AssignChildren ();
+//				} else {
+//					Debug.Log ("Excecution order error");
+//				}
+//			}
+//			i++;
+//		}
+	}
 
 	IEnumerator GenerateObject(Inst inst, bool haveMesh) {
 		Vector3 pos = Util.GetPosition (inst);
@@ -80,7 +97,7 @@ public class MapLoad : MonoBehaviour
 		instance.mapLoad = this;
 		InstGameObject instGameObject = new InstGameObject ();
 		instantiatedGameObjects.Add(go.gameObject);
-		instantiatedDictionary.Add (inst.guid, go.gameObject);
+		instantiatedDictionary.Add (inst.guid.ToUpper(), go.gameObject);
 		i++;
 		yield return null;
 
@@ -162,7 +179,9 @@ public class MapLoad : MonoBehaviour
 	}
 
 	// Horrible!
-	public IEnumerator GenerateItem(Inst inst) {
+
+	//public IEnumerator GenerateItem(Inst inst) {
+	void GenerateItem(Inst inst) {
 		Vector3 pos = Util.GetPosition (inst);
 		Quaternion rot = Util.GetRotation (inst);
         string name = "Unknown";
@@ -170,7 +189,13 @@ public class MapLoad : MonoBehaviour
         List<Partition> partitions = new List<Partition>();
         Partition partition = new Partition();
 		Mesh meshfile = null;
-        if(inst.type == "Entity.ReferenceObjectData" && (Util.GetField("ReferencedObject", inst).reference != null || Util.GetField("ReferencedObject", inst).reference != "null"))
+
+
+		//This part is just trying to get the actual model name. It goes through different partitions and blueprints in order to get an accurate model name.
+		//Normally, it's fine to just do name + _lod0_data, but sometimes we have objects that reference non-existant objects, such as container_large_blue.
+		//While container_large exists, _blue is just referencing an other instance, and thus an other material for said container.
+		//It's mostly not an issue.
+		if(inst.type == "Entity.ReferenceObjectData" && Util.GetField("ReferencedObject", inst) != null && (Util.GetField("ReferencedObject", inst).reference != null && Util.GetField("ReferencedObject", inst).reference != "null"))
         {
             name = Util.GetField("ReferencedObject", inst).reference;
 
@@ -256,9 +281,14 @@ public class MapLoad : MonoBehaviour
 				mf.mesh.RecalculateNormals();
 				subGO.name = subsetNames[subsetInt];
 				subGO.transform.parent = go.transform;
+
 				subsetInt++;
 			}
-
+			if (bc2mesh.inverted) {
+				Vector3 localScale = go.transform.localScale;
+				localScale.x *= -1;
+				go.transform.localScale = localScale;
+			}
 		} else {
 			go = Instantiate (placeholder.gameObject, pos, rot) as GameObject;
 		}
@@ -288,9 +318,9 @@ public class MapLoad : MonoBehaviour
 		instance.mapLoad = this;
 	
 		//InstGameObjects.Add (instGameObject);
-		instantiatedDictionary.Add (inst.guid, go.gameObject);
+		instantiatedDictionary.Add (inst.guid.ToUpper(), go.gameObject);
 		i++;
-		yield return null;
+	//	yield return null;
 	}
 
 }

@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using BC2;
 
 public class Util {
 
 	public static MapLoad mapLoad;
+	private static Dictionary<string, string> ExistingFiles = new Dictionary<string, string>();
+
     public static Inst GetType(string type, Partition partition)
     {
         Inst ret = null;
@@ -44,18 +48,18 @@ public class Util {
 	public static Inst GetInst(string GUID, Partition partition) {
 		Inst ret = null;
 		GUID = GUID.ToUpper();
-		if(partition.instance != null)
+		if(partition.instance != null && GUID != null)
         {
             foreach (Inst inst in partition.instance)
             {
-                if (inst.guid.ToUpper() == GUID)
+				if (inst.guid.ToUpper() == GUID.ToUpper())
                 {
                     ret = inst;
                 }
             }
         } else
         {
-            Util.Log("shit went wrong patition does not exist: " + GUID);
+			Util.Log("shit went wrong patition does not exist: " + GUID + " | " + partition.guid);
         }
        
         return ret;
@@ -128,7 +132,15 @@ public class Util {
     public static GameObject GetGOByString(string GUID) {
         MapLoad ml = GetMapload();
         GameObject returnGO = null;
-		ml.instantiatedDictionary.TryGetValue(GUID, out returnGO);
+		if (ml.instantiatedDictionary.ContainsKey (GUID.ToLower ())) {
+			Debug.Log (GUID + " exist lower");
+
+		}
+		if(ml.instantiatedDictionary.ContainsKey(GUID.ToUpper())) {
+			Debug.Log (GUID + " exist upper");
+		}
+		
+		ml.instantiatedDictionary.TryGetValue(GUID.ToUpper(), out returnGO);
         return returnGO;
     }
 
@@ -154,7 +166,12 @@ public class Util {
 
     public static bool FileExist(string path)
     {
-		if( System.IO.File.Exists(path) == true || System.IO.File.Exists("Resources/" + path) == true || System.IO.File.Exists(path + ".obj") == true || System.IO.File.Exists("Resources/" +path + ".obj") == true) {
+		string result = null;
+		ExistingFiles.TryGetValue (path, out result);
+		if (result != null) {
+			return true;
+		} else if( System.IO.File.Exists(path) == true || System.IO.File.Exists("Resources/" + path) == true) {
+			ExistingFiles.Add (path, path);
             return true;
 		} else {
             return false;
@@ -192,6 +209,12 @@ public class Util {
 	public static Quaternion GetRotation(Inst inst) {
 		Matrix4x4 matrix = Util.GenerateMatrix4x4 (inst);
 		Quaternion newQuat = MatrixHelper.QuatFromMatrix(matrix);
+		return newQuat;
+	}
+
+	public static Quaternion GetRotationFromString(string rot) {
+		Matrix4x4 matrix = Util.GenerateMatrix4x4String (rot);
+		Quaternion newQuat = MatrixHelper.QuatFromMatrix (matrix);
 		return newQuat;
 	}
 

@@ -1,0 +1,52 @@
+<?xml version="1.0"	encoding="UTF-8"?>
+<Database id="Rome" displayName="Rome (BFBC2) Database">
+	<Settings>
+		<Setting name='UseSparseSerialization' value='false'/>
+	</Settings>
+
+	<Schema>
+		<Constraints source='$(TNT_ROOT)/Data/Schema/*.lua' />
+	</Schema>
+	
+	<!-- Domain configuration 	  
+          -->
+
+	<Domain name="Source"	root="Source" isReadOnly="true">
+		<!-- Asset Remapping Example... if commented out, this will map the 
+		     specified soldier assets to one and the same mesh.
+
+			<Remap source="Characters/US/US_RUS" target="Characters/US/US_03"/>
+			<Remap source="Characters/US/US_01" target="Characters/US/US_03"/>
+			<Remap source="Characters/US/US_02" target="Characters/US/US_03"/>
+			<Remap source="Characters/US/US_04" target="Characters/US/US_03"/>
+		  -->		  
+
+		<!--Emergency binding rules
+          -->
+		<EmergencyBindings>
+			<Type name="TextureBaseAsset" target="Textures/white"/>
+      <Type name="ShaderGraph" target="Shaders/debug/black"/>
+      <Type name="WaveAsset" target="Sound/UI/Menu_Back_1_Wave"/>
+      <Type name="SoundAsset" target="Sound/SimpleSound_Mono"/>
+    </EmergencyBindings>
+	</Domain>
+	<Domain	name="Temp" root="db/Temp" isEphemeral='true'>
+		<Import domain="Source" readOnly='true'/>
+	</Domain>
+	<Domain	name="Win32" root="Output/Win32" isEphemeral='true' /> <!-- useBinaryXml='true' --> 
+	<Domain	name="Xenon" root="Output/Xenon" isEphemeral='true' /> <!-- useBinaryXml='true' --> 
+	<Domain	name="Ps3" root="Output/Ps3" isEphemeral='true'/>
+	<Domain	name="Linux" root="Output/Linux" isEphemeral='true'/>
+	<Domain	name="Editor" root="Output/Editor" isEphemeral='true'/>
+		
+	<TypeMap>
+		<Type name="WaterMeshData" action='ignore'/>
+		<Type name="WaterQuadData" action='ignore'/>
+	</TypeMap>
+
+	<!-- Pipeline bindings
+	  -->
+
+	<Pipelines>
+	</Pipelines>
+</Database>

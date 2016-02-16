@@ -4,12 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 
 public class BC2Mesh {
 	public string path;
 	public List<string> subMeshNames = new List<string> ();
 	public List<Mesh> subMesh = new List<Mesh> ();
+	public bool inverted = false;
 }
 
 
@@ -27,11 +28,11 @@ public class MeshDataImporter {
 		List<Mesh> subsetMesh = new List<Mesh> ();
 		List<string> subsetNames = new List<string> ();
 
+
 		var s_Data = File.ReadAllBytes (loc);
 		using (var s_Reader = new BinaryReader(new MemoryStream(s_Data))) {
 			MeshData md = new MeshData();
-			
-			Debug.Log ("Converting" + loc);
+
 			stream = s_Reader;
 			//md.useFloat = float32;
 			md.Init ();
@@ -47,16 +48,31 @@ public class MeshDataImporter {
 				v3float += v3[v3int].x;
 				v3int ++;
 			}
-			if(v3float > 100000f || v3float < -100000f) {
-				md= new MeshData();
-				s_Reader.BaseStream.Seek(0,0);
+
+			//hacky, but mostly works
+			//Try creating something that detects corrupt mesh.
+			//Perhaps overall distance or size? 
+			//Like, how tall the mesh is compared to how long it is.
+			string name = loc.ToLower();
+			float avg = (v3float / v3.Count);
+
+			if (name.Contains ("sub_pen_outdoor") || name.Contains ("com_bridge_old/com_bridge_old") || name.Contains("sewer") || name.Contains("pickuppoint") && 
+				!(name.Contains("bridge_small") )) {
+
+				md = new MeshData ();
+				s_Reader.BaseStream.Seek (0, 0);
 				md.useFloat = true;
-				md.Init();
-				Debug.Log("32 bit float");
-				
+				md.Init ();
+
+				Debug.Log (loc + " is using 32 bit float | " + avg + " | " + v3float);
 			}
-			
-			
+								
+
+			if ((name.Contains("skyline")  || name.Contains ("com_bridge_old/") || name.Contains("pickuppoint") || name.Contains("sewer"))){
+				bc2mesh.inverted = true;
+			}
+
+				
 			while (i < md.subset.Count) {
 				
 				if(!md.subset[i].name.Contains("ZOnly")) {
@@ -65,8 +81,9 @@ public class MeshDataImporter {
 					verts = md.subset[i].GetV3(0).ToArray();
 					int[] tris = md.subset[i].GetIndices().ToArray();
 
-					if(md.subset[i].name.Contains("Sewer")) {
+					if(bc2mesh.inverted == true) {
 						tris = tris.Reverse().ToArray();
+						Util.Log ("Inverted: " + loc);
 						 //verts = md.subset[i].GetV3Inverted(0).ToArray();
 
 					}
@@ -364,7 +381,6 @@ public class MeshDataImporter {
 					bool invalidChar = false;
 					while( i < vertexCount && stop == false) {
 						int ret = 0;
-						Debug.Log (stream.BaseStream.Length + " | " + FTell ());
 						if (stream.BaseStream.Length - (FTell () + 4) > 0) {
 							stop = true;
 						} else {
@@ -372,7 +388,7 @@ public class MeshDataImporter {
 							int iv = Short ();
 							Bytes (vertexStride - 4);
 							//ve.Add(new Vector2(h2f (iu),(1.0f - h2f(iv) )));
-							if(iu == null || iu == null) {
+							if(iu == null || iv == null) {
 								Debug.Log("End of flile");
 							} else {
 								uvtest = new Vector2(h2f (iu),(1.0f - h2f(iv) ));
@@ -393,8 +409,8 @@ public class MeshDataImporter {
 					
 					
 					if( invalidChar == false) {
-						Debug.Log("Found offset: " + v2offset + " for: + " + name);
-						foundUV = true;
+//						Debug.Log("Found offset: " + v2offset + " for: + " + name);
+//						foundUV = true;
 						uvOffset = v2offset;
 					} else {
 						//Debug.Log("Tried offset: " + v2offset);

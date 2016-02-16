@@ -40,6 +40,7 @@ public class TerrainSplineData : MonoBehaviour {
         Inst plane = Util.GetInst(planes.item[0].reference, ml.partition);
         if(Util.GetField("PlaneType", plane).value == "Lake")
         {
+			transform.localScale = Vector3.one;
             GeneratePlane gp = transform.gameObject.AddComponent<GeneratePlane>();
             foreach(Vector3 v3 in pointPos)
             {

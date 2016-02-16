@@ -12,18 +12,34 @@ public class BC2Instance : MonoBehaviour {
 
 
     void Start() {
-		if(instance.type == "GameSharedResources.TerrainEntityData") {
+		string name = null;
+		if(Util.GetField ("Name", instance) != null) {
+			name = Util.GetField ("Name", instance).value;
+			if (name != null) {
+				transform.name = name;
+			}
+		}
+
+		string type = instance.type;
+		if(type == "GameSharedResources.TerrainEntityData") {
            transform.gameObject.AddComponent<TerrainEntityData>();
 		}
-        if(instance.type == "Physics.HavokAsset")
+        if(type == "Physics.HavokAsset")
         {
            transform.gameObject.AddComponent<HavokAsset>();
         }
-		if (instance.type == "Terrain.TerrainSplinePlaneData") {
-			transform.gameObject.AddComponent<TerrainSplinePlaneData>();
+		if (type == "Terrain.TerrainSplinePlaneData") {
+			TerrainSplinePlaneData tspd = transform.gameObject.AddComponent<TerrainSplinePlaneData>();
 		}
-		if (instance.type == "Terrain.TerrainSplineData") {
+		if (type == "Terrain.TerrainSplineData") {
 			transform.gameObject.AddComponent<TerrainSplineData> ();
+		}
+		if (type == "Terrain.TerrainSplinePointData") {
+			transform.gameObject.AddComponent<TerrainSplinePointData> ();
+		}	
+
+		if (type == "GameSharedResources.MissionObjectiveEntityData") {
+			transform.gameObject.AddComponent<MissionObjectiveEntityData> ();
 		}
 	}
 

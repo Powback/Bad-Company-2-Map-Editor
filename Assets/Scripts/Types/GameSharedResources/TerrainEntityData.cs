@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BC2;
+
 
 public class TerrainEntityData : MonoBehaviour {
 
@@ -47,51 +50,43 @@ public class TerrainEntityData : MonoBehaviour {
 
         }
     }
+
+
+	int TerrainHeight(string location)
+	{
+		Inst heightFieldData = Util.GetTypes("Terrain.TerrainHeightfieldData", partition)[0];
+		int height = Mathf.CeilToInt(float.Parse(Util.GetField("SizeY", heightFieldData).value));
+		return height;
+	}
+
+
+
+	int TerrainRes(string location, string guid)
+	{
+
+		Inst terrainInst = Util.GetInst(guid, partition);
+		int res = Mathf.CeilToInt(float.Parse(Util.GetField("SizeXZ", terrainInst).value));
+		return res;
+	}
+
+
     void LoadTerrain(string location, int res, int height, string id)
     {
-        if (Util.FileExist("Resources/_Converted/" + location + id + ".raw")) {
-            GameObject terrain = GenerateTerrain(location, res, height, id);
+		if (Util.FileExist("Resources/"+location + ".heightfield-0" + id +".terrainheightfield")) {
+			GameObject terrain = GenerateTerrain("Resources/"+location + ".heightfield-0" + id +".terrainheightfield", res, height, id);
             terrain.transform.parent = Util.GetMapload().terrainHolder.transform;
         }
-        else
-        {
-            Util.Log("Couldn't find terrain " + location + " , attempting to convert it.");
-            string convertlocation = location + ".heightfield-0" + id +".terrainheightfield";
-            ConvertTerrain(location, res, id);
-            //GameObject terrain = GenerateTerrain(location, res, height, id);
-            //terrain.transform.parent = Util.GetMapload().terrainHolder.transform;
-        }
     }
-
-    void ConvertTerrain(string location, int res, string id)
-    {
-        if (Util.FileExist("Resources/" + location + ".heightfield-0" + id + ".terrainheightfield"))
-        {
-            Util.AddTempFile("location", location);
-            string resolution = res.ToString();
-            Util.AddTempFile("res", resolution);
-            Util.AddTempFile("id", id); // used for outer terrain mostly.
-            StartConvert();
-
-        }
-    }
+		
 
     GameObject GenerateTerrain(string location, int res, int height, string id)
     {
        
         GameObject terrain = (GameObject)Instantiate(Util.GetMapload().empty, Vector3.zero, Quaternion.identity);
         terrain.name = location + id;
-        if (Util.FileExist("Resources/_Converted/" + location + id + ".raw"))
-        {
-            Util.Log("Trying to load " + location);
-            GenerateTerrainMesh(terrain, "Resources/_Converted/" + location+ id + ".raw", res, height, fullres);
-           
-
-        }
-        else
-        {
-            Util.Log("Couldn't create " + location);
-        }
+        
+		GenerateTerrainMesh(terrain, location, res, height, fullres);
+        
         float terrainPos = ((res * -1) / 2);
         if(res < 512)
         {
@@ -105,23 +100,6 @@ public class TerrainEntityData : MonoBehaviour {
         return terrain;
     }
 
-
-    int TerrainHeight(string location)
-    {
-        Inst heightFieldData = Util.GetTypes("Terrain.TerrainHeightfieldData", partition)[0];
-        int height = Mathf.CeilToInt(float.Parse(Util.GetField("SizeY", heightFieldData).value));
-        return height;
-    }
-
-
-
-    int TerrainRes(string location, string guid)
-    {
-
-        Inst terrainInst = Util.GetInst(guid, partition);
-        int res = Mathf.CeilToInt(float.Parse(Util.GetField("SizeXZ", terrainInst).value));
-        return res;
-    }
 
 
 
@@ -187,16 +165,71 @@ public class TerrainEntityData : MonoBehaviour {
 
         }
     }
+	public static int ToBigEndian(byte[] buf, int i) {
+		return(buf [i] << 24) | buf [i + 1] << 16 | buf [i + 2] << 8 | buf [i + 3];
+	}
 
 	public static void GenerateTerrainMesh(GameObject terrainGO, string path, int sizeorg, int height, int fullsize)
 	{
 		int size = sizeorg + 1;
-		byte[] buffer;
-		using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open, FileAccess.Read)))
-		{
-			buffer = reader.ReadBytes((size * size) * 2);
+
+		byte[] orgBuffer = new byte[(size * size) * 2];
+		byte[] flippedBuffer = new byte[(size * size) * 2];
+		byte[] buffer = new byte[(size * size) * 2];
+		using (BinaryReader reader = new BinaryReader (File.Open (path, FileMode.Open, FileAccess.Read))) {
+			
+			int headerLength = 49;
+
+			reader.ReadBytes (headerLength);
+
+			int lineoffset = 0;
+			int terrainOffset = 0;
+
+			while (lineoffset < sizeorg) { // Resize the image to (power of 2) + 1
+				int fileOffset = 0;
+
+				while (fileOffset < sizeorg * 2) { // read one line
+					orgBuffer [terrainOffset] = reader.ReadByte ();
+					terrainOffset++;
+					fileOffset++;
+				}
+				orgBuffer [terrainOffset + 1] = buffer [terrainOffset - 1];
+				orgBuffer [terrainOffset + 2] = buffer [terrainOffset];
+				terrainOffset += 2;
+				lineoffset++;
+			}
+
+			int lastLine = 0;
+
+			while (lastLine < (size * 2)) {
+				int offset = (((size * size) * 2) - size * 2);
+				orgBuffer [offset + lastLine] = orgBuffer [(offset - (size * 2)) + lastLine];
+				lastLine++;
+			}
+
+
+			for (int y = 0; y < (size * 2) ; y++) {
+				for (int x = 0; x < (size  *2 ); x++) {
+					
+					int newOffset = (x * size) + y;
+					int orgOffset = (y * size) + x;
+
+					buffer [newOffset] = orgBuffer [orgOffset]; 
+					buffer [newOffset+1] = orgBuffer [orgOffset +1]; 
+					x++;
+				}
+				y++;
+			}
+				
+
+
+
+		
+
 			reader.Close();
 		}
+
+
 		Terrain terrain = terrainGO.AddComponent<Terrain>();
 		terrainGO.AddComponent<TerrainCollider>();
 		TerrainData terrainData = new TerrainData();
@@ -223,8 +256,9 @@ public class TerrainEntityData : MonoBehaviour {
 			{
 				int num6 = Mathf.Clamp(j, 0, size - 1) + (Mathf.Clamp(i, 0, size - 1) * size);
 				byte num7 = buffer[num6 * 2];
-				buffer[num6 * 2] = buffer[(num6 * 2) + 1];
-				buffer[(num6 * 2) + 1] = num7;
+//				buffer[num6 * 2] = buffer[(num6 * 2) + 1];
+//				buffer[(num6 * 2) + 1] = num7;
+
 				float num9 = System.BitConverter.ToUInt16(buffer, num6 * 2) * num3;
 				heights[i, j] = num9;
 				
@@ -234,24 +268,6 @@ public class TerrainEntityData : MonoBehaviour {
 		terrain.heightmapPixelError = 1;
 		
 	}
-
-
-    // TODO: Fix the shitty hardcoded script.
-    void StartConvert() {
-        Process p = new Process();
-        p.StartInfo.UseShellExecute = false;
-        p.StartInfo.RedirectStandardInput = true;
-        p.StartInfo.RedirectStandardOutput = true;
-
-        p.StartInfo.FileName = "open";
-        p.StartInfo.Arguments = "TerrainConvertMac.command";
-        p.StartInfo.WorkingDirectory = "Tools";
-        p.StartInfo.CreateNoWindow = false;
-
-        p.Start();
-    }
-
-
 }
 
 
