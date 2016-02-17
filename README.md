@@ -8,7 +8,7 @@ The main goal here is to create a fully functional 3D map editor that allows you
 # Why Unity?
 Unity provides a fast rendering engine with a lot of room for expansion. It loads quickly and is extremely customizable. While it's mostly used for game development, it's an excellent platform for projects such as this one.
 
-# How to use
+# How to install.
 Method 1 - Automatic. Coming soon!
 Download the files located in the File Branch and place them in the assets/resources folder.
 
@@ -28,5 +28,5 @@ That's pretty much it.
 # Thanks to:
 * Frankelstner - For all his work in the BF modding scene. Also the Unarchiver and converter scripts.
 * Emulator Neuxus - For Rome, Venice Unleashed and Rime
-* sand2710 - For the .meshdata importer. 
+* sand2710 - For the original .meshdata importer. 
 * Nasipal and Badbaubau - For helping me figure out how Frostbite works.
