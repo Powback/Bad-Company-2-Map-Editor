@@ -16,13 +16,19 @@ public class MapLoad : MonoBehaviour
 	public string mapName;
 	public GameObject placeholder;
     public GameObject empty;
+	public GameObject sphere;
     public GameObject terrainHolder;
 	public Material materialwhite;
+	public Material waterMaterial;
+	public Material materialInvisibleWall;
+	public Material helperMaterial;
+	public Material glassMaterial;
     public Component waterScript;
-    public Material waterMaterial;
 	[NonSerialized]
 	public Partition partition;
 	int i;
+	public bool showHelpers = false;
+	public bool loadAllPartitions = false;
 	public string saveAs = "TestMap";
     public bool save;
     public bool saved;
@@ -41,6 +47,7 @@ public class MapLoad : MonoBehaviour
 	Dictionary<string, GameObject> convertedDictionary = new Dictionary<string, GameObject>();
 
 	int convertedCount = 0;
+
 
     void Start()
     {
@@ -95,7 +102,6 @@ public class MapLoad : MonoBehaviour
 		instance.instance = inst;
 		instance.id = i;
 		instance.mapLoad = this;
-		InstGameObject instGameObject = new InstGameObject ();
 		instantiatedGameObjects.Add(go.gameObject);
 		instantiatedDictionary.Add (inst.guid.ToUpper(), go.gameObject);
 		i++;
@@ -107,20 +113,21 @@ public class MapLoad : MonoBehaviour
     {
         if(save && saved == false)
         {
-            saved = true;
-            foreach (GameObject go in instantiatedGameObjects) {
-                go.GetComponent<BC2Instance>().SetPosRot();
-            }
-            MapContainer.Save(partition, "Resources/Levels/"+ saveAs + ".xml");
+			Save ();
+			saved = true;
         }
 	}
 
-
+	public void Save() {
+		foreach (GameObject go in instantiatedGameObjects) {
+			go.GetComponent<BC2Instance>().SetPosRot();
+		}
+		MapContainer.Save(partition, "Resources/Levels/"+ saveAs + ".xml");
+	}
 
 
 	public string GetMeshPath(Inst inst) {
 		List<Partition> partitions = new List<Partition>();
-		Partition partition = new Partition();
 		string mesh = "";
 		if(inst.type == "Entity.ReferenceObjectData" && (Util.GetField("ReferencedObject", inst).reference != null || Util.GetField("ReferencedObject", inst).reference != "null"))
 		{
@@ -131,6 +138,7 @@ public class MapLoad : MonoBehaviour
 			
 			
 			Partition refPartition = Util.LoadPartition(cleanName);
+		
 			partitions.Add(refPartition);
 			
 			if(refPartition != null && name != "null") {
@@ -176,6 +184,7 @@ public class MapLoad : MonoBehaviour
 			
 		}
 		return mesh;
+
 	}
 
 	// Horrible!
@@ -187,10 +196,7 @@ public class MapLoad : MonoBehaviour
         string name = "Unknown";
         string mesh = inst.type + " | " + inst.guid;
         List<Partition> partitions = new List<Partition>();
-        Partition partition = new Partition();
-		Mesh meshfile = null;
-
-
+       
 		//This part is just trying to get the actual model name. It goes through different partitions and blueprints in order to get an accurate model name.
 		//Normally, it's fine to just do name + _lod0_data, but sometimes we have objects that reference non-existant objects, such as container_large_blue.
 		//While container_large exists, _blue is just referencing an other instance, and thus an other material for said container.
@@ -275,7 +281,11 @@ public class MapLoad : MonoBehaviour
 				GameObject subGO = (GameObject) Instantiate(empty,Vector3.zero,Quaternion.identity);
 				MeshRenderer mr = subGO.AddComponent<MeshRenderer>();
 				MeshFilter mf = subGO.AddComponent<MeshFilter>();
-				mr.material = new Material(materialwhite);
+				if (Regex.IsMatch (subsetNames [subsetInt].ToLower (), "glass")) {
+					mr.material = glassMaterial;
+				} else {
+					mr.material = new Material (materialwhite);
+				}
 				mr.material.name = subsetNames[subsetInt];
 				mf.mesh = sub;
 				mf.mesh.RecalculateNormals();
@@ -309,15 +319,19 @@ public class MapLoad : MonoBehaviour
 		go.transform.position = pos;
 		if (inst.type == "Entity.ReferenceObjectData") {
 			Vector3 scale = go.transform.localScale;
-			scale.x *= -1;
+			scale.x *= -1; // the meshimporter is inverted. This is a workaround.
 			go.transform.localScale = scale;
+
+			if(Regex.IsMatch(go.name.ToLower() ,"invisiblewall")) {
+				go.GetComponentInChildren<MeshRenderer>().material = new Material(materialInvisibleWall);
+			}
 		}
 		BC2Instance instance = go.AddComponent<BC2Instance>();
         instance.instance = inst;
         instance.id = i;
 		instance.mapLoad = this;
-	
-		//InstGameObjects.Add (instGameObject);
+		instance.partitions = partitions;
+		instantiatedGameObjects.Add(go.gameObject);
 		instantiatedDictionary.Add (inst.guid.ToUpper(), go.gameObject);
 		i++;
 	//	yield return null;

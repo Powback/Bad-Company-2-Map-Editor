@@ -7,7 +7,6 @@ public class TerrainSplinePointData : MonoBehaviour {
 	void Start () {
         Inst inst = transform.GetComponent<BC2Instance>().instance;
         string parentGUID = Util.GetField("Parent", inst).reference;
-		Util.Log (parentGUID);
 		if (parentGUID != null) {
 			GameObject parent = Util.GetGOByString (parentGUID.ToUpper());
 			if (parent.gameObject != null) {

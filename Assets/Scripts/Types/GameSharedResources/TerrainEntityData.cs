@@ -16,11 +16,11 @@ public class TerrainEntityData : MonoBehaviour {
     int fullres;
 
     void Start() {
-        CheckTerrain("00", 0);
+        CheckTerrain("00", 0, 0);
         GenerateOuterTerrain(terrainLoc);
     }
 
-    void CheckTerrain(string id, int res)
+	void CheckTerrain(string id, int res, int terrainCount)
     {
         instance = GetComponent<BC2Instance>().instance;
         string terrainLocation = Util.GetField("TerrainAsset", instance).reference;
@@ -46,7 +46,7 @@ public class TerrainEntityData : MonoBehaviour {
             
             int terrainHeight = TerrainHeight(terrainLocation);
 
-            LoadTerrain(terrainLocation, terrainRes, terrainHeight, id);
+			LoadTerrain(terrainLocation, terrainRes, terrainHeight, id, terrainCount);
 
         }
     }
@@ -70,16 +70,16 @@ public class TerrainEntityData : MonoBehaviour {
 	}
 
 
-    void LoadTerrain(string location, int res, int height, string id)
+	void LoadTerrain(string location, int res, int height, string id, int terrainCount)
     {
 		if (Util.FileExist("Resources/"+location + ".heightfield-0" + id +".terrainheightfield")) {
-			GameObject terrain = GenerateTerrain("Resources/"+location + ".heightfield-0" + id +".terrainheightfield", res, height, id);
+			GameObject terrain = GenerateTerrain("Resources/"+location + ".heightfield-0" + id +".terrainheightfield", res, height, id, terrainCount);
             terrain.transform.parent = Util.GetMapload().terrainHolder.transform;
         }
     }
 		
 
-    GameObject GenerateTerrain(string location, int res, int height, string id)
+	GameObject GenerateTerrain(string location, int res, int height, string id, int terrainCount)
     {
        
         GameObject terrain = (GameObject)Instantiate(Util.GetMapload().empty, Vector3.zero, Quaternion.identity);
@@ -90,7 +90,7 @@ public class TerrainEntityData : MonoBehaviour {
         float terrainPos = ((res * -1) / 2);
         if(res < 512)
         {
-            terrain.transform.position = OuterTerrainPos(512, id);
+			terrain.transform.position = OuterTerrainPos(512, id, terrainCount);
         } else
         {
             terrain.transform.position = new Vector3(terrainPos, 0, terrainPos);
@@ -103,34 +103,49 @@ public class TerrainEntityData : MonoBehaviour {
 
 
 
-    Vector3 OuterTerrainPos(int res, string id)
+	Vector3 OuterTerrainPos(int res, string id, int terrainCount)
     {
-        List<Vector3> pos12 = new List<Vector3>();
+		if (terrainCount == 12) {
+			List<Vector3> pos12 = new List<Vector3> ();
 
 
-        pos12.Add(new Vector3(-1, 0, -1)); // useless
-        pos12.Add(new Vector3(-2, 0, -2));
-        pos12.Add(new Vector3(-2, 0, -1));
-        pos12.Add(new Vector3(-1, 0, -2));
-        pos12.Add(new Vector3(-2, 0, 0));
-        pos12.Add(new Vector3(-2, 0, 1));
-        pos12.Add(new Vector3(-1, 0, 1));
-        pos12.Add(new Vector3(0, 0, -2));
-        pos12.Add(new Vector3(1, 0, -2));
-        pos12.Add(new Vector3(1, 0, -1));
-        pos12.Add(new Vector3(0, 0, 1));
-        pos12.Add(new Vector3(1, 0, 0));
-        pos12.Add(new Vector3(1, 0, 1));
-        int i = int.Parse(id);
-            return pos12[i] * (fullres / 2);
-        
+			pos12.Add (new Vector3 (-1, 0, -1)); // useless
+			pos12.Add (new Vector3 (-2, 0, -2));
+			pos12.Add (new Vector3 (-2, 0, -1));
+			pos12.Add (new Vector3 (-1, 0, -2));
+			pos12.Add (new Vector3 (-2, 0, 0));
+			pos12.Add (new Vector3 (-2, 0, 1));
+			pos12.Add (new Vector3 (-1, 0, 1));
+			pos12.Add (new Vector3 (0, 0, -2));
+			pos12.Add (new Vector3 (1, 0, -2));
+			pos12.Add (new Vector3 (1, 0, -1));
+			pos12.Add (new Vector3 (0, 0, 1));
+			pos12.Add (new Vector3 (1, 0, 0));
+			pos12.Add (new Vector3 (1, 0, 1));
+			int i = int.Parse (id);
+			return pos12 [i] * (fullres / 2);
+		} else {
+			return new Vector3 (1024, 0, 1024);
+		}
     }
     void GenerateOuterTerrain(string location)
     {
-
-        for (int i = 0; i < 12; i++)
+		int numOuterTerrains = 0;
+		if (Util.FileExist ("Resources/" + location + ".heightfield-048.terrainheightfield")) {
+			numOuterTerrains = 48;
+		} else if (Util.FileExist ("Resources/" + location + ".heightfield-036.terrainheightfield")) {
+			numOuterTerrains = 36;
+		} else if (Util.FileExist ("Resources/" + location + ".heightfield-024.terrainheightfield")) {
+			numOuterTerrains = 24;
+		} else if (Util.FileExist ("Resources/" + location + ".heightfield-012.terrainheightfield")) {
+			numOuterTerrains = 12;
+		} else {
+			numOuterTerrains = 0;
+		}
+		 
+		for (int i = 0; i < numOuterTerrains; i++)
         {
-            string prefix = "0";
+			string prefix = "0"; // make terrain0-9 into terrain001-09;
             if(i + 1 > 9)
             {
                 prefix = "";
@@ -158,7 +173,7 @@ public class TerrainEntityData : MonoBehaviour {
                     Util.Log("Couldn't find the correct res for " + location + id);
                 }
 
-                CheckTerrain(id, res);
+				CheckTerrain(id, res, numOuterTerrains);
             }
             
 
@@ -174,11 +189,12 @@ public class TerrainEntityData : MonoBehaviour {
 		int size = sizeorg + 1;
 
 		byte[] orgBuffer = new byte[(size * size) * 2];
-		byte[] flippedBuffer = new byte[(size * size) * 2];
 		byte[] buffer = new byte[(size * size) * 2];
 		using (BinaryReader reader = new BinaryReader (File.Open (path, FileMode.Open, FileAccess.Read))) {
 			
-			int headerLength = 49;
+			int headerLength = Util.GetTerrainHeaderLength(path);
+
+
 
 			reader.ReadBytes (headerLength);
 
@@ -202,7 +218,7 @@ public class TerrainEntityData : MonoBehaviour {
 			int lastLine = 0;
 
 			while (lastLine < (size * 2)) {
-				int offset = (((size * size) * 2) - size * 2);
+				int offset = (((size * size) * 2) - (size * 2));
 				orgBuffer [offset + lastLine] = orgBuffer [(offset - (size * 2)) + lastLine];
 				lastLine++;
 			}
@@ -255,7 +271,7 @@ public class TerrainEntityData : MonoBehaviour {
 			for (int j = 0; j < heightmapWidth; j++)
 			{
 				int num6 = Mathf.Clamp(j, 0, size - 1) + (Mathf.Clamp(i, 0, size - 1) * size);
-				byte num7 = buffer[num6 * 2];
+//				byte num7 = buffer[num6 * 2];
 //				buffer[num6 * 2] = buffer[(num6 * 2) + 1];
 //				buffer[(num6 * 2) + 1] = num7;
 

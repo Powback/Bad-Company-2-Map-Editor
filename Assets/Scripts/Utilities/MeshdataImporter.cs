@@ -56,8 +56,8 @@ public class MeshDataImporter {
 			string name = loc.ToLower();
 			float avg = (v3float / v3.Count);
 
-			if (name.Contains ("sub_pen_outdoor") || name.Contains ("com_bridge_old/com_bridge_old") || name.Contains("sewer") || name.Contains("pickuppoint") && 
-				!(name.Contains("bridge_small") )) {
+			if (name.Contains ("sub_pen_outdoor") || name.Contains ("com_bridge_old/com_bridge_old") || name.Contains("sewer") || name.Contains("pickuppoint") ||
+				name.Contains("com_bridge_small") || name.Contains("buffalo_dead" ) ) {
 
 				md = new MeshData ();
 				s_Reader.BaseStream.Seek (0, 0);
@@ -68,7 +68,7 @@ public class MeshDataImporter {
 			}
 								
 
-			if ((name.Contains("skyline")  || name.Contains ("com_bridge_old/") || name.Contains("pickuppoint") || name.Contains("sewer"))){
+			if ((name.Contains ("com_bridge_old/") || name.Contains("pickuppoint") || name.Contains("sewer"))){
 				bc2mesh.inverted = true;
 			}
 
@@ -380,7 +380,6 @@ public class MeshDataImporter {
 					Vector2 uvtest = new Vector2();
 					bool invalidChar = false;
 					while( i < vertexCount && stop == false) {
-						int ret = 0;
 						if (stream.BaseStream.Length - (FTell () + 4) > 0) {
 							stop = true;
 						} else {

@@ -28,12 +28,13 @@ namespace BC2
 	public class BC2Array {
         [XmlAttribute(AttributeName = "name")]
         public string name;
+		[XmlText]
+		public string value;
         [XmlElement(ElementName="item")]
 		public List<Item> item;
 		[XmlElement(ElementName = "complex")]
 		public List<Complex> complex;
-		[XmlText]
-		public string value;
+
 	}
 
 	[System.Serializable]
@@ -41,14 +42,15 @@ namespace BC2
 	public class Complex {
         [XmlAttribute(AttributeName = "name")]
         public string name;
+		[XmlText]
+		public string value;
         [XmlElement(ElementName="field")]
 		public List<Field> field;
 		[XmlElement(ElementName = "complex")]
 		public List<Complex> complex;
 		[XmlElement(ElementName = "array")]
 		public List<BC2Array> array;
-		[XmlText]
-		public string value;
+
 	}
 
 	[System.Serializable]
@@ -71,6 +73,7 @@ namespace BC2
 	[System.Serializable]
 	[XmlRoot(ElementName="partition")]
 	public class Partition {
+		public string name;
         [XmlAttribute(AttributeName = "guid")]
         public string guid;
         [XmlAttribute(AttributeName = "primaryInstance")]

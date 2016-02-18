@@ -132,14 +132,6 @@ public class Util {
     public static GameObject GetGOByString(string GUID) {
         MapLoad ml = GetMapload();
         GameObject returnGO = null;
-		if (ml.instantiatedDictionary.ContainsKey (GUID.ToLower ())) {
-			Debug.Log (GUID + " exist lower");
-
-		}
-		if(ml.instantiatedDictionary.ContainsKey(GUID.ToUpper())) {
-			Debug.Log (GUID + " exist upper");
-		}
-		
 		ml.instantiatedDictionary.TryGetValue(GUID.ToUpper(), out returnGO);
         return returnGO;
     }
@@ -147,6 +139,14 @@ public class Util {
     public static MapLoad GetMapload() {
 		return mapLoad;
     }
+	public static int GetTerrainHeaderLength(string path) {
+		if(Regex.IsMatch(path, "sp_04/sp_04.heightfield-00")) {
+			return 379;
+		} else {
+			return 49;
+		}
+		
+	}
 
     public static Partition LoadPartition(string path)
     {
@@ -159,6 +159,7 @@ public class Util {
             if (InstanceCollection != null)
             {
                 partition = InstanceCollection;
+				partition.name = path;
             }
         }
         return partition;
@@ -180,9 +181,13 @@ public class Util {
 
     public static string ClearGUIDString(string name)
     {
-        string pattern = "/[a-zA-Z0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+[a-zA-Z0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+";
-        name = Regex.Replace(name, pattern, "");
-        return name;
+		if (name != null) {
+			string pattern = "/[a-zA-Z0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+[a-zA-Z0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+";
+			name = Regex.Replace (name, pattern, "");
+			return name;
+		} else {
+			return null;
+		}
     }
 
     public static bool IsObject(Inst inst) {
@@ -217,7 +222,7 @@ public class Util {
 		Quaternion newQuat = MatrixHelper.QuatFromMatrix (matrix);
 		return newQuat;
 	}
-
+		
 
 	public static Vector3 GetPosition(Inst inst) {
 		Vector3 pos = Vector3.zero;
@@ -340,36 +345,6 @@ public class Util {
     {
         UnityEngine.Debug.Log(log);
     }
-
-    public static void AddTempFile(string type, string text)
-    {
-        if (text != null)
-        {
-
-            string curResLocation   = "Tools/Temp/CurRes.txt";
-            string newResLocation   = "Tools/Temp/NewRes.txt";
-            string terrainLocation  = "Tools/Temp/TerrainLocation.txt";
-            string idLocation       = "Tools/Temp/id.txt";
-
-            if (type == "res")
-            {
-                int res = int.Parse(text);
-                int newRes = res + 1;
-
-                File.WriteAllText(curResLocation, res + "x" + res);
-                File.WriteAllText(newResLocation, newRes + "x" + newRes);
-            } else if( type == "location")
-            {
-                File.WriteAllText(terrainLocation, text);
-            } else if( type == "id")
-            {
-                File.WriteAllText(idLocation, text);
-            }
-        }
-        else
-        {
-            UnityEngine.Debug.Log("Temp File add failed. No values passed");
-        }
-    }
+		
 
 }
