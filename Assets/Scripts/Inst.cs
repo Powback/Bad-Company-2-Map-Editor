@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BC2;
 
+[SelectionBase]
 public class BC2Instance : MonoBehaviour {
 	public int id;
 	public Inst instance;

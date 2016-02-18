@@ -12,35 +12,43 @@ public class MapLoad : MonoBehaviour
 
 	//TODO
 	//Fix havokasset
-	
+	[Header("Main config")]
+	[Tooltip("Main map XML file")]
 	public string mapName;
+
+	[Tooltip("Saved as Resources/Levels/mapname.xml")]
+	public string saveAs = "TestMap";
+	public bool save;
+	public bool saved;
+
+	[Header("Load Config")]
+	public bool showHelpers = false;
+	public bool loadAllPartitions = false;
+
+	[Header("Prefabs")]
+
+	public GameObject terrainHolder;
 	public GameObject placeholder;
-    public GameObject empty;
+	public GameObject empty;
 	public GameObject sphere;
-    public GameObject terrainHolder;
+
+	[Header("Materials")]
 	public Material materialwhite;
 	public Material waterMaterial;
 	public Material materialInvisibleWall;
 	public Material helperMaterial;
 	public Material glassMaterial;
-    public Component waterScript;
-	[NonSerialized]
-	public Partition partition;
-	int i;
-	public bool showHelpers = false;
-	public bool loadAllPartitions = false;
-	public string saveAs = "TestMap";
-    public bool save;
-    public bool saved;
-	//public List<InstGameObject> InstGameObjects = new List<InstGameObject>();
 
-	public int MaxThreads = 1;
-	public int threads = 0;
-
-	//public Dictionary<string, GameObject> goDictionary = new Dictionary<string, GameObject> ();
+	[Header("Content")]
 	public List<GameObject> instantiatedGameObjects = new List<GameObject>();
 	public Dictionary<string, GameObject> instantiatedDictionary = new Dictionary<string, GameObject>();
 	public Dictionary<string, BC2Mesh> instantiatedMeshDictionary = new Dictionary<string, BC2Mesh>();
+
+	//public List<InstGameObject> InstGameObjects = new List<InstGameObject>();
+
+
+	//public Dictionary<string, GameObject> goDictionary = new Dictionary<string, GameObject> ();
+
 	Dictionary<string, Inst> unconvertedDictionary = new Dictionary<string, Inst>();
 
 	public List<Inst> unconvertedInst = new List<Inst>();
@@ -48,6 +56,9 @@ public class MapLoad : MonoBehaviour
 
 	int convertedCount = 0;
 
+	[NonSerialized]
+	public Partition partition;
+	int i;
 
     void Start()
     {
