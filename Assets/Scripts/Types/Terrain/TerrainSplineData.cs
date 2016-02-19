@@ -5,55 +5,47 @@ using BC2;
 
 public class TerrainSplineData : MonoBehaviour {
 
-    public Inst inst;
-    public List<Inst> points = new List<Inst>();
-    public List<Vector3> pointPos = new List<Vector3>();
+	public List<GameObject> points = new List<GameObject>();
+	public List<GameObject> planes = new List<GameObject>();
     public MapLoad ml;
 
 
-    public void Start()
-    {
-        inst = this.gameObject.GetComponent<BC2Instance>().instance;
-        BC2Array array = Util.GetArray("Points", inst);
-        foreach (Item Item in array.item)
-        {
-            ml = Util.GetMapload();
-            Inst refPoint = Util.GetInst(Item.reference, ml.partition);
-            points.Add(refPoint);
-        }
-        foreach(Inst point in points)
-        {
-            Complex posString = Util.GetComplex("Position", point);
-            Vector3 pos = Util.GetPositionFromString(posString.value);
-            pointPos.Add(pos);
-        }
+	public void Start() {
+		transform.localScale = Vector3.one;
+		transform.rotation = Quaternion.identity;
+		ml = Util.GetMapload ();
+		BC2Array planeArray = Util.GetArray ("Planes", transform.GetComponent<BC2Instance> ().instance);
+		BC2Array pointArray = Util.GetArray ("Points", transform.GetComponent<BC2Instance> ().instance);
 
-      
-        LineRenderer LR = gameObject.AddComponent<LineRenderer>();
-        LR.SetVertexCount(pointPos.Count);
-        for(int i = 0; i < pointPos.Count; i++)
-        {
-            LR.SetPosition(i, pointPos[i]);
-        }
+		foreach (Item item in pointArray.item) {
+			if (item.reference != "" && item.reference != "null" && item.reference != null) {
+				points.Add (Util.GetGOByString (item.reference));
+			}
+		}
 
-        BC2Array planes = Util.GetArray("Planes", inst);
-        Inst plane = Util.GetInst(planes.item[0].reference, ml.partition);
-        if(Util.GetField("PlaneType", plane).value == "Lake")
-        {
-			transform.localScale = Vector3.one;
-            GeneratePlane gp = transform.gameObject.AddComponent<GeneratePlane>();
-            foreach(Vector3 v3 in pointPos)
-            {
-                gp.points.Add(v3);
-            }
-            Vector3 startpos = new Vector3();
-            startpos.y = pointPos[0].y;
-            transform.position = startpos;
-            transform.rotation = new Quaternion(0, 0, 0, 0);
-            
-            gp.Generate();
-            transform.GetComponent<MeshRenderer>().material = ml.waterMaterial;
-        }
+		foreach (Item item in planeArray.item) {
+			if (item.reference != "" && item.reference != "null" && item.reference != null) {
+				GameObject plane = Util.GetGOByString (item.reference);
+				planes.Add (plane);
+				plane.transform.parent = transform;
+				plane.GetComponent<TerrainSplinePlaneData> ().positionPoints = points;
+				plane.GetComponent<TerrainSplinePlaneData> ().AssignValues ();
+			}
+		}
+			
 
-    }
+		DrawLines ();
+	
+	
+	}
+
+	void DrawLines() {
+		LineRenderer LR = gameObject.AddComponent<LineRenderer>();
+		LR.SetVertexCount(points.Count);
+		for(int i = 0; i < points.Count; i++)
+		{
+			LR.SetPosition(i, points[i].transform.position);
+		}
+
+	}
 }

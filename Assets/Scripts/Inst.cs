@@ -42,9 +42,6 @@ public class BC2Instance : MonoBehaviour {
         if(type == "Physics.HavokAsset")
         {
            transform.gameObject.AddComponent<HavokAsset>();
-        }
-		if (type == "Terrain.TerrainSplinePlaneData") {
-			transform.gameObject.AddComponent<TerrainSplinePlaneData>();
 		}
 		if (type == "Terrain.TerrainSplineData") {
 			transform.gameObject.AddComponent<TerrainSplineData> ();
@@ -52,6 +49,17 @@ public class BC2Instance : MonoBehaviour {
 		if (type == "Terrain.TerrainSplinePointData") {
 			transform.gameObject.AddComponent<TerrainSplinePointData> ();
 		}	
+		if (type == "Terrain.TerrainSplinePlaneData") {
+			transform.gameObject.AddComponent<TerrainSplinePlaneData>();
+		}
+		if (type == "GameSharedResources.SoldierSpawnEntityData") {
+			transform.gameObject.AddComponent<SoldierSpawnEntityData> ();
+		}
+		if (type == "GameSharedResources.TeamEntityData") {
+			transform.gameObject.AddComponent<TeamEntityData> ();
+		}
+
+
 
 		if (type == "GameSharedResources.MissionObjectiveEntityData") {
 			transform.gameObject.AddComponent<MissionObjectiveEntityData> ();
