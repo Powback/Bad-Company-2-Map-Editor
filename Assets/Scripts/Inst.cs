@@ -79,12 +79,13 @@ public class BC2Instance : MonoBehaviour {
             Matrix4x4 matrix = new Matrix4x4(); 
             matrix.SetTRS(pos,rot,Vector3.one);
             Matrix4x4 m = matrix;
-			matrixstring =
-				m.m02 + "/" + (m.m10 * -1) + "/" + (m.m00 * -1) + "/*zero*/" +
-				m.m21 + "/" + m.m11 + "/" + m.m01 + "/*zero*/" +
-				m.m22 + "/" + m.m12 + "/" + (m.m20 * -1) + "/*zero*/" +
-				pos.z + "/" + pos.y + "/" + pos.x + "/*zero*";
 
+			matrixstring =
+				Math.Round(m.m02, 9) + "/" + (Math.Round(m.m10, 9) * -1) + "/" + (Math.Round(m.m00, 9) * -1) + "/*zero*/" +
+				Math.Round(m.m21, 9) + "/" + Math.Round(m.m11, 9) + "/" + Math.Round(m.m01, 9) + "/*zero*/" +
+				Math.Round(m.m22, 9) + "/" + Math.Round(m.m12, 9) + "/" + (Math.Round(m.m20, 9) * -1) + "/*zero*/" +
+				pos.z + "/" + pos.y + "/" + pos.x + "/*zero*";
+			
 
             Util.GetComplex("Transform", instance).value = matrixstring;
         }

@@ -85,7 +85,7 @@ public class TerrainEntityData : MonoBehaviour {
         GameObject terrain = (GameObject)Instantiate(Util.GetMapload().empty, Vector3.zero, Quaternion.identity);
         terrain.name = location + id;
         
-		GenerateTerrainMesh(terrain, location, res, height, fullres);
+		GenerateTerrainMesh(terrain, location, res, height, fullres, terrainCount, int.Parse(id));
         
         float terrainPos = ((res * -1) / 2);
         if(res < 512)
@@ -107,8 +107,6 @@ public class TerrainEntityData : MonoBehaviour {
     {
 		if (terrainCount == 12) {
 			List<Vector3> pos12 = new List<Vector3> ();
-
-
 			pos12.Add (new Vector3 (-1, 0, -1)); // useless
 			pos12.Add (new Vector3 (-2, 0, -2));
 			pos12.Add (new Vector3 (-2, 0, -1));
@@ -124,6 +122,103 @@ public class TerrainEntityData : MonoBehaviour {
 			pos12.Add (new Vector3 (1, 0, 1));
 			int i = int.Parse (id);
 			return pos12 [i] * (fullres / 2);
+		} else if (terrainCount == 36) {
+			List<Vector3> pos32 = new List<Vector3> ();
+			pos32.Add (new Vector3 (-3, 0, -3));//0
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-2, 0, -2)); // 7
+			pos32.Add (new Vector3 (-2, 0, -1)); // 8
+			pos32.Add (new Vector3 (-1, 0, -2));// 9
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-2, 0, 0));// 14
+			pos32.Add (new Vector3 (-2, 0, 1));// 15
+			pos32.Add (new Vector3 (-1, 0, 1));// 16
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (1, 0, -1));// 21
+			pos32.Add (new Vector3 (1, 0, -2));// 22
+			pos32.Add (new Vector3 (1, 0, -1));// 23
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (0, 0, -2)); // 28
+			pos32.Add (new Vector3 (1, 0, -2)); // 29
+			pos32.Add (new Vector3 (1, 0, -1)); // 30
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			pos32.Add (new Vector3 (-3, 0, -3));
+			int i = int.Parse (id);
+			return pos32 [i] * (fullres / 2);
+		} else if (terrainCount == 48) {
+			
+			List<Vector3> pos48 = new List<Vector3> ();
+			pos48.Add (new Vector3 (-3, 0, -3));//0
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-2, 0, -2));// 10
+			pos48.Add (new Vector3 (-2, 0, -1)); //11
+			pos48.Add (new Vector3 (-1, 0, -2)); //12
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-2, 0, 0)); // 19
+			pos48.Add (new Vector3 (-2, 0, 1));// 20
+			pos48.Add (new Vector3 (-1, 0, 1));// 21
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (0, 0, -2)); // 28
+			pos48.Add (new Vector3 (1, 0, -2)); // 29
+			pos48.Add (new Vector3 (1, 0, -1)); // 30
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (0, 0, 1));// 37
+			pos48.Add (new Vector3 (1, 0, 0)); // 38
+			pos48.Add (new Vector3 (1, 0, 1)); // 39
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+			pos48.Add (new Vector3 (-3, 0, -3));
+
+			int i = int.Parse (id);
+			return pos48 [i] * (fullres / 2);
+
 		} else {
 			return new Vector3 (1024, 0, 1024);
 		}
@@ -162,7 +257,7 @@ public class TerrainEntityData : MonoBehaviour {
                 }
                 else if (size == 33157)
                 {
-                    res = 124;
+                    res = 128;
                 }
                 else if (size == 8325)
                 {
@@ -184,7 +279,7 @@ public class TerrainEntityData : MonoBehaviour {
 		return(buf [i] << 24) | buf [i + 1] << 16 | buf [i + 2] << 8 | buf [i + 3];
 	}
 
-	public static void GenerateTerrainMesh(GameObject terrainGO, string path, int sizeorg, int height, int fullsize)
+	public static void GenerateTerrainMesh(GameObject terrainGO, string path, int sizeorg, int height, int fullsize, int terrainCount, int id)
 	{
 		int size = sizeorg + 1;
 
@@ -253,7 +348,12 @@ public class TerrainEntityData : MonoBehaviour {
 		if(size < 512)
 		{
 			int otSize = (fullsize) / 2;
-			terrainData.size = new Vector3(otSize, height, otSize);
+			if (terrainCount == 48 && !(id == 10 || id == 11 || id == 12 || id == 19 || id == 20 || id == 21 || id == 28 || id == 29 || id == 30 || id == 37 || id == 38 || id == 39)) {
+				otSize = otSize / 2;
+			}
+				
+				terrainData.size = new Vector3 (otSize, height, otSize);
+
 		} else
 		{
 			terrainData.size = new Vector3(size - 1, height, size - 1);

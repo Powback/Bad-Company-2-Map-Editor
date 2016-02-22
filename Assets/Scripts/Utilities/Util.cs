@@ -139,12 +139,10 @@ public class Util {
     public static MapLoad GetMapload() {
 		return mapLoad;
     }
-	public static int GetTerrainHeaderLength(string path) {
-		if(Regex.IsMatch(path, "sp_04/sp_04.heightfield-00")) {
-			return 379;
-		} else {
-			return 49;
-		}
+	public static int GetTerrainHeaderLength(string path) { // unfinished
+		
+		return 49;
+
 		
 	}
 

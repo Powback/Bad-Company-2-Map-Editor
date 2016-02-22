@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Text.RegularExpressions;
 using BC2;
+using System.Text;
 
 public class MapContainer
 {
@@ -12,8 +13,10 @@ public class MapContainer
 	public static void Save(object obj, string path)
 	{
 		var serializer = new XmlSerializer(typeof(Partition));
-		using(var stream = new FileStream(path, FileMode.Create))
+	
+		using(StreamWriter stream = new StreamWriter(path, false))
 		{
+			
 			serializer.Serialize(stream, obj);
 		}
 	}
