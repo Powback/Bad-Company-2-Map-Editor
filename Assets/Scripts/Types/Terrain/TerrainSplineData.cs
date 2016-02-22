@@ -12,7 +12,7 @@ public class TerrainSplineData : MonoBehaviour {
 
 	public void Start() {
 		transform.localScale = Vector3.one;
-		transform.rotation = Quaternion.identity;
+		//transform.rotation = Quaternion.identity;
 		ml = Util.GetMapload ();
 		BC2Array planeArray = Util.GetArray ("Planes", transform.GetComponent<BC2Instance> ().instance);
 		BC2Array pointArray = Util.GetArray ("Points", transform.GetComponent<BC2Instance> ().instance);

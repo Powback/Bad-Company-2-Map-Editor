@@ -38,7 +38,7 @@ public class TerrainSplinePlaneData : MonoBehaviour {
 				if (parent != "" && parent != "null" && parent != null) {
 					GameObject parentGO =  Util.GetGOByString (parent);
 					point.transform.parent = parentGO.transform;
-					point.transform.position = parentGO.transform.position;
+					//point.transform.position = parentGO.transform.position;
 				}
 			}
 		}
@@ -48,8 +48,10 @@ public class TerrainSplinePlaneData : MonoBehaviour {
 	public void AssignLakeMesh() {
 
 		Inst plane = transform.GetComponent<BC2Instance> ().instance;
-		GeneratePlane gp = transform.gameObject.AddComponent<GeneratePlane> ();
-
+		GameObject go = (GameObject) Instantiate(Util.GetMapload().empty, new Vector3(0,positionPoints[0].transform.position.y, 0), Quaternion.identity);
+		GeneratePlane gp = go.gameObject.AddComponent<GeneratePlane> ();
+		go.transform.parent = transform;
+		go.transform.name = "Water";
 		foreach(GameObject pos in positionPoints) {
 			gp.points.Add (pos.transform.position);
 		}
@@ -57,11 +59,11 @@ public class TerrainSplinePlaneData : MonoBehaviour {
 		transform.localScale = Vector3.one;
 		Vector3 startpos = new Vector3 (0, 0, 0);
 		startpos.y = gp.points [0].y;
-		transform.position = startpos;
-		transform.rotation = new Quaternion (0, 0, 0, 0);
+		//transform.position = startpos;
+		//transform.rotation = new Quaternion (0, 0, 0, 0);
 
 		gp.Generate ();
-		transform.GetComponent<MeshRenderer> ().material = Util.GetMapload().waterMaterial;
+		go.GetComponent<MeshRenderer> ().material = Util.GetMapload().waterMaterial;
 	}
 }
 

@@ -73,6 +73,7 @@ namespace BC2
 	[System.Serializable]
 	[XmlRoot(ElementName="partition")]
 	public class Partition {
+		[XmlIgnoreAttribute]
 		public string name;
         [XmlAttribute(AttributeName = "guid")]
         public string guid;

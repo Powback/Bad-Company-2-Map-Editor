@@ -92,33 +92,33 @@ public class MapLoad : MonoBehaviour
 //		}
 	}
 
-	IEnumerator GenerateObject(Inst inst, bool haveMesh) {
-		Vector3 pos = Util.GetPosition (inst);
-		Quaternion rot = Util.GetRotation (inst);
-		GameObject go = null;
-		if (haveMesh) {
-			string meshPath = Util.GetField("ReferencedObject", inst).reference;
-			go = (GameObject) Instantiate(convertedDictionary[meshPath], pos,rot);
-		} else {
-			go = (GameObject) Instantiate (placeholder,pos,rot);
-		}
-
-		go.name = Util.ClearGUID (inst);
-		
-		//go.AddComponent<MeshRenderer>().material.color = new Color (UnityEngine.Random.Range (0.1f, 1.0f), UnityEngine.Random.Range (0.1f, 1.0f), UnityEngine.Random.Range (0.1f, 1.0f));
-		GameObject parent = transform.GetComponent<MapItems>().SelectParent(inst.type);
-		go.transform.parent = parent.transform;
-
-		BC2Instance instance = go.AddComponent<BC2Instance>();
-		instance.instance = inst;
-		instance.id = i;
-		instance.mapLoad = this;
-		instantiatedGameObjects.Add(go.gameObject);
-		instantiatedDictionary.Add (inst.guid.ToUpper(), go.gameObject);
-		i++;
-		yield return null;
-
-	}
+//	IEnumerator GenerateObject(Inst inst, bool haveMesh) {
+//		Vector3 pos = Util.GetPosition (inst);
+//		Quaternion rot = Util.GetRotation (inst);
+//		GameObject go = null;
+//		if (haveMesh) {
+//			string meshPath = Util.GetField("ReferencedObject", inst).reference;
+//			go = (GameObject) Instantiate(convertedDictionary[meshPath], pos,rot);
+//		} else {
+//			go = (GameObject) Instantiate (placeholder,pos,rot);
+//		}
+//
+//		go.name = Util.ClearGUID (inst);
+//		
+//		//go.AddComponent<MeshRenderer>().material.color = new Color (UnityEngine.Random.Range (0.1f, 1.0f), UnityEngine.Random.Range (0.1f, 1.0f), UnityEngine.Random.Range (0.1f, 1.0f));
+//		GameObject parent = transform.GetComponent<MapItems>().SelectParent(inst.type);
+//		go.transform.parent = parent.transform;
+//
+//		BC2Instance instance = go.AddComponent<BC2Instance>();
+//		instance.instance = inst;
+//		instance.id = i;
+//		instance.mapLoad = this;
+//		instantiatedGameObjects.Add(go.gameObject);
+//		instantiatedDictionary.Add (inst.guid.ToUpper(), go.gameObject);
+//		i++;
+//		yield return null;
+//
+//	}
 
 	void FixedUpdate()
     {
