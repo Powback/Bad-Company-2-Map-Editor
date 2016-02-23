@@ -1,9 +1,0 @@
-Area Geometry Data.
-
-We have several different types
-First of all, there is the "combat" type. It defines the area that none of the teams can enter. This is ingnored by the vehicles that are defined in the "CombatAreaTriggerEntityData" instance under "AllowedVehicles".
-Then we have team1 and 2, which defines which team that can enter the area.
-
-We then have "sourrounding", that defines the area that nothing can enter. This is the outer border of the combat area.
-
-Then we have some unnamed ones. I assume these defines the sound that is played in that area. It could also define what kind of step sound that should be playing. I'm not sure

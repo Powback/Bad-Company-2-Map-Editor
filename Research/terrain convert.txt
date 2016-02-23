@@ -1,1 +1,0 @@
-mogrify -resize 1025x1025 -flip -rotate 90 -depth 16 -size 1024x1024+49 gray:007.raw 
