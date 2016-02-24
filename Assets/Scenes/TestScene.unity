@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5848d6c612b0e43eeb7a2d6a460acb97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapName: nam_mp_007cq
+  mapName: nam_mp_006cq
   saveAs: TestMap
   save: 0
   saved: 0
