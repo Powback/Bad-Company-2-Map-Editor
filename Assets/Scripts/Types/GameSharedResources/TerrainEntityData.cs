@@ -304,8 +304,8 @@ public class TerrainEntityData : MonoBehaviour {
 					terrainOffset++;
 					fileOffset++;
 				}
-				orgBuffer [terrainOffset + 1] = buffer [terrainOffset - 1];
-				orgBuffer [terrainOffset + 2] = buffer [terrainOffset];
+				orgBuffer [fileOffset + 1] = buffer [fileOffset - 1];
+				orgBuffer [fileOffset + 2] = buffer [fileOffset];
 				terrainOffset += 2;
 				lineoffset++;
 			}
@@ -314,7 +314,7 @@ public class TerrainEntityData : MonoBehaviour {
 
 			while (lastLine < (size * 2)) {
 				int offset = (((size * size) * 2) - (size * 2));
-				orgBuffer [offset + lastLine] = orgBuffer [(offset - (size * 2)) + lastLine];
+				orgBuffer [offset + lastLine] = orgBuffer [((offset - (size * 2) ) + lastLine)];
 				lastLine++;
 			}
 
@@ -332,7 +332,12 @@ public class TerrainEntityData : MonoBehaviour {
 				y++;
 			}
 				
-
+			for (int x = 0; x < size * 2; x++) {
+				int offset = ((size * size) * 2) - (size * 2);
+				buffer [offset + x] = buffer [offset - (size * 2) + x];
+				buffer [offset + x +1 ] = buffer [offset - (size * 2) + x +1];
+				x++;
+			}
 
 
 		
@@ -342,8 +347,9 @@ public class TerrainEntityData : MonoBehaviour {
 
 
 		Terrain terrain = terrainGO.AddComponent<Terrain>();
-		terrainGO.AddComponent<TerrainCollider>();
+		TerrainCollider tc = terrainGO.AddComponent<TerrainCollider>();
 		TerrainData terrainData = new TerrainData();
+		tc.terrainData = terrainData;
 		terrainData.heightmapResolution = size;
 		if(size < 512)
 		{
@@ -384,6 +390,8 @@ public class TerrainEntityData : MonoBehaviour {
 		terrain.heightmapPixelError = 1;
 		
 	}
+
+
 }
 
 

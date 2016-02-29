@@ -8,9 +8,9 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Skybox
   m_Shader: {fileID: 6, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _SUNDISK_HIGH_QUALITY
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -20,8 +20,8 @@ Material:
           name: _MainTex
         second:
           m_Texture: {fileID: 0}
-          m_Scale: {x: 0.25, y: 1}
-          m_Offset: {x: -3.42, y: 0.03}
+          m_Scale: {x: -0.25, y: -1}
+          m_Offset: {x: 2.32, y: 0}
       data:
         first:
           name: _BumpMap
@@ -147,7 +147,11 @@ Material:
       data:
         first:
           name: _Exposure
-        second: 1
+        second: 1.02
+      data:
+        first:
+          name: _SunDisk
+        second: 2
       data:
         first:
           name: _SunSize

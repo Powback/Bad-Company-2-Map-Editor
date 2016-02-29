@@ -292,6 +292,8 @@ public class MapLoad : MonoBehaviour
 				GameObject subGO = (GameObject) Instantiate(empty,Vector3.zero,Quaternion.identity);
 				MeshRenderer mr = subGO.AddComponent<MeshRenderer>();
 				MeshFilter mf = subGO.AddComponent<MeshFilter>();
+				MeshCollider mc = subGO.AddComponent<MeshCollider> ();
+
 				if (Regex.IsMatch (subsetNames [subsetInt].ToLower (), "glass")) {
 					mr.material = glassMaterial;
 				} else {
@@ -302,7 +304,7 @@ public class MapLoad : MonoBehaviour
 				mf.mesh.RecalculateNormals();
 				subGO.name = subsetNames[subsetInt];
 				subGO.transform.parent = go.transform;
-
+				mc.sharedMesh = mf.mesh;
 				subsetInt++;
 			}
 			if (bc2mesh.inverted) {

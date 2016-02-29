@@ -121,6 +121,86 @@ public class MeshDataImporter {
 		return bc2mesh;
 		
 	}
+
+
+
+	public static BC2Mesh LoadMeshRaw(string loc, int uvOffset, bool bigFloat, bool inverted) {
+		BC2Mesh bc2mesh = new BC2Mesh ();
+		List<Mesh> subsetMesh = new List<Mesh> ();
+		List<string> subsetNames = new List<string> ();
+
+
+		var s_Data = File.ReadAllBytes (loc);
+		using (var s_Reader = new BinaryReader(new MemoryStream(s_Data))) {
+			MeshData md = new MeshData();
+
+			stream = s_Reader;
+			//md.useFloat = float32;
+			md.Init ();
+
+			string name = loc.ToLower();
+
+		
+
+			md = new MeshData ();
+			s_Reader.BaseStream.Seek (0, 0);
+			md.useFloat = bigFloat;
+			md.Init ();
+
+		
+
+
+
+			bc2mesh.inverted = inverted;
+
+
+			int i = 0;
+			while (i < md.subset.Count) {
+
+				if(!md.subset[i].name.Contains("ZOnly")) {
+					Mesh me = new Mesh ();
+					Vector3[] verts  = null;
+					verts = md.subset[i].GetV3(0).ToArray();
+					int[] tris = md.subset[i].GetIndices().ToArray();
+
+					if(bc2mesh.inverted == true) {
+						tris = tris.Reverse().ToArray();
+						Util.Log ("Inverted: " + loc);
+						//verts = md.subset[i].GetV3Inverted(0).ToArray();
+
+					}
+
+
+					;
+					Vector2[] uv = null;
+
+					md.subset[i].uvOffset = uvOffset;
+					
+
+					List<Vector2> tempv2 = new List<Vector2>();
+					tempv2 = md.subset[i].getV2();
+					if(tempv2.Count != 0) {
+
+						uv = tempv2.ToArray();
+					}
+					me.vertices = verts;
+					me.triangles = tris;
+					me.uv = uv;
+					subsetNames.Add(md.subset[i].name);
+					subsetMesh.Add(me);
+				}
+				i++;
+			}
+
+
+
+		}
+		bc2mesh.path = loc;
+		bc2mesh.subMesh = subsetMesh;
+		bc2mesh.subMeshNames = subsetNames;
+		return bc2mesh;
+
+	}
 	
 	
 	public static string String()

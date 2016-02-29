@@ -13,6 +13,7 @@ public class HavokAsset : MonoBehaviour {
 
     private List<Matrix4x4> matrix = new List<Matrix4x4>();
     private List<Vector3> positions = new List<Vector3>();
+	private List<GameObject> gameObjects = new List<GameObject>();
 	public Dictionary<string, BC2Mesh> instantiatedMeshDictionary = new Dictionary<string, BC2Mesh>();
 	public Dictionary<string, GameObject> instantiatedDictionary = new Dictionary<string, GameObject>();
 
@@ -30,6 +31,14 @@ public class HavokAsset : MonoBehaviour {
         }
 
     }
+
+	public void UpdatePosRot() { // incomplete, as the positions aren't stored in the main level file. 
+		foreach (GameObject go in gameObjects) {
+			int id = go.GetComponent<HavokItem> ().ID;
+			havokItems [id] = Util.GetMatrixString (go.transform);
+		}
+
+	}
 
 
 	public void GenerateHavokItem(Inst inst) {
@@ -80,6 +89,11 @@ public class HavokAsset : MonoBehaviour {
 
 
 							go.transform.parent = transform;
+							HavokItem hi = go.AddComponent<HavokItem> ();
+							hi.ID = i;
+							hi.pos = pos;
+							hi.rot = rot;
+							gameObjects.Add (go);
 						}
 						i++;
 
