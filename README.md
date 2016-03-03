@@ -38,7 +38,7 @@ The project works mostly out of the box. However, there are a few preperations y
  
   Press play on the top.
   
-    The editor will now load the selected map. Be patient while it loads.
+  The editor will now load the selected map. Be patient while it loads.
     
   Press on the scene tab in order to navigate through the map. Hold the right mouse button in order to change view-direction.
   
