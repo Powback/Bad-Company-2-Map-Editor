@@ -30,11 +30,18 @@ The project works mostly out of the box. However, there are a few preperations y
 
 # How to use
   You can load maps by setting the level name into the "Level Name" text box located inside the _GM GameObject.
+  
   You can find the level names inside Resources/levels.
-  The level names are the ones that look like "mp_001CQ". You will get a map-preview when the editor finds the selected map.
+  
+  The level names are the ones that look like "mp_001CQ". You will get a map-preview when the editor finds the selected
+ map.
+ 
   Press play on the top.
+  
     The editor will now load the selected map. Be patient while it loads.
+    
   Press on the scene tab in order to navigate through the map. Hold the right mouse button in order to change view-direction.
+  
   You can select each object by pressing it. To the right you can modify the selected object's properties.
   
   I encurage you to just try yourself forward in order to understand what does what.
