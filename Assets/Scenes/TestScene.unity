@@ -128,8 +128,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapName: nam_mp_007cq
   saveAs: TestMap
-  save: 0
-  saved: 0
   showHelpers: 0
   loadAllPartitions: 0
   terrainHolder: {fileID: 1795039412}
@@ -296,6 +294,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1795039413}
+  - 114: {fileID: 1795039414}
   m_Layer: 0
   m_Name: TerrainHolder
   m_TagString: Untagged
@@ -315,6 +314,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+--- !u!114 &1795039414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1795039412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4baaac2482be842aca1001658496dac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  instance:
+    type: 
+    guid: 
+    id: 
+    field:
+    - name: 
+      value: 
+      reference: 
+    - name: 
+      value: sdasdasdasdasdsadsadasdasdasdasdasdasdad
+      reference: asdasdasdasasdsadasdsdsdsddsdsdsdsdsdsdsdsdsds
+    array:
+    - name: 
+      value: 
+      item: []
+      complex: []
+    - name: 
+      value: 
+      item: []
+      complex: []
+    complex: []
+  partitions: []
+  mapLoad: {fileID: 0}
 --- !u!1 &1939075998
 GameObject:
   m_ObjectHideFlags: 0

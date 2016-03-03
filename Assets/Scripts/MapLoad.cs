@@ -9,7 +9,7 @@ using System.Reflection;
 
 public class MapLoad : MonoBehaviour 
 {
-
+	
 	//TODO
 	//Fix havokasset
 	[Header("Main config")]
@@ -18,8 +18,6 @@ public class MapLoad : MonoBehaviour
 
 	[Tooltip("Saved as Resources/Levels/mapname.xml")]
 	public string saveAs = "TestMap";
-	public bool save;
-	public bool saved;
 
 	[Header("Load Config")]
 	public bool showHelpers = false;
@@ -59,6 +57,7 @@ public class MapLoad : MonoBehaviour
 	[NonSerialized]
 	public Partition partition;
 	int i;
+
 
     void Start()
     {
@@ -120,20 +119,16 @@ public class MapLoad : MonoBehaviour
 //
 //	}
 
-	void FixedUpdate()
-    {
-        if(save && saved == false)
-        {
-			Save ();
-			saved = true;
-        }
-	}
 
 	public void Save() {
-		foreach (GameObject go in instantiatedGameObjects) {
-			go.GetComponent<BC2Instance>().SetPosRot();
+		if (saveAs != "" && saveAs != null) {
+			foreach (GameObject go in instantiatedGameObjects) {
+				go.GetComponent<BC2Instance> ().SetPosRot ();
+			}
+			MapContainer.Save (partition, "Resources/Levels/" + saveAs + ".xml");
+		} else {
+			Util.Log ("No save name assigned");
 		}
-		MapContainer.Save(partition, "Resources/Levels/"+ saveAs + ".xml");
 	}
 
 
