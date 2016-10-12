@@ -19,7 +19,7 @@ useTmpFile=0        # Make a temporary file on the hard drive for packing in cas
 
 # If you want a dump of all files and do not care about re-packaging those files, change the unpack folder to an absolute path.
 # All fbrb archives are then extracted into the same folder.
-unpackFolder=""
+unpackFolder="../../Resources"
 #unpackfolder=r"D:\hexing\bc2 full dump"
 
 
