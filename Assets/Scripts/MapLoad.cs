@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using BC2;
 using System.Reflection;
+using ShaderDBParser;
 
 public class MapLoad : MonoBehaviour 
 {
@@ -57,11 +58,14 @@ public class MapLoad : MonoBehaviour
 	[NonSerialized]
 	public Partition partition;
 	int i;
-
+	
+	ShaderDB shaderdb = new ShaderDB();
 
     void Start()
     {
+
 		Util.mapLoad = this;
+		shaderdb.LoadShaderDatabase("levels/" + mapName + "/Shaders/Dx11_Single.dx11shaderdatabase");
         partition = Util.LoadPartition("levels/" + mapName);
 //		StartCoroutine ("StartImport");
 //		StartCoroutine (StartConvert());

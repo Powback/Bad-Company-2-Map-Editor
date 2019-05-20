@@ -228,8 +228,17 @@ public class Util {
 
 		
 	}
+	public static byte[] ReadFile(string path)
+	{
+		string subPath = "Resources/";
+		if (FileExist(subPath + path))
+		{
+			return File.ReadAllBytes(subPath + path);
+		}
+		return null;
+	}
 
-    public static Partition LoadPartition(string path)
+	public static Partition LoadPartition(string path)
     {
         string subPath = "Resources/";
         string extension = ".xml";
