@@ -74,7 +74,7 @@ public class HavokAsset : MonoBehaviour {
 //								instantiatedDictionary.TryGetValue (name, out go);
 //								Util.Log ("Saving time on caching yo");
 //							} else {
-								GameObject go = loadMesh ("Resources/" + modelName);
+								GameObject go = loadMesh ("Resources/" + modelName, name);
 //								instantiatedDictionary.Add (name, go.gameObject);
 //							}
 //
@@ -104,7 +104,7 @@ public class HavokAsset : MonoBehaviour {
 	}
 
 
-	public GameObject loadMesh(string meshpath) {
+	public GameObject loadMesh(string meshpath, string refMeshName) {
 		GameObject go = Instantiate (emptyGO, Vector3.zero, Quaternion.identity) as GameObject;
 
 
@@ -120,6 +120,8 @@ public class HavokAsset : MonoBehaviour {
 				instantiatedMeshDictionary.Add (meshpath, bc2mesh);
 			}
 
+
+
 			subsetMesh = bc2mesh.subMesh;
 			subsetNames = bc2mesh.subMeshNames;
 			foreach(Mesh sub in subsetMesh) {
@@ -127,7 +129,6 @@ public class HavokAsset : MonoBehaviour {
 				GameObject subGO = (GameObject) Instantiate(emptyGO, Vector3.zero,Quaternion.identity);
 				MeshRenderer mr = subGO.AddComponent<MeshRenderer>();
 				MeshFilter mf = subGO.AddComponent<MeshFilter>();
-				mr.material = new Material(Util.GetMapload().materialwhite);
 				mr.material.name = subsetNames[subsetInt];
 				mf.mesh = sub;
 				mf.mesh.RecalculateNormals();

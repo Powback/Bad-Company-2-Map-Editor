@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using BC2;
 using System.Reflection;
 using ShaderDBParser;
+using Assets.Scripts.MaterialManager;
 
 public class MapLoad : MonoBehaviour 
 {
@@ -58,15 +59,14 @@ public class MapLoad : MonoBehaviour
 	[NonSerialized]
 	public Partition partition;
 	int i;
-	
-	ShaderDB shaderdb = new ShaderDB();
-	Dictionary<string, Material> materials = new Dictionary<string, Material>();
+
+	[NonSerialized]
+	public MaterialManager materialManager;
 
     void Start()
     {
-
+		materialManager = new MaterialManager(mapName);
 		Util.mapLoad = this;
-		shaderdb.LoadShaderDatabase("levels/" + mapName + "/Shaders/Dx11_Single.dx11shaderdatabase");
         partition = Util.LoadPartition("levels/" + mapName);
 //		StartCoroutine ("StartImport");
 //		StartCoroutine (StartConvert());
@@ -207,14 +207,15 @@ public class MapLoad : MonoBehaviour
         string name = "Unknown";
         string mesh = inst.type + " | " + inst.guid;
         List<Partition> partitions = new List<Partition>();
-		Dictionary<string, List<string>> shaders = new Dictionary<string, List<string>>();
-		string meshPartitionPath = "";
-       
+		string shaderName = "";
+		string shaderPath = "";
+		string refMeshClean = "";
+		
 		//This part is just trying to get the actual model name. It goes through different partitions and blueprints in order to get an accurate model name.
 		//Normally, it's fine to just do name + _lod0_data, but sometimes we have objects that reference non-existant objects, such as container_large_blue.
 		//While container_large exists, _blue is just referencing an other instance, and thus an other material for said container.
 		//It's mostly not an issue.
-		if(inst.type == "Entity.ReferenceObjectData" && Util.GetField("ReferencedObject", inst) != null && (Util.GetField("ReferencedObject", inst).reference != null && Util.GetField("ReferencedObject", inst).reference != "null"))
+		if (inst.type == "Entity.ReferenceObjectData" && Util.GetField("ReferencedObject", inst) != null && (Util.GetField("ReferencedObject", inst).reference != null && Util.GetField("ReferencedObject", inst).reference != "null"))
         {
             name = Util.GetField("ReferencedObject", inst).reference;
 
@@ -242,8 +243,7 @@ public class MapLoad : MonoBehaviour
                         if (Util.GetField("Mesh", staticModelEntityData) != null)
                         {
                             string refMesh = Util.GetField("Mesh", staticModelEntityData).reference;
-                            string refMeshClean = Util.ClearGUIDString(refMesh);
-							meshPartitionPath = refMeshClean;
+                            refMeshClean = Util.ClearGUIDString(refMesh);
 
 							string refMeshGuid = Util.GetGuid(refMesh);
 
@@ -255,8 +255,7 @@ public class MapLoad : MonoBehaviour
 	                            {
 		                            foreach (Complex complex in Util.GetArray("SurfaceShaders", shaderInstance).complex)
 		                            {
-										string shaderName = "";
-										string shaderPath = "";
+
 										List<string> textureNames = new List<string>();
 										foreach (Field field in complex.field)
 										{
@@ -264,22 +263,15 @@ public class MapLoad : MonoBehaviour
 											{
 												shaderName = Util.ClearGUIDString(field.value);
 											}
-											if (!shaders.ContainsKey(shaderName))
+
+											if (field.name == "Shader")
 											{
-												if (field.name == "Shader")
-												{
-													shaderPath = refMeshClean + "/" + Util.ClearGUIDString(field.reference);
-
-													shaderdb.ResourceDictionary.TryGetValue(shaderPath.ToLower(),
-													out textureNames);
-												}
-
-												if (!string.IsNullOrEmpty(shaderPath) && textureNames != null && textureNames.Count != 0)
-												{
-													shaders.Add(shaderName, textureNames);
-												}
+												shaderPath = Util.ClearGUIDString(field.reference);
 											}
+
 										}
+
+										materialManager.RegisterShader(refMeshClean, shaderPath, shaderName);
 									}
 	                            }
                                 Inst rigidMeshAsset = Util.GetInst(refMeshGuid, meshPartition);
@@ -290,16 +282,11 @@ public class MapLoad : MonoBehaviour
                                     mesh = refMeshMesh + "_lod0_data";
 
                                 }
-                               
                             }
-                           
                         }
-
                     }
                 }
-               
             }
-          
         }
 
 		string meshpath = "Resources/" + mesh + ".meshdata";
@@ -330,53 +317,7 @@ public class MapLoad : MonoBehaviour
 				MeshFilter mf = subGO.AddComponent<MeshFilter>();
 				MeshCollider mc = subGO.AddComponent<MeshCollider> ();
 
-				if (Regex.IsMatch(subsetNames[subsetInt].ToLower(), "glass"))
-				{
-					mr.material = glassMaterial;
-				}
-				else
-				{
-					string materialName = subsetNames[subsetInt];
-					string materialPath = meshPartitionPath + "/" + materialName;
-					Material mat;
-					if (this.materials.TryGetValue(materialPath, out mat))
-					{
-						mr.material = mat;
-					}
-					else
-					{
-						List<string> textures;
-						foreach (string shaderName in shaders.Keys)
-						{
-							if (materialName.Contains(shaderName))
-							{
-								if (shaders.TryGetValue(shaderName, out textures))
-								{
-									mat = new Material(materialwhite);
-									mat.name = materialName;
-									foreach (string textureName in textures)
-									{
-										string textureType = Util.GetTextureType(textureName);
-										Texture2D texture = Util.LoadiTexture(textureName + ".itexture");
-
-										if (textureType != "" && texture != null)
-										{
-											mat.SetTexture(textureType, texture);
-										}
-									}
-									this.materials.Add(materialPath, mat);
-									mr.material = mat;
-								}
-								break;
-							}
-							else
-							{
-								mr.material = materialwhite;
-							}
-						}
-					}
-					
-				}
+				mr.material = materialManager.GetMaterial(refMeshClean, shaderPath, subsetNames[subsetInt]);
 
 				mf.mesh = sub;
 				mf.mesh.RecalculateNormals();
