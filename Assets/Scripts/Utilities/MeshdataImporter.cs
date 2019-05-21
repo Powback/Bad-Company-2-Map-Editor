@@ -106,7 +106,7 @@ public class MeshDataImporter {
 					me.vertices = verts;
 					me.triangles = tris;
 					me.uv = uv;
-					subsetNames.Add(md.subset[i].name);
+					subsetNames.Add(md.subset[i].name.Replace("lod0|",""));
 					subsetMesh.Add(me);
 				}
 				i++;

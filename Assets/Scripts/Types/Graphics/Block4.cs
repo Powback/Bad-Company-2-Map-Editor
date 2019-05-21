@@ -19,23 +19,28 @@ namespace ShaderDBParser
 				items.Add(new Block4Item(p_Reader));
 			}
 		}
+		public List<Block4Item> getItems()
+		{
+			
+			return this.items;
+		}
 	}
 
 	class Block4Item
 	{
-		byte[] reference;
+		public string reference;
 		long A;
 		long B;
 		long C;
 		long D;
-		long shaderIndex1;
-		long shaderIndex2;
+		public long shaderIndex1;
+		public long shaderIndex2;
 		long E;
-		long paramGroupIndex;
+		public long paramGroupIndex;
 
 		public Block4Item(BinaryReader p_Reader)
 		{
-			reference = p_Reader.ReadBytes(16);
+			reference = Util.ByteArrayToString(p_Reader.ReadBytes(16));
 			A = p_Reader.ReadInt32();
 			B = p_Reader.ReadInt32();
 			C = p_Reader.ReadInt32();

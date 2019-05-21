@@ -20,6 +20,15 @@ namespace ShaderDBParser
 			group3 = new Block6Group(p_Reader);
 		}
 
+		public List<Block6GroupItem>GetItems()
+		{
+			List<Block6GroupItem> items = new List<Block6GroupItem>();
+			items = items.Concat<Block6GroupItem>(this.group1.getItems()).ToList();
+			items = items.Concat<Block6GroupItem>(this.group2.getItems()).ToList();
+			items = items.Concat<Block6GroupItem>(this.group3.getItems()).ToList();
+
+			return items;
+		}
 	}
 
 	class Block6Group
@@ -35,20 +44,25 @@ namespace ShaderDBParser
 				items.Add(new Block6GroupItem(p_Reader));
 			}
 		}
+
+		public List<Block6GroupItem> getItems()
+		{
+			return this.items;
+		}
 	}
 
 	class Block6GroupItem {
-		string name;
-		byte[] reference;
+		public string name = "";
+		public string reference;
 
 		public Block6GroupItem(BinaryReader p_Reader)
 		{
-			string name = "";
 			char ch;
 			while ((int)(ch = p_Reader.ReadChar()) != 0)
-				name = name + ch;
+				this.name = this.name + ch;
 
-			reference = p_Reader.ReadBytes(16);
+			reference = Util.ByteArrayToString(p_Reader.ReadBytes(16));
+			
 		}
 	}
 }

@@ -20,22 +20,33 @@ namespace ShaderDBParser
 				items.Add(new Block7Item(p_Reader));
 			}
 		}
+
+		public Dictionary<string, short[]> getItems()
+		{
+			Dictionary<string, short[]> items = new Dictionary<string, short[]>();
+			foreach(Block7Item item in this.items)
+			{
+				items.Add(item.reference, item.items);
+			}
+			return items;
+		}
 	}
 
 	class Block7Item
 	{
-		byte[] reference;
+		public string reference;
 		long shortsCount;
-		List<short> items = new List<short>();
+		public short[] items;
 
 		public Block7Item(BinaryReader p_Reader)
 		{
-			reference = p_Reader.ReadBytes(16);
+			reference = Util.ByteArrayToString(p_Reader.ReadBytes(16));
 			shortsCount = p_Reader.ReadInt32();
+			items = new short[shortsCount];
 
 			for(int i = 0; i < shortsCount; i++)
 			{
-				items.Add(p_Reader.ReadInt16());
+				items[i] = p_Reader.ReadInt16();
 			}
 		}
 	}

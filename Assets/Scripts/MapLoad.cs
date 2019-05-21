@@ -60,6 +60,7 @@ public class MapLoad : MonoBehaviour
 	int i;
 	
 	ShaderDB shaderdb = new ShaderDB();
+	Dictionary<string, Material> materials = new Dictionary<string, Material>();
 
     void Start()
     {
@@ -206,6 +207,8 @@ public class MapLoad : MonoBehaviour
         string name = "Unknown";
         string mesh = inst.type + " | " + inst.guid;
         List<Partition> partitions = new List<Partition>();
+		Dictionary<string, List<string>> shaders = new Dictionary<string, List<string>>();
+		string meshPartitionPath = "";
        
 		//This part is just trying to get the actual model name. It goes through different partitions and blueprints in order to get an accurate model name.
 		//Normally, it's fine to just do name + _lod0_data, but sometimes we have objects that reference non-existant objects, such as container_large_blue.
@@ -240,11 +243,45 @@ public class MapLoad : MonoBehaviour
                         {
                             string refMesh = Util.GetField("Mesh", staticModelEntityData).reference;
                             string refMeshClean = Util.ClearGUIDString(refMesh);
-                            string refMeshGuid = Util.GetGuid(refMesh);
+							meshPartitionPath = refMeshClean;
+
+							string refMeshGuid = Util.GetGuid(refMesh);
 
                             Partition meshPartition = Util.LoadPartition(refMeshClean);
                             if(meshPartition != null)
                             {
+	                            List<Inst> shaderInstances = Util.GetTypes("Render.MeshShaderSetAsset", meshPartition);
+	                            foreach (Inst shaderInstance in shaderInstances)
+	                            {
+		                            foreach (Complex complex in Util.GetArray("SurfaceShaders", shaderInstance).complex)
+		                            {
+										string shaderName = "";
+										string shaderPath = "";
+										List<string> textureNames = new List<string>();
+										foreach (Field field in complex.field)
+										{
+											if (field.name == "Name")
+											{
+												shaderName = Util.ClearGUIDString(field.value);
+											}
+											if (!shaders.ContainsKey(shaderName))
+											{
+												if (field.name == "Shader")
+												{
+													shaderPath = refMeshClean + "/" + Util.ClearGUIDString(field.reference);
+
+													shaderdb.ResourceDictionary.TryGetValue(shaderPath.ToLower(),
+													out textureNames);
+												}
+
+												if (!string.IsNullOrEmpty(shaderPath) && textureNames != null && textureNames.Count != 0)
+												{
+													shaders.Add(shaderName, textureNames);
+												}
+											}
+										}
+									}
+	                            }
                                 Inst rigidMeshAsset = Util.GetInst(refMeshGuid, meshPartition);
                                 if(rigidMeshAsset != null)
                                 {
@@ -293,12 +330,54 @@ public class MapLoad : MonoBehaviour
 				MeshFilter mf = subGO.AddComponent<MeshFilter>();
 				MeshCollider mc = subGO.AddComponent<MeshCollider> ();
 
-				if (Regex.IsMatch (subsetNames [subsetInt].ToLower (), "glass")) {
+				if (Regex.IsMatch(subsetNames[subsetInt].ToLower(), "glass"))
+				{
 					mr.material = glassMaterial;
-				} else {
-					mr.material = new Material (materialwhite);
 				}
-				mr.material.name = subsetNames[subsetInt];
+				else
+				{
+					string materialName = subsetNames[subsetInt];
+					string materialPath = meshPartitionPath + "/" + materialName;
+					Material mat;
+					if (this.materials.TryGetValue(materialPath, out mat))
+					{
+						mr.material = mat;
+					}
+					else
+					{
+						List<string> textures;
+						foreach (string shaderName in shaders.Keys)
+						{
+							if (materialName.Contains(shaderName))
+							{
+								if (shaders.TryGetValue(shaderName, out textures))
+								{
+									mat = new Material(materialwhite);
+									mat.name = materialName;
+									foreach (string textureName in textures)
+									{
+										string textureType = Util.GetTextureType(textureName);
+										Texture2D texture = Util.LoadiTexture(textureName + ".itexture");
+
+										if (textureType != "" && texture != null)
+										{
+											mat.SetTexture(textureType, texture);
+										}
+									}
+									this.materials.Add(materialPath, mat);
+									mr.material = mat;
+								}
+								break;
+							}
+							else
+							{
+								mr.material = materialwhite;
+							}
+						}
+					}
+					
+				}
+
 				mf.mesh = sub;
 				mf.mesh.RecalculateNormals();
 				subGO.name = subsetNames[subsetInt];

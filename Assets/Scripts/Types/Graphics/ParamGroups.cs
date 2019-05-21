@@ -22,6 +22,11 @@ namespace ShaderDBParser
 				paramGroups.Add(l_Group);
 			}
 		}
+
+		public List<ParamGroup> GetParamGroups()
+		{
+			return this.paramGroups;
+		}
 	}
 
 	class ParamGroup
@@ -87,7 +92,10 @@ namespace ShaderDBParser
 
 
 		}
-
+		public List<TextureParameter> getTextureParameters()
+		{
+			return this.textureParameters;
+		}
 	}
 
 	class ParamGroupMeta
@@ -110,15 +118,15 @@ namespace ShaderDBParser
 		}
 	}
 
-	class TextureParameter
+	public class TextureParameter
 	{
 		private long index;
-		private string TextureName;
+		public string TextureName;
 
 		public TextureParameter(BinaryReader p_Reader)
 		{
 			this.index = p_Reader.ReadInt32();
-			this.TextureName = new string(p_Reader.ReadChars(136));
+			this.TextureName = new string(p_Reader.ReadChars(136)).Replace("\0","");
 		}
 
 	}

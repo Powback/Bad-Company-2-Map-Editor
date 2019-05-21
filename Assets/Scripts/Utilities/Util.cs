@@ -190,6 +190,32 @@ public class Util {
         }
         return ret;
     }
+	public static string GetTextureType(string textureName)
+	{
+		string type = "";
+		textureName = textureName.ToLower();
+
+		if(textureName.Contains("detail"))
+		{
+			type = "_DetailMask";
+		}
+		if(textureName.EndsWith("_d") || textureName.EndsWith("_c"))
+		{
+			type += "_MainTex";
+		}
+		else if(textureName.EndsWith("_s")) {
+			type += "_MetallicGlossMap";
+		}
+		else if (textureName.EndsWith("_n"))
+		{
+			type += "_BumpMap";
+		}
+		else if (textureName.EndsWith("_m"))
+		{
+			type += "_MetallicGlossMap";
+		}
+		return type;
+	}
 
     public static string ClearGUID(Inst inst) {
         string name = "Unknown";
@@ -433,6 +459,10 @@ public class Util {
 
 
 	public static Texture2D LoadiTexture(string path) {
+		if(!FileExist("Resources/" + path))
+		{
+			return null;
+		}
 		Texture2D ret = iTexture.LoadTexture ("Resources/"+path);
 		return ret;
 	}
@@ -442,6 +472,13 @@ public class Util {
     {
         UnityEngine.Debug.Log(log);
     }
-		
+
+	public static string ByteArrayToString(byte[] ba)
+	{
+		StringBuilder hex = new StringBuilder(ba.Length * 2);
+		foreach (byte b in ba)
+			hex.AppendFormat("{0:x2}", b);
+		return hex.ToString();
+	}
 
 }

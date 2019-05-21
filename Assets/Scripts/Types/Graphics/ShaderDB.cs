@@ -17,7 +17,7 @@ namespace ShaderDBParser
 
 	public class ShaderDB
 	{
-		public Dictionary<string, string> ResourceDictionary = new Dictionary<string, string>();
+		public Dictionary<string, List<string>> ResourceDictionary = new Dictionary<string, List<string>>();
 
 		private ShaderDBHeader header;
 		private ParamGroups paramGroups;
@@ -42,6 +42,52 @@ namespace ShaderDBParser
 				this.block6 = new Block6(s_Reader);
 				this.block7 = new Block7(s_Reader);
 
+
+			}
+
+			LoadDictionary();
+		}
+
+		public void LoadDictionary()
+		{
+			Dictionary<string, short[]> block7items = this.block7.getItems();
+			List<Block4Item> block4items = this.block4.getItems();
+			List<ParamGroup> paramGroups = this.paramGroups.GetParamGroups();
+			ShaderGroup1 shaderGroup1 = this.shaderGroups.GetParamGroup1();
+			ShaderGroup2 shaderGroup2 = this.shaderGroups.GetParamGroup2();
+			foreach (Block6GroupItem block6groupitem in this.block6.GetItems())
+			{
+				Console.WriteLine(block6groupitem.name);
+
+				List<string> textureNames = new List<string>();
+				short[] shorts;
+				block7items.TryGetValue(block6groupitem.reference, out shorts);
+				if (shorts == null)
+				{
+					continue;
+				}
+				foreach (short index in shorts)
+				{
+					Block4Item block4Item = block4items[index];
+					ShaderDecleration sd1 = shaderGroup1.shaderDeclerations[(int)block4Item.shaderIndex1];
+					Shader shader1 = shaderGroup1.shaders[(int)block4Item.shaderIndex1];
+
+					ShaderDecleration sd2 = shaderGroup1.shaderDeclerations[(int)block4Item.shaderIndex1];
+					Shader shader2 = shaderGroup1.shaders[(int)block4Item.shaderIndex1];
+
+					ParamGroup paramGroup = paramGroups[(int)block4Item.paramGroupIndex];
+					List<TextureParameter> textureParameter = paramGroup.getTextureParameters();
+					//this.ResourceDictionary.Add(block6groupitem.name, textureParameter);
+					foreach (TextureParameter tp in textureParameter)
+					{
+						if (!textureNames.Contains(tp.TextureName))
+						{
+							Console.WriteLine(index + "----" + tp.TextureName);
+							textureNames.Add(tp.TextureName);
+						}
+					}
+				}
+				this.ResourceDictionary.Add(block6groupitem.name.ToLower(), textureNames);
 
 			}
 		}

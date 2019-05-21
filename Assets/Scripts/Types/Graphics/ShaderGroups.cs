@@ -19,15 +19,22 @@ namespace ShaderDBParser
 			group2 = new ShaderGroup2(p_Reader);
 
 		}
-
+		public ShaderGroup1 GetParamGroup1()
+		{
+			return this.group1;
+		}
+		public ShaderGroup2 GetParamGroup2()
+		{
+			return this.group2;
+		}
 
 	}
 	
 	class ShaderGroup1
 	{
 		long shaderCount;
-		List<Shader> shaders = new List<Shader>();
-		List<ShaderDecleration> shaderDeclerations = new List<ShaderDecleration>();
+		public List<Shader> shaders = new List<Shader>();
+		public List<ShaderDecleration> shaderDeclerations = new List<ShaderDecleration>();
 
 		public ShaderGroup1(BinaryReader p_Reader)
 		{
@@ -43,8 +50,8 @@ namespace ShaderDBParser
 	class ShaderGroup2
 	{
 		long shaderCount;
-		List<Shader> shaders = new List<Shader>();
-		List<ShaderDecleration> shaderDeclerations = new List<ShaderDecleration>();
+		public List<Shader> shaders = new List<Shader>();
+		public List<ShaderDecleration> shaderDeclerations = new List<ShaderDecleration>();
 
 		public ShaderGroup2(BinaryReader p_Reader)
 		{
