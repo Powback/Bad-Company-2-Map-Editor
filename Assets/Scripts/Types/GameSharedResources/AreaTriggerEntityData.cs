@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Globalization;
 using BC2;
+
 public class AreaTriggerEntityData : MonoBehaviour {
 	public bool showSphere = true;
 	GameObject radiusSphere;
@@ -9,7 +11,7 @@ public class AreaTriggerEntityData : MonoBehaviour {
 		showSphere = Util.GetMapload ().showHelpers;
 		Inst inst = transform.GetComponent<BC2Instance> ().instance;
 		string radiusString = Util.GetField ("Radius", inst).value;
-		float radius = float.Parse (radiusString);
+		float radius = float.Parse (radiusString, new CultureInfo("en-US", false));
 		radiusSphere = (GameObject)Instantiate (Util.GetMapload ().sphere, transform.position, transform.rotation);
 		radiusSphere.transform.localScale = new Vector3 (radius, radius, radius);
 		radiusSphere.name = inst.guid + " helper";

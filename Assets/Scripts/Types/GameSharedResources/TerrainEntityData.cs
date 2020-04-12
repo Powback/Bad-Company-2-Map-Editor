@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 using BC2;
-
 
 public class TerrainEntityData : MonoBehaviour {
 
@@ -55,7 +55,7 @@ public class TerrainEntityData : MonoBehaviour {
 	int TerrainHeight(string location)
 	{
 		Inst heightFieldData = Util.GetTypes("Terrain.TerrainHeightfieldData", partition)[0];
-		int height = Mathf.CeilToInt(float.Parse(Util.GetField("SizeY", heightFieldData).value));
+		int height = Mathf.CeilToInt(float.Parse(Util.GetField("SizeY", heightFieldData).value, new CultureInfo("en-US", false)));
 		return height;
 	}
 
@@ -65,7 +65,7 @@ public class TerrainEntityData : MonoBehaviour {
 	{
 
 		Inst terrainInst = Util.GetInst(guid, partition);
-		int res = Mathf.CeilToInt(float.Parse(Util.GetField("SizeXZ", terrainInst).value));
+		int res = Mathf.CeilToInt(float.Parse(Util.GetField("SizeXZ", terrainInst).value, new CultureInfo("en-US", false)));
 		return res;
 	}
 

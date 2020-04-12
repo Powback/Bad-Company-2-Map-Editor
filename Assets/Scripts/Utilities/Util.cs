@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Globalization;
 using BC2;
 using BC2.Util.Texture;
 
@@ -12,6 +13,7 @@ public class Util {
 
 	public static MapLoad mapLoad;
 	private static Dictionary<string, string> ExistingFiles = new Dictionary<string, string>();
+    private static CultureInfo cultureInfo = new CultureInfo("en-US", false);
 
     public static Inst GetType(string type, Partition partition)
     {
@@ -71,10 +73,10 @@ public class Util {
 
 
 	static Quaternion Normalize(Quaternion q){
-		double nqx = double.Parse (q.x.ToString ());
-		double nqy = double.Parse (q.y.ToString ());
-		double nqz = double.Parse (q.z.ToString ());
-		double nqw = double.Parse (q.w.ToString ());
+        double nqx = double.Parse (q.x.ToString (), cultureInfo);
+		double nqy = double.Parse (q.y.ToString (), cultureInfo);
+		double nqz = double.Parse (q.z.ToString (), cultureInfo);
+		double nqw = double.Parse (q.w.ToString (), cultureInfo);
 
 		double norm2 = nqx*nqx + nqy*nqy + nqz*nqz + nqw*nqw;
 		if (norm2 > Double.MaxValue) 
@@ -97,7 +99,7 @@ public class Util {
 		nqz *= normInverse;
 		nqw *= normInverse; 
 
-		Quaternion quat = new Quaternion (float.Parse (nqx.ToString()), float.Parse (nqy.ToString()), float.Parse (nqz.ToString()), float.Parse (nqw.ToString()));
+		Quaternion quat = new Quaternion (float.Parse (nqx.ToString(), cultureInfo), float.Parse (nqy.ToString(), cultureInfo), float.Parse (nqz.ToString(), cultureInfo), float.Parse (nqw.ToString(), cultureInfo));
 		return quat;
 	}
 
@@ -343,8 +345,8 @@ public class Util {
 	public static Vector3 GetPosition(Inst inst) {
 		Vector3 pos = Vector3.zero;
 		string bc2pos = null;
-		
-		if (Util.GetComplex("Transform", inst) != null || Util.GetComplex("Position", inst) != null) {
+
+        if (Util.GetComplex("Transform", inst) != null || Util.GetComplex("Position", inst) != null) {
             //Util.Log(inst.guid);
             if(Util.GetComplex("Transform", inst) != null && Util.GetComplex("Transform", inst).value != null)
             {
@@ -359,9 +361,9 @@ public class Util {
 				string coordiantes = bc2pos;
 				string[] coords = coordiantes.Split ('/');
 				int numcoords = coords.Length;
-				float z = float.Parse (coords [(numcoords - 4)]);
-				float y = float.Parse (coords [(numcoords - 3)]);
-				float x = float.Parse (coords [(numcoords - 2)]);
+				float z = float.Parse (coords [(numcoords - 4)], cultureInfo);
+				float y = float.Parse (coords [(numcoords - 3)], cultureInfo);
+				float x = float.Parse (coords [(numcoords - 2)], cultureInfo);
 				pos = new Vector3 (x, y, z);
 			}
 			
@@ -378,9 +380,9 @@ public class Util {
 			string coordiantes = bc2pos;
 			string[] coords = coordiantes.Split ('/');
 			int numcoords = coords.Length;
-			float z = float.Parse (coords [(numcoords - 4)]);
-			float y = float.Parse (coords [(numcoords - 3)]);
-			float x = float.Parse (coords [(numcoords - 2)]);
+			float z = float.Parse (coords [(numcoords - 4)], cultureInfo);
+			float y = float.Parse (coords [(numcoords - 3)], cultureInfo);
+			float x = float.Parse (coords [(numcoords - 2)], cultureInfo);
 			pos = new Vector3 (x, y, z);
 		}
 		return pos;
@@ -400,21 +402,21 @@ public class Util {
 			string[] coords = coordiantes.Split ('/');
 			int numcoords = coords.Length;
 			if(numcoords > 3) { 
-				float rz = (float.Parse (coords [0]) * -1);
-				float ry = (float.Parse (coords [1]) * -1);
-				float rx = (float.Parse (coords [2]) * -1);
+				float rz = (float.Parse (coords [0], cultureInfo) * -1);
+				float ry = (float.Parse (coords [1], cultureInfo) * -1);
+				float rx = (float.Parse (coords [2], cultureInfo) * -1);
 				
-				float uz = (float.Parse (coords [4]));
-				float uy = (float.Parse (coords [5]));
-				float ux = (float.Parse (coords [6]));
+				float uz = (float.Parse (coords [4], cultureInfo));
+				float uy = (float.Parse (coords [5], cultureInfo));
+				float ux = (float.Parse (coords [6], cultureInfo));
 				
-				float fz = (float.Parse (coords [8]));
-				float fy = (float.Parse (coords [9]));
-				float fx = (float.Parse (coords [10]));
+				float fz = (float.Parse (coords [8], cultureInfo));
+				float fy = (float.Parse (coords [9], cultureInfo));
+				float fx = (float.Parse (coords [10], cultureInfo));
 				
-				float px = (float.Parse (coords [12]));
-				float py = (float.Parse (coords [13]));
-				float pz = (float.Parse (coords [14]));
+				float px = (float.Parse (coords [12], cultureInfo));
+				float py = (float.Parse (coords [13], cultureInfo));
+				float pz = (float.Parse (coords [14], cultureInfo));
 				
 				matrix.SetColumn(0, new Vector4(rx,ry,rz,0));
 				matrix.SetColumn(1, new Vector4(ux,uy,uz,0));
@@ -432,21 +434,21 @@ public class Util {
 			string[] coords = coordiantes.Split ('/');
 			int numcoords = coords.Length;
 			if(numcoords > 3) { 
-				float rz = (float.Parse (coords [0]) * -1);
-				float ry = (float.Parse (coords [1]) * -1);
-				float rx = (float.Parse (coords [2]) * -1);
+				float rz = (float.Parse (coords [0], cultureInfo) * -1);
+				float ry = (float.Parse (coords [1], cultureInfo) * -1);
+				float rx = (float.Parse (coords [2], cultureInfo) * -1);
+
+				float uz = (float.Parse (coords [4], cultureInfo));
+				float uy = (float.Parse (coords [5], cultureInfo));
+				float ux = (float.Parse (coords [6], cultureInfo));
+
+				float fz = (float.Parse (coords [8], cultureInfo));
+				float fy = (float.Parse (coords [9], cultureInfo));
+				float fx = (float.Parse (coords [10], cultureInfo));
 				
-				float uz = (float.Parse (coords [4]));
-				float uy = (float.Parse (coords [5]));
-				float ux = (float.Parse (coords [6]));
-				
-				float fz = (float.Parse (coords [8]));
-				float fy = (float.Parse (coords [9]));
-				float fx = (float.Parse (coords [10]));
-				
-				float px = (float.Parse (coords [12]));
-				float py = (float.Parse (coords [13]));
-				float pz = (float.Parse (coords [14]));
+				float px = (float.Parse (coords [12], cultureInfo));
+				float py = (float.Parse (coords [13], cultureInfo));
+				float pz = (float.Parse (coords [14], cultureInfo));
 				
 				matrix.SetColumn(0, new Vector4(rx,ry,rz,0));
 				matrix.SetColumn(1, new Vector4(ux,uy,uz,0));
