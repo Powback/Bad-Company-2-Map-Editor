@@ -73,10 +73,10 @@ public class Util {
 
 
 	static Quaternion Normalize(Quaternion q){
-        double nqx = double.Parse (q.x.ToString (), cultureInfo);
-		double nqy = double.Parse (q.y.ToString (), cultureInfo);
-		double nqz = double.Parse (q.z.ToString (), cultureInfo);
-		double nqw = double.Parse (q.w.ToString (), cultureInfo);
+        double nqx = double.Parse (q.x.ToString ());
+		double nqy = double.Parse (q.y.ToString ());
+		double nqz = double.Parse (q.z.ToString ());
+		double nqw = double.Parse (q.w.ToString ());
 
 		double norm2 = nqx*nqx + nqy*nqy + nqz*nqz + nqw*nqw;
 		if (norm2 > Double.MaxValue) 
@@ -99,7 +99,7 @@ public class Util {
 		nqz *= normInverse;
 		nqw *= normInverse; 
 
-		Quaternion quat = new Quaternion (float.Parse (nqx.ToString(), cultureInfo), float.Parse (nqy.ToString(), cultureInfo), float.Parse (nqz.ToString(), cultureInfo), float.Parse (nqw.ToString(), cultureInfo));
+		Quaternion quat = new Quaternion (float.Parse (nqx.ToString()), float.Parse (nqy.ToString()), float.Parse (nqz.ToString()), float.Parse (nqw.ToString()));
 		return quat;
 	}
 
