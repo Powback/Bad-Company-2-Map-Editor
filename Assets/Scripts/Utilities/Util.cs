@@ -32,43 +32,45 @@ public class Util {
     }
 		
 	public static string GetMatrixString(Transform transform) {
-		Vector3 pos = transform.position;
-		Quaternion rot = transform.rotation;
-
-
-		Matrix4x4 matrix = new Matrix4x4(); 
-		matrix.SetTRS(pos.normalized,Normalize(rot),Vector3.one);
-		Matrix4x4 m = matrix;
-
-
-		string m02 = ( m.m02 ).ToString();
-		string m10 = ( m.m10 * -1).ToString();
-		string m00 = ( m.m00 * -1).ToString();
-		string m21 = ( m.m21 ).ToString();
-		string m11 = ( m.m11 ).ToString();
-		string m01 = ( m.m01 ).ToString();
-		string m22 = ( m.m22 ).ToString();
-		string m12 = ( m.m12 ).ToString();
-		string m20 = ( m.m20  * -1).ToString ();
-
-		if( m.m02.ToString() == "1") { 	m02 = "1.0"; } else if(m.m02.ToString() == "-1") { m02 = "-1.0";}
-		if( m.m10.ToString() == "1") { 	m10 = "1.0"; } else if(m.m10.ToString() == "-1") { m10 = "-1.0";}  
-		if( m.m00.ToString() == "1") { 	m00 = "1.0"; } else if(m.m00.ToString() == "-1") { m00 = "-1.0";}  
-		if( m.m21.ToString() == "1") { 	m21 = "1.0"; } else if(m.m21.ToString() == "-1") { m21 = "-1.0";}  
-		if( m.m11.ToString() == "1") { 	m11 = "1.0"; } else if(m.m11.ToString() == "-1") { m11 = "-1.0";}  
-		if( m.m01.ToString() == "1") { 	m01 = "1.0"; } else if(m.m01.ToString() == "-1") { m01 = "-1.0";}  
-		if( m.m22.ToString() == "1") { 	m22 = "1.0"; } else if(m.m22.ToString() == "-1") { m22 = "-1.0";}  
-		if( m.m12.ToString() == "1") { 	m12 = "1.0"; } else if(m.m12.ToString() == "-1") { m12 = "-1.0";}  
-		if( m.m20.ToString() == "1") { 	m20 = "1.0"; } else if(m.m20.ToString() == "-1") { m20 = "-1.0";}  	
-
-
-		string matrixstring =
-			m20+ "/" + m10 + "/" + m00 + "/*zero*/" +
-			m21 + "/" + m11+ "/" + m01+ "/*zero*/" +
-			m22+ "/" + m12+ "/" + m02+ "/*zero*/" +
-			pos.z + "/" + pos.y + "/" + pos.x + "/*zero*";
-
-		return matrixstring;
+        Vector3 pos = transform.position;
+        Quaternion rot = transform.rotation;
+        
+        Matrix4x4 matrix = new Matrix4x4(); 
+        matrix.SetTRS(pos.normalized,Normalize(rot),Vector3.one);
+        Matrix4x4 m = matrix;
+        
+        string posX = pos.x.ToString(cultureInfo),
+               posY = pos.y.ToString(cultureInfo),
+               posZ = pos.z.ToString(cultureInfo);
+        
+        string m02 = ( m.m02 ).ToString(cultureInfo);
+        string m10 = ( m.m10 * -1).ToString(cultureInfo);
+        string m00 = ( m.m00 * -1).ToString(cultureInfo);
+        string m21 = ( m.m21 ).ToString(cultureInfo);
+        string m11 = ( m.m11 ).ToString(cultureInfo);
+        string m01 = ( m.m01 ).ToString(cultureInfo);
+        string m22 = ( m.m22 ).ToString(cultureInfo);
+        string m12 = ( m.m12 ).ToString(cultureInfo);
+        string m20 = ( m.m20  * -1).ToString (cultureInfo);
+        
+        if( m.m02.ToString() == "1") { 	m02 = "1.0"; } else if(m.m02.ToString() == "-1") { m02 = "-1.0";}
+        if( m.m10.ToString() == "1") { 	m10 = "1.0"; } else if(m.m10.ToString() == "-1") { m10 = "-1.0";}  
+        if( m.m00.ToString() == "1") { 	m00 = "1.0"; } else if(m.m00.ToString() == "-1") { m00 = "-1.0";}  
+        if( m.m21.ToString() == "1") { 	m21 = "1.0"; } else if(m.m21.ToString() == "-1") { m21 = "-1.0";}  
+        if( m.m11.ToString() == "1") { 	m11 = "1.0"; } else if(m.m11.ToString() == "-1") { m11 = "-1.0";}  
+        if( m.m01.ToString() == "1") { 	m01 = "1.0"; } else if(m.m01.ToString() == "-1") { m01 = "-1.0";}  
+        if( m.m22.ToString() == "1") { 	m22 = "1.0"; } else if(m.m22.ToString() == "-1") { m22 = "-1.0";}  
+        if( m.m12.ToString() == "1") { 	m12 = "1.0"; } else if(m.m12.ToString() == "-1") { m12 = "-1.0";}  
+        if( m.m20.ToString() == "1") { 	m20 = "1.0"; } else if(m.m20.ToString() == "-1") { m20 = "-1.0";}  	
+        
+        
+        string matrixstring =
+        	m20+ "/" + m10 + "/" + m00 + "/*zero*/" +
+        	m21 + "/" + m11+ "/" + m01+ "/*zero*/" +
+        	m22+ "/" + m12+ "/" + m02+ "/*zero*/" +
+        	posZ + "/" + posY + "/" + posX + "/*zero*";
+        
+        return matrixstring;
 	}
 
 
