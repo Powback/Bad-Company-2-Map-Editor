@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Globalization;
 using BC2;
 using BC2.Util.Texture;
 
@@ -12,6 +13,7 @@ public class Util {
 
 	public static MapLoad mapLoad;
 	private static Dictionary<string, string> ExistingFiles = new Dictionary<string, string>();
+    private static CultureInfo cultureInfo = new CultureInfo("en-US", false);
 
     public static Inst GetType(string type, Partition partition)
     {
@@ -30,48 +32,50 @@ public class Util {
     }
 		
 	public static string GetMatrixString(Transform transform) {
-		Vector3 pos = transform.position;
-		Quaternion rot = transform.rotation;
-
-
-		Matrix4x4 matrix = new Matrix4x4(); 
-		matrix.SetTRS(pos.normalized,Normalize(rot),Vector3.one);
-		Matrix4x4 m = matrix;
-
-
-		string m02 = ( m.m02 ).ToString();
-		string m10 = ( m.m10 * -1).ToString();
-		string m00 = ( m.m00 * -1).ToString();
-		string m21 = ( m.m21 ).ToString();
-		string m11 = ( m.m11 ).ToString();
-		string m01 = ( m.m01 ).ToString();
-		string m22 = ( m.m22 ).ToString();
-		string m12 = ( m.m12 ).ToString();
-		string m20 = ( m.m20  * -1).ToString ();
-
-		if( m.m02.ToString() == "1") { 	m02 = "1.0"; } else if(m.m02.ToString() == "-1") { m02 = "-1.0";}
-		if( m.m10.ToString() == "1") { 	m10 = "1.0"; } else if(m.m10.ToString() == "-1") { m10 = "-1.0";}  
-		if( m.m00.ToString() == "1") { 	m00 = "1.0"; } else if(m.m00.ToString() == "-1") { m00 = "-1.0";}  
-		if( m.m21.ToString() == "1") { 	m21 = "1.0"; } else if(m.m21.ToString() == "-1") { m21 = "-1.0";}  
-		if( m.m11.ToString() == "1") { 	m11 = "1.0"; } else if(m.m11.ToString() == "-1") { m11 = "-1.0";}  
-		if( m.m01.ToString() == "1") { 	m01 = "1.0"; } else if(m.m01.ToString() == "-1") { m01 = "-1.0";}  
-		if( m.m22.ToString() == "1") { 	m22 = "1.0"; } else if(m.m22.ToString() == "-1") { m22 = "-1.0";}  
-		if( m.m12.ToString() == "1") { 	m12 = "1.0"; } else if(m.m12.ToString() == "-1") { m12 = "-1.0";}  
-		if( m.m20.ToString() == "1") { 	m20 = "1.0"; } else if(m.m20.ToString() == "-1") { m20 = "-1.0";}  	
-
-
-		string matrixstring =
-			m20+ "/" + m10 + "/" + m00 + "/*zero*/" +
-			m21 + "/" + m11+ "/" + m01+ "/*zero*/" +
-			m22+ "/" + m12+ "/" + m02+ "/*zero*/" +
-			pos.z + "/" + pos.y + "/" + pos.x + "/*zero*";
-
-		return matrixstring;
+        Vector3 pos = transform.position;
+        Quaternion rot = transform.rotation;
+        
+        Matrix4x4 matrix = new Matrix4x4(); 
+        matrix.SetTRS(pos.normalized,Normalize(rot),Vector3.one);
+        Matrix4x4 m = matrix;
+        
+        string posX = pos.x.ToString(cultureInfo),
+               posY = pos.y.ToString(cultureInfo),
+               posZ = pos.z.ToString(cultureInfo);
+        
+        string m02 = ( m.m02 ).ToString(cultureInfo);
+        string m10 = ( m.m10 * -1).ToString(cultureInfo);
+        string m00 = ( m.m00 * -1).ToString(cultureInfo);
+        string m21 = ( m.m21 ).ToString(cultureInfo);
+        string m11 = ( m.m11 ).ToString(cultureInfo);
+        string m01 = ( m.m01 ).ToString(cultureInfo);
+        string m22 = ( m.m22 ).ToString(cultureInfo);
+        string m12 = ( m.m12 ).ToString(cultureInfo);
+        string m20 = ( m.m20  * -1).ToString (cultureInfo);
+        
+        if( m.m02.ToString() == "1") { 	m02 = "1.0"; } else if(m.m02.ToString() == "-1") { m02 = "-1.0";}
+        if( m.m10.ToString() == "1") { 	m10 = "1.0"; } else if(m.m10.ToString() == "-1") { m10 = "-1.0";}  
+        if( m.m00.ToString() == "1") { 	m00 = "1.0"; } else if(m.m00.ToString() == "-1") { m00 = "-1.0";}  
+        if( m.m21.ToString() == "1") { 	m21 = "1.0"; } else if(m.m21.ToString() == "-1") { m21 = "-1.0";}  
+        if( m.m11.ToString() == "1") { 	m11 = "1.0"; } else if(m.m11.ToString() == "-1") { m11 = "-1.0";}  
+        if( m.m01.ToString() == "1") { 	m01 = "1.0"; } else if(m.m01.ToString() == "-1") { m01 = "-1.0";}  
+        if( m.m22.ToString() == "1") { 	m22 = "1.0"; } else if(m.m22.ToString() == "-1") { m22 = "-1.0";}  
+        if( m.m12.ToString() == "1") { 	m12 = "1.0"; } else if(m.m12.ToString() == "-1") { m12 = "-1.0";}  
+        if( m.m20.ToString() == "1") { 	m20 = "1.0"; } else if(m.m20.ToString() == "-1") { m20 = "-1.0";}  	
+        
+        
+        string matrixstring =
+        	m20+ "/" + m10 + "/" + m00 + "/*zero*/" +
+        	m21 + "/" + m11+ "/" + m01+ "/*zero*/" +
+        	m22+ "/" + m12+ "/" + m02+ "/*zero*/" +
+        	posZ + "/" + posY + "/" + posX + "/*zero*";
+        
+        return matrixstring;
 	}
 
 
 	static Quaternion Normalize(Quaternion q){
-		double nqx = double.Parse (q.x.ToString ());
+        double nqx = double.Parse (q.x.ToString ());
 		double nqy = double.Parse (q.y.ToString ());
 		double nqz = double.Parse (q.z.ToString ());
 		double nqw = double.Parse (q.w.ToString ());
@@ -343,8 +347,8 @@ public class Util {
 	public static Vector3 GetPosition(Inst inst) {
 		Vector3 pos = Vector3.zero;
 		string bc2pos = null;
-		
-		if (Util.GetComplex("Transform", inst) != null || Util.GetComplex("Position", inst) != null) {
+
+        if (Util.GetComplex("Transform", inst) != null || Util.GetComplex("Position", inst) != null) {
             //Util.Log(inst.guid);
             if(Util.GetComplex("Transform", inst) != null && Util.GetComplex("Transform", inst).value != null)
             {
@@ -359,9 +363,9 @@ public class Util {
 				string coordiantes = bc2pos;
 				string[] coords = coordiantes.Split ('/');
 				int numcoords = coords.Length;
-				float z = float.Parse (coords [(numcoords - 4)]);
-				float y = float.Parse (coords [(numcoords - 3)]);
-				float x = float.Parse (coords [(numcoords - 2)]);
+				float z = float.Parse (coords [(numcoords - 4)], cultureInfo);
+				float y = float.Parse (coords [(numcoords - 3)], cultureInfo);
+				float x = float.Parse (coords [(numcoords - 2)], cultureInfo);
 				pos = new Vector3 (x, y, z);
 			}
 			
@@ -378,9 +382,9 @@ public class Util {
 			string coordiantes = bc2pos;
 			string[] coords = coordiantes.Split ('/');
 			int numcoords = coords.Length;
-			float z = float.Parse (coords [(numcoords - 4)]);
-			float y = float.Parse (coords [(numcoords - 3)]);
-			float x = float.Parse (coords [(numcoords - 2)]);
+			float z = float.Parse (coords [(numcoords - 4)], cultureInfo);
+			float y = float.Parse (coords [(numcoords - 3)], cultureInfo);
+			float x = float.Parse (coords [(numcoords - 2)], cultureInfo);
 			pos = new Vector3 (x, y, z);
 		}
 		return pos;
@@ -400,21 +404,21 @@ public class Util {
 			string[] coords = coordiantes.Split ('/');
 			int numcoords = coords.Length;
 			if(numcoords > 3) { 
-				float rz = (float.Parse (coords [0]) * -1);
-				float ry = (float.Parse (coords [1]) * -1);
-				float rx = (float.Parse (coords [2]) * -1);
+				float rz = (float.Parse (coords [0], cultureInfo) * -1);
+				float ry = (float.Parse (coords [1], cultureInfo) * -1);
+				float rx = (float.Parse (coords [2], cultureInfo) * -1);
 				
-				float uz = (float.Parse (coords [4]));
-				float uy = (float.Parse (coords [5]));
-				float ux = (float.Parse (coords [6]));
+				float uz = (float.Parse (coords [4], cultureInfo));
+				float uy = (float.Parse (coords [5], cultureInfo));
+				float ux = (float.Parse (coords [6], cultureInfo));
 				
-				float fz = (float.Parse (coords [8]));
-				float fy = (float.Parse (coords [9]));
-				float fx = (float.Parse (coords [10]));
+				float fz = (float.Parse (coords [8], cultureInfo));
+				float fy = (float.Parse (coords [9], cultureInfo));
+				float fx = (float.Parse (coords [10], cultureInfo));
 				
-				float px = (float.Parse (coords [12]));
-				float py = (float.Parse (coords [13]));
-				float pz = (float.Parse (coords [14]));
+				float px = (float.Parse (coords [12], cultureInfo));
+				float py = (float.Parse (coords [13], cultureInfo));
+				float pz = (float.Parse (coords [14], cultureInfo));
 				
 				matrix.SetColumn(0, new Vector4(rx,ry,rz,0));
 				matrix.SetColumn(1, new Vector4(ux,uy,uz,0));
@@ -432,21 +436,21 @@ public class Util {
 			string[] coords = coordiantes.Split ('/');
 			int numcoords = coords.Length;
 			if(numcoords > 3) { 
-				float rz = (float.Parse (coords [0]) * -1);
-				float ry = (float.Parse (coords [1]) * -1);
-				float rx = (float.Parse (coords [2]) * -1);
+				float rz = (float.Parse (coords [0], cultureInfo) * -1);
+				float ry = (float.Parse (coords [1], cultureInfo) * -1);
+				float rx = (float.Parse (coords [2], cultureInfo) * -1);
+
+				float uz = (float.Parse (coords [4], cultureInfo));
+				float uy = (float.Parse (coords [5], cultureInfo));
+				float ux = (float.Parse (coords [6], cultureInfo));
+
+				float fz = (float.Parse (coords [8], cultureInfo));
+				float fy = (float.Parse (coords [9], cultureInfo));
+				float fx = (float.Parse (coords [10], cultureInfo));
 				
-				float uz = (float.Parse (coords [4]));
-				float uy = (float.Parse (coords [5]));
-				float ux = (float.Parse (coords [6]));
-				
-				float fz = (float.Parse (coords [8]));
-				float fy = (float.Parse (coords [9]));
-				float fx = (float.Parse (coords [10]));
-				
-				float px = (float.Parse (coords [12]));
-				float py = (float.Parse (coords [13]));
-				float pz = (float.Parse (coords [14]));
+				float px = (float.Parse (coords [12], cultureInfo));
+				float py = (float.Parse (coords [13], cultureInfo));
+				float pz = (float.Parse (coords [14], cultureInfo));
 				
 				matrix.SetColumn(0, new Vector4(rx,ry,rz,0));
 				matrix.SetColumn(1, new Vector4(ux,uy,uz,0));

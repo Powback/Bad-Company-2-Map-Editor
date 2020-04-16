@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Globalization;
 using BC2;
-
 
 public class HavokAsset : MonoBehaviour {
     public Partition partition;
@@ -19,7 +19,9 @@ public class HavokAsset : MonoBehaviour {
 
 	private GameObject emptyGO;
 
-	public void Start() {
+    private CultureInfo cultureInfo = new CultureInfo("en-US", false);
+
+    public void Start() {
 		emptyGO = Util.GetMapload ().empty.gameObject;
 
         Inst instance = transform.gameObject.GetComponent<BC2Instance>().instance;
@@ -204,9 +206,7 @@ public class HavokAsset : MonoBehaviour {
 
 	
 	void GeneratePosRot(string coordinates) {
-		int i = -1;
-
-
+        int i = -1;
 
 		string[] coords = coordinates.Split ('/');
 		//int numcoords = coords.Length;
@@ -215,21 +215,21 @@ public class HavokAsset : MonoBehaviour {
             Matrix4x4 m = new Matrix4x4();
 
 
-			float rz = 	float.Parse (coords [i + 1]) * -1;
-			float ry =	float.Parse (coords [i + 2]) * -1;
-			float rx =	float.Parse (coords [i + 3]) * -1;
+			float rz = 	float.Parse (coords [i + 1], cultureInfo) * -1;
+			float ry =	float.Parse (coords [i + 2], cultureInfo) * -1;
+			float rx =	float.Parse (coords [i + 3], cultureInfo) * -1;
 
-			float uz =	float.Parse (coords [i + 5]);
-			float uy =	float.Parse (coords [i + 6]);
-			float ux =	float.Parse (coords [i + 7]);
+			float uz =	float.Parse (coords [i + 5], cultureInfo);
+			float uy =	float.Parse (coords [i + 6], cultureInfo);
+			float ux =	float.Parse (coords [i + 7], cultureInfo);
 
-			float fz =	float.Parse (coords [i + 9]);
-			float fy =	float.Parse (coords [i + 10]);
-			float fx =	float.Parse (coords [i + 11]);
+			float fz =	float.Parse (coords [i + 9], cultureInfo);
+			float fy =	float.Parse (coords [i + 10], cultureInfo);
+			float fx =	float.Parse (coords [i + 11], cultureInfo);
 
-			float z =	float.Parse (coords [(i + 13)]);
-			float y = 	float.Parse (coords [(i + 14)]);
-			float x = 	float.Parse (coords [(i + 15)]);
+			float z =	float.Parse (coords [(i + 13)], cultureInfo);
+			float y = 	float.Parse (coords [(i + 14)], cultureInfo);
+			float x = 	float.Parse (coords [(i + 15)], cultureInfo);
 
             m.SetColumn(0, new Vector4(rx, ry, rz, 0));
             m.SetColumn(1, new Vector4(ux, uy, uz, 0));
