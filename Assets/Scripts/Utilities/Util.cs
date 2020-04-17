@@ -41,9 +41,13 @@ public class Util
 		matrix.SetTRS(pos.normalized, Normalize(rot), Vector3.one);
 		Matrix4x4 m = matrix;
 
-		string posX = pos.x.ToString(cultureInfo),
-			   posY = pos.y.ToString(cultureInfo),
-			   posZ = pos.z.ToString(cultureInfo);
+		string posX = pos.x.ToString(cultureInfo);
+		string posY = pos.y.ToString(cultureInfo);
+		string posZ = pos.z.ToString(cultureInfo);
+
+		if (posX != "0" && !posX.Contains(".")) { posX = posX + ".0"; }
+		if (posY != "0" && !posY.Contains(".")) { posY = posY + ".0"; }
+		if (posZ != "0" && !posZ.Contains(".")) { posZ = posZ + ".0"; }
 
 		string m02 = (m.m02).ToString(cultureInfo);
 		string m10 = (m.m10 * -1).ToString(cultureInfo);
