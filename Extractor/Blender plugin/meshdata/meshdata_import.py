@@ -335,12 +335,21 @@ class Meshdata:
             if removeDoubles:
                 #bpy.ops.object.editmode_toggle()
                 #bpy.ops.object.remove_doubles(me) # bpy.ops.mesh.remove_doubles()
-                bpy.ops.object.mode_set(mode='OBJECT')
+                if bpy.ops.object.mode_set.poll():
+                    bpy.ops.object.mode_set(mode='OBJECT')
+                else:
+                    print("mode_set:1() context is incorrect, current mode is", bpy.context.mode)
                 bpy.context.scene.objects.active = ob
-                bpy.ops.object.mode_set(mode='EDIT')
+                if bpy.ops.object.mode_set.poll():
+                    bpy.ops.object.mode_set(mode='EDIT')
+                else:
+                    print("mode_set:2() context is incorrect, current mode is", bpy.context.mode)
                 bpy.ops.mesh.select_all(action='SELECT')
                 bpy.ops.mesh.remove_doubles()
-                bpy.ops.object.mode_set(mode='OBJECT')
+                if bpy.ops.object.mode_set.poll():
+                    bpy.ops.object.mode_set(mode='OBJECT')
+                else:
+                    print("mode_set:3() context is incorrect, current mode is", bpy.context.mode)
                 
         print("useFloat: {0}".format(useFloat))
         print("Finished in: {:.4f} sec".format(time.time() - self.time_start))
