@@ -42,11 +42,13 @@ class ImportMeshdata(bpy.types.Operator, ImportHelper):
             )
 
     uv_offset = bpy.props.IntProperty(name="UV offset", default=0)
+    uv_offset2 = bpy.props.IntProperty(name="UV offset 2", default=0)
     bone_weight_offset = bpy.props.IntProperty(name="bone weights offset", default=0)
+    remove_doubles = bpy.props.BoolProperty(name="remove doubles", description="for each mesh imported run remove doubles", default=True)
     
     def execute(self, context):
        meshdata = Meshdata(self.filepath)
-       meshdata.blenderCreate(self.use_float, self.uv_offset, self.bone_weight_offset)
+       meshdata.blenderCreate(self.use_float, self.uv_offset, self.uv_offset2, self.bone_weight_offset, self.remove_doubles)
        return {'FINISHED'}
 
 def menu_func_import(self, context):

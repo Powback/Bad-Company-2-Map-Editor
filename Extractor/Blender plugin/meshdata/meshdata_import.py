@@ -1,5 +1,6 @@
 #!/usr/bin/python
-## sand2710 - 2015
+## version 0.2
+## sand2710 - 2015-2016
 
 import time
 
@@ -26,32 +27,6 @@ def H2F(H):
 
 def U82F(B):
     return 1.0 / 255 * B
-
-# # too slow
-# def H2F(float16):
-#     s = int((float16 >> 15) & 0x00000001)    # sign
-#     e = int((float16 >> 10) & 0x0000001f)    # exponent
-#     f = int(float16 & 0x000003ff)            # fraction
-    
-#     if e == 0:
-#         if f == 0:
-#             return int(s << 31)
-#         else:
-#             while not (f & 0x00000400):
-#                 f = f << 1
-#                 e -= 1
-#                 e += 1
-#                 f &= ~0x00000400
-#         #print(s,e,f)
-#     elif e == 31:
-#         if f == 0:
-#             return int((s << 31) | 0x7f800000)
-#         else:
-#             return int((s << 31) | 0x7f800000 | (f << 13))
-        
-#         e = e + (127 -15)
-#         f = f << 13
-#         return int((s << 31) | (e << 23) | f)
     
 class Subset:
 
@@ -125,28 +100,6 @@ class Subset:
                 # x, -z, y (zy swap and negative z are adjustment for blender)
                 ve.append((H2F(ix), -H2F(iz), H2F(iy)))
         return ve
-
-    # def getWeightsOLD(self, offset):
-    #     # { boneId0: { weight0: [ vertexId0, ... vxN  ], ... wN }, ... bN } 
-    #     w = {}
-        
-    #     self.fh.seek(self.vxOffset, 0)
-    #     for vxId in range(0, self.vertexCount):
-    #         vxdata = self.fh.read(self.vertexStride)
-    #         for bone_i in range(0, self.boneCount):
-    #             boneId = self.bones[bone_i]
-    #             weight = struct.unpack_from("B", vxdata, offset + bone_i)[0]
-    #             if boneId in w:
-    #                 if weight in w[boneId]:
-    #                     w[boneId][weight].append(vxId) # bone and weight exist, append new vertex
-    #                 else:
-    #                     if type(w[boneId]) is dict:
-    #                         w[boneId][weight] = [vxId] # there's already some weight create a new vx list
-    #                     else:
-    #                         w[boneId] = {weight:[vxId]} # there were no weights for this boneid, add one
-    #             else:
-    #                 w[boneId] = {weight:[vxId]} # there's was not boneId, create it
-    #     return w
 
     def saveWeight(self, w, vxId, boneId, weight):
         if boneId in w:
@@ -304,7 +257,7 @@ class Meshdata:
             subset = self.subset[i]
             print("subset[{0:02d}].idxOffset: 0x{1:08x}".format(i, subset.idxOffset))
             
-    def blenderCreate(self, useFloat, uvOffset, boneWeightsOffset):
+    def blenderCreate(self, useFloat, uvOffset, uvOffset2, boneWeightsOffset, removeDoubles):
 
         for i in range(0,self. subsetCount):
             subset = self.subset[i]
@@ -362,19 +315,33 @@ class Meshdata:
                 f.material_index = 0
                 f.use_smooth = 1
 
+            # vertices uv
+                
             if uvOffset > 0:
                 vert_uvs = subset.getV2(uvOffset) # 0x28
                 if len(vert_uvs) > 0:
-                    me.uv_textures.new("UV"+str(uvOffset))
+                    me.uv_textures.new("UVMap"+str(uvOffset))
                     uvlist = [uv for pair in [vert_uvs[l.vertex_index] for l in me.loops] for uv in pair]
                     me.uv_layers[-1].data.foreach_set("uv", uvlist)
                 
-            # vert_uvs = subset.getV2(0x30)
-            # if len(vert_uvs) > 0:
-            #     me.uv_textures.new("UV1")
-            #     uvlist = [uv for pair in [vert_uvs[l.vertex_index] for l in me.loops] for uv in pair]
-            #     me.uv_layers[-1].data.foreach_set("uv", uvlist)
+            if uvOffset2 > 0:
+                vert_uvs = subset.getV2(uvOffset2) # 0x30
+                if len(vert_uvs) > 0:
+                    me.uv_textures.new("UVMap"+str(uvOffset2))
+                    uvlist = [uv for pair in [vert_uvs[l.vertex_index] for l in me.loops] for uv in pair]
+                    me.uv_layers[-1].data.foreach_set("uv", uvlist)
 
+            # remove doubles
+            if removeDoubles:
+                #bpy.ops.object.editmode_toggle()
+                #bpy.ops.object.remove_doubles(me) # bpy.ops.mesh.remove_doubles()
+                bpy.ops.object.mode_set(mode='OBJECT')
+                bpy.context.scene.objects.active = ob
+                bpy.ops.object.mode_set(mode='EDIT')
+                bpy.ops.mesh.select_all(action='SELECT')
+                bpy.ops.mesh.remove_doubles()
+                bpy.ops.object.mode_set(mode='OBJECT')
+                
         print("useFloat: {0}".format(useFloat))
         print("Finished in: {:.4f} sec".format(time.time() - self.time_start))
 
@@ -385,9 +352,8 @@ def process_meshdata(path):
     print("file size: "+str(si.st_size))
     meshdata = Meshdata(path)
     print("mesh calculated size: "+str(meshdata.size))
-    print("tried to do some shit")
     # for i in range(6,48):
-    #meshdata.blenderCreate()
+    meshdata.blenderCreate()
 
 def main(argv):
     for arg in argv:
